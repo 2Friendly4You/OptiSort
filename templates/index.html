@@ -1,17 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Train AI</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
 
     <style>
+        /* Your inline CSS styles go here */
+        body {
+            font-family: Arial, sans-serif;
+        }
 
+        .container {
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .class-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .class-image-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            overflow: hidden;
+            margin-right: 10px;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        .class-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
     </style>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
-    
+    <div class="container">
+        <h1>AI Image Recognition</h1>
+        <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="class_count">Number of Classes:</label>
+                <input type="number" id="class_count" name="class_count" min="1" required>
+            </div>
+            <div id="class-inputs">
+                <!-- Add class card divs dynamically using JavaScript -->
+            </div>
+            <button type="submit" class="btn btn-primary">Train Model</button>
+        </form>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const classInputs = document.getElementById("class-inputs");
+            const classCountInput = document.getElementById("class_count");
+
+            classCountInput.addEventListener("input", function () {
+                const classCount = parseInt(classCountInput.value);
+                classInputs.innerHTML = "";
+
+                for (let i = 0; i < classCount; i++) {
+                    const classCard = document.createElement("div");
+                    classCard.classList.add("class-card");
+                    classCard.innerHTML = `
+                <label for="class_name_${i}">Class ${i + 1} Name:</label>
+                <input type="text" id="class_name_${i}" name="class_name_${i}" required>
+                <br>
+                <label for="class_${i}">Images:</label>
+                <input type="file" id="class_${i}" name="class_${i}" accept="image/*" multiple>
+                <br>
+            `;
+
+                    // Add the class card to the container
+                    classInputs.appendChild(classCard);
+
+                    // Add event listener to handle image selection
+                    const classInput = document.getElementById(`class_${i}`);
+                    classInput.addEventListener("change", function () {
+                        for (const file of classInput.files) {
+                            const imageContainer = document.createElement("div");
+                            imageContainer.classList.add("class-image-container");
+                            classCard.appendChild(imageContainer);
+
+                            const image = document.createElement("img");
+                            image.classList.add("class-image");
+                            image.src = URL.createObjectURL(file);
+                            imageContainer.appendChild(image);
+
+                            const deleteButton = document.createElement("button");
+                            deleteButton.classList.add("delete-button");
+                            deleteButton.innerHTML = "&times;"; // Times symbol (×) for delete
+                            imageContainer.appendChild(deleteButton);
+
+                            // Add event listener to delete the image when the delete button is clicked
+                            deleteButton.addEventListener("click", function () {
+                                imageContainer.remove();
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
 </body>
+
 </html>
