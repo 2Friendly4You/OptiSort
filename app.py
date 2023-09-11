@@ -31,7 +31,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/train', methods=['POST'])
-def train_model():
+def train_image_classifier():
     # Check if training is already in progress
     if app.config['TRAINING_IN_PROGRESS']:
         return jsonify({"message": "Training is already in progress."}), 400
@@ -89,16 +89,21 @@ def train_model():
             zipf.write(config_file_path, 'config.json')  # Add config file to the zip
             zipf.write(model_tflite, 'model.tflite')  # Add model to the zip
 
-        # Return the zip file as a response
-        # Send the trained model file as a response
-        response = send_file(os.path.join(model_folder, model_zip_filename), as_attachment=True)
-        response.headers["Content-Disposition"] = f"attachment; filename={model_zip_filename}"
-
-        return response
+        # Send a JSON response with the link to download the trained model
+        response_data = {
+            "message": "Model trained successfully",
+            "download_url": f"/download/{model_zip_filename}"
+        }
+        return jsonify(response_data)
     
     finally:
             # Reset the training flag when training is completed or an error occurs
             app.config['TRAINING_IN_PROGRESS'] = False
+
+@app.route('/download/<filename>', methods=['GET'])
+def download_file(filename):
+    model_folder = app.config['MODEL_FOLDER']
+    return send_file(os.path.join(model_folder, filename), as_attachment=True)
 
 def train_model(class_names, epochs=50):
     PATH = os.path.join(os.path.dirname("static/images/"))

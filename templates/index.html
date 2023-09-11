@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Train AI</title>
+    <title>AI Image Recognition Trainer</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -68,14 +68,12 @@
             cursor: pointer;
         }
     </style>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>AI Image Recognition</h1>
-        <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data" target="download-iframe">
+        <h1>AI Image Recognition Trainer</h1>
+        <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="class_count">Number of Classes:</label>
                 <input type="number" id="class_count" name="class_count" min="1" required>
@@ -86,11 +84,7 @@
             <!-- Add a submit button for training -->
             <button type="submit" id="train-button" class="btn btn-primary">Train Model</button>
         </form>
-
-        <!-- Hidden iframe for handling file download -->
-        <iframe id="download-iframe" name="download-iframe" style="display: none;"></iframe>
-
-
+        <div id="result-container"></div>
     </div>
 
     <script>
@@ -146,10 +140,47 @@
 
                     const uploadForm = document.getElementById("upload-form");
                     const trainButton = document.getElementById("train-button");
+                    const resultContainer = document.getElementById("result-container");
 
-                    trainButton.addEventListener("click", function () {
-                        // Submit the form to trigger the download
-                        uploadForm.submit();
+                    trainButton.addEventListener("click", function (event) {
+                        // Prevent the default form submission behavior
+                        event.preventDefault();
+
+                        // Disable the form and train button to prevent multiple submissions
+                        trainButton.disabled = true;
+                        uploadForm.disabled = true;
+
+                        // Serialize the form data
+                        const formData = new FormData(uploadForm);
+
+                        // Send a POST request to the server using AJAX
+                        $.ajax({
+                            type: "POST",
+                            url: "/train",
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function (response) {
+                                // Handle the response, e.g., display the result in the result container
+                                resultContainer.innerHTML = response.message;
+
+                                // Check if a download link is provided in the response
+                                if (response.download_url) {
+                                    // Automatically redirect to the download link
+                                    window.location.href = response.download_url;
+                                }
+
+                                // Re-enable the form and train button
+                                trainButton.disabled = false;
+                                uploadForm.disabled = false;
+                            },
+                            error: function (error) {
+
+                                // Re-enable the form and train button in case of an error
+                                trainButton.disabled = false;
+                                uploadForm.disabled = false;
+                            },
+                        });
                     });
                 }
             });
