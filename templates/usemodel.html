@@ -46,36 +46,43 @@
     </svg>
 
     <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-primary">
-                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="#"
-                        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">Menu</span>
+        <div class="row">
+            <div class="col-sm-auto bg-primary sticky-top">
+                <div class="d-flex flex-sm-column flex-row flex-nowrap align-items-center sticky-top">
+                    <a href="/" class="d-block p-3 link-dark text-decoration-none" title="" data-bs-toggle="tooltip"
+                        data-bs-placement="right" data-bs-original-title="Icon-only">
+                        <span class="fs-5 text-light">F<span class="d-none d-sm-inline">rüchtesortierer</span></span>
                     </a>
-                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-                        id="menu">
+                    <ul
+                        class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap mb-auto mx-auto align-items-center align-items-sm-start">
                         <li class="nav-item">
-                            <a href="/" class="nav-link px-0 align-middle text-dark">
-                                <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">Home</span></a>
+                            <a href="/" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Home">
+                                <span class="ms-1"><b>Home</b></span>
+                            </a>
                         </li>
                         <li>
-                            <a href="/trainmodel" class="nav-link px-0 align-middle text-dark">
-                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Train
-                                    model</span></a>
+                            <a href="/trainmodel" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Train model">
+                                <span class="ms-1"><b>Train model</b></span>
+                            </a>
                         </li>
                         <li>
-                            <a href="/usemodel" class="nav-link px-0 align-middle text-dark">
-                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline">Use model</span></a>
+                            <a href="/usemodel" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Use model">
+                                <span class="ms-1"><b>Use model</b></span>
+                            </a>
                         </li>
+                        <li>
                     </ul>
                 </div>
             </div>
-            <div class="col py-3">
-
+            <div class="col-sm p-3 min-vh-100">
+                <!-- content -->
             </div>
         </div>
     </div>
+
 
     <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
         <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
