@@ -14,6 +14,11 @@ app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['MODEL_FOLDER'] = 'static/models'
 app.config['TRAINING_IN_PROGRESS'] = False  # Flag to track training status
 
+# Initialize lists to hold classes
+all_classes = []
+selected_classes = []
+rejected_classes = []
+
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
 
@@ -32,13 +37,56 @@ def delete_and_create_folders():
 def index():
     return render_template('index.html')
 
+
 @app.route('/trainmodel')
 def trainmodel():
     return render_template('trainmodel.html')
 
+
 @app.route('/usemodel')
 def usemodel():
     return render_template('usemodel.html')
+
+
+@app.route('/upload', methods=['POST'])
+def upload():
+    global all_classes
+
+    # Handle the uploaded zip file
+    zip_file = request.files['zip_file']
+    if zip_file:
+        # Save the zip file to the file system
+        zip_file.save(os.path.join("uploads", zip_file.filename))
+
+        # Unpack the zip file
+        with zipfile.ZipFile(os.path.join("uploads", zip_file.filename), 'r') as zip_ref:
+            zip_ref.extractall("uploads")
+
+        # Load the all classes JSON
+        with open(os.path.join("uploads", "config.json"), 'r') as json_file:
+            json_data = json.load(json_file)
+            all_classes = json_data["class_names"]
+
+        # Simulate loading the model and sending scanned classes back
+        # In reality, you'd load the model and extract classes here
+        # Replace with actual scanned classes
+        
+        scanned_classes = all_classes
+        return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes})
+
+    return jsonify({"message": "No zip file uploaded."})
+
+
+@app.route('/sort', methods=['POST'])
+def sort():
+    global selected_classes, rejected_classes
+    selected_classes = request.form.getlist('selected_classes[]')
+    rejected_classes = request.form.getlist('rejected_classes[]')
+
+    print(selected_classes)
+    print(rejected_classes)
+
+    return jsonify({"message": "Sorting information saved successfully."})
 
 
 @app.route('/train', methods=['POST'])
@@ -180,7 +228,8 @@ def train_model(class_names, epochs=40):
     feature_batch_average = global_average_layer(feature_batch)
     print(feature_batch_average.shape)
 
-    prediction_layer = tf.keras.layers.Dense(len(class_names), activation=tf.nn.softmax)
+    prediction_layer = tf.keras.layers.Dense(
+        len(class_names), activation=tf.nn.softmax)
     prediction_batch = prediction_layer(feature_batch_average)
     print(prediction_batch.shape)
 
@@ -201,8 +250,8 @@ def train_model(class_names, epochs=40):
 
     initial_epochs = int(epochs/2)
     history = model.fit(train_dataset,
-              epochs=initial_epochs,
-              validation_data=validation_dataset)
+                        epochs=initial_epochs,
+                        validation_data=validation_dataset)
 
     base_model.trainable = True
 
@@ -239,4 +288,6 @@ def train_model(class_names, epochs=40):
 
 
 if __name__ == '__main__':
+    # Create the "uploads" directory if it doesn't exist
+    os.makedirs("uploads", exist_ok=True)
     app.run(debug=False)

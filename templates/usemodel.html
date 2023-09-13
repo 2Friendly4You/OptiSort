@@ -78,7 +78,45 @@
                 </div>
             </div>
             <div class="col-sm p-3 min-vh-100">
-                <!-- content -->
+                <div class="container mt-5">
+                    <h1>AI Model Sorter</h1>
+                    <form method="POST" action="/upload" enctype="multipart/form-data" id="uploadForm">
+                        <div class="form-group">
+                            <input type="file" name="zip_file" accept=".zip" class="form-control-file">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload and Extract Class Names</button>
+                    </form>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col">
+                            <h2>All Classes</h2>
+                            <ul id="allClasses" class="list-group">
+                                <!-- Classes will be displayed here dynamically after uploading -->
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h2>Selected Classes</h2>
+                            <ul id="selectedClasses" class="list-group">
+                                <!-- Selected classes will be displayed here dynamically -->
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <h2>Rejected Classes</h2>
+                            <ul id="rejectedClasses" class="list-group">
+                                <!-- Rejected classes will be displayed here dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="/sort">
+                        <input type="hidden" name="selected_classes[]" id="selectedClassesInput" value="">
+                        <input type="hidden" name="rejected_classes[]" id="rejectedClassesInput" value="">
+                        <button type="button" class="btn btn-success" onclick="saveSorting()">Save Sorting</button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -131,6 +169,106 @@
             </li>
         </ul>
     </div>
+
+    <script>
+        var allClasses = []; // To store loaded classes
+        var selectedClasses = []; // To store selected classes
+        var rejectedClasses = []; // To store rejected classes
+
+        function saveSorting() {
+            var selectedClasses = $('#selectedClasses li').map(function () {
+                return $(this).text();
+            }).get();
+            var rejectedClasses = $('#rejectedClasses li').map(function () {
+                return $(this).text();
+            }).get();
+
+            // Send the sorted classes to the server for saving
+            $.ajax({
+                url: '/sort',
+                type: 'POST',
+                data: {
+                    selected_classes: selectedClasses,
+                    rejected_classes: rejectedClasses
+                },
+                success: function (response) {
+                    if (response.message === "Sorting information saved successfully.") {
+                        alert("Sorting saved successfully.");
+                    } else {
+                        alert("Failed to save sorting.");
+                    }
+                }
+            });
+        }
+
+        // Function to update the displayed classes in "All Classes"
+        function updateAllClasses() {
+            var allClassesList = $('#allClasses');
+            allClassesList.empty();
+            $.each(allClasses, function (index, value) {
+                allClassesList.append('<li class="list-group-item">' + value + ' <button type="button" class="btn btn-success btn-sm float-right" onclick="moveToSelected(\'' + value + '\')">Select</button> <button type="button" class="btn btn-danger btn-sm float-right" onclick="moveToRejected(\'' + value + '\')">Reject</button></li>');
+            });
+        }
+
+        // Function to move a class to selected classes
+        function moveToSelected(className) {
+            var index = allClasses.indexOf(className);
+            if (index !== -1) {
+                allClasses.splice(index, 1);
+                selectedClasses.push(className);
+                updateAllClasses();
+                updateClasses(selectedClasses, 'selectedClasses');
+            }
+        }
+
+        // Function to move a class to rejected classes
+        function moveToRejected(className) {
+            var index = allClasses.indexOf(className);
+            if (index !== -1) {
+                allClasses.splice(index, 1);
+                rejectedClasses.push(className);
+                updateAllClasses();
+                updateClasses(rejectedClasses, 'rejectedClasses');
+            }
+        }
+
+        // Function to update the displayed classes in "Selected Classes" and "Rejected Classes"
+        function updateClasses(classes, targetId) {
+            var targetList = $('#' + targetId);
+            targetList.empty();
+            $.each(classes, function (index, value) {
+                targetList.append('<li class="list-group-item">' + value + '</li>');
+            });
+        }
+
+        // AJAX call to update the classes after uploading
+        $('#uploadForm').submit(function (event) {
+            event.preventDefault();
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                async: false,
+                success: function (response) {
+                    // Reset the class lists when new data is loaded
+                    allClasses = response.scanned_classes;
+                    selectedClasses = [];
+                    rejectedClasses = [];
+                    updateAllClasses();
+                    updateClasses(selectedClasses, 'selectedClasses');
+                    updateClasses(rejectedClasses, 'rejectedClasses');
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+            return false;
+        });
+    </script>
+
 </body>
 
 </html>
