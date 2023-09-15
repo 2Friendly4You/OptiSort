@@ -12,11 +12,21 @@ import threading
 import eventlet
 import random
 from threading import Thread
+import serial
+import cv2
+from multiprocessing import Pool, freeze_support
+import os
+import time
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['MODEL_FOLDER'] = 'static/models'
 app.config['TRAINING_IN_PROGRESS'] = False  # Flag to track training status
+
+IMG_SIZE = (200, 200)
+NUM_CAMERAS = 5
+OFFSET = -2
+PORT = "COM3"
 
 socketio = SocketIO(app, async_mode="threading")
 
@@ -29,6 +39,16 @@ rejected_classes = []
 training_lock = threading.Lock()
 
 
+def load_model(model_path):
+    # Load the TFLite model
+    interpreter = tf.lite.Interpreter(model_path=model_path)
+    interpreter.allocate_tensors()
+
+    # Get input and output tensors
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+
 def delete_and_create_folders():
     images_folder = app.config['UPLOAD_FOLDER']
     shutil.rmtree(images_folder)  # Delete the entire images folder
@@ -39,28 +59,16 @@ def delete_and_create_folders():
     os.makedirs(model_folder)    # Recreate the images folder
 
 
-def generate_random_images():
-    image_paths = []
-    for _ in range(5):
-        # Generate random image URLs (replace with your image URLs)
-        random_image_url = f"https://picsum.photos/{random.randint(200, 400)}/{random.randint(200, 400)}/"
-        image_paths.append(random_image_url)
-    return image_paths
-
-
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('received json: ' + str(json))
 
-def update_data():
-    while True:
-        images = generate_random_images()
-        text = "This is some random text."
-        socketio.emit('update_images', {'images': images})
-        socketio.emit('update_text', {'text': text})
-        print("Sent data")
-        print(images)
-        sleep(5)  # Update data every 5 seconds
+
+def update_websocket_images(images):
+    socketio.emit('update_images', {'images': images})
+
+def update_websocket_text(text):
+    socketio.emit('update_text', {'text': text})
 
 
 @app.route('/')
@@ -100,6 +108,8 @@ def upload():
         # Simulate loading the model and sending scanned classes back
         # In reality, you'd load the model and extract classes here
         # Replace with actual scanned classes
+
+        load_model(os.path.join("uploads", "model.tflite"))
 
         scanned_classes = all_classes
         return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes})
@@ -199,6 +209,77 @@ def train_image_classifier():
 def download_file(filename):
     model_folder = app.config['MODEL_FOLDER']
     return send_file(os.path.join(model_folder, filename), as_attachment=True)
+
+
+def capture_camera(camera_index, num_tries=10):
+    for _ in range(num_tries):
+        cap = cv2.VideoCapture(camera_index)
+
+        if not cap.isOpened():
+            print(f"Could not open camera {camera_index}")
+            return None
+
+        ret, frame = cap.read()
+
+        cap.release()
+
+        if ret:
+            return frame
+
+        time.sleep(0.1)
+
+    print(f"Could not capture frame from camera {camera_index} after {num_tries} tries")
+    return None
+
+def capture_images(num_cameras):
+    file_names_to_check = []
+
+    with Pool(num_cameras) as pool:
+        frames = pool.map(capture_camera, range(num_cameras))
+
+    for i, frame in enumerate(frames):
+        if frame is not None:
+            filename = f"camera_{i}_{len(os.listdir('static/captured_images'))}.jpg"
+            cv2.imwrite(os.path.join("static/captured_images", filename), frame)
+            file_names_to_check.append(filename)
+
+    return file_names_to_check
+
+def move_captured_images_to_unclassified_images():
+    # get all captured images
+    captured_images = os.listdir("static/captured_images")
+    for image in captured_images:
+        # move captured images to unclassified_images
+        shutil.move(os.path.join("static/captured_images", image), os.path.join("unclassified_images", image))
+
+# returns a value between -100 and 100
+def predict_image(image_path):
+    # Load the single image you want to predict on
+    img = tf.keras.preprocessing.image.load_img(
+        image_path, target_size=IMG_SIZE)
+
+    # Convert the image to a numpy array
+    img_array = tf.keras.preprocessing.image.img_to_array(img)
+
+    # Add an extra dimension to the array to make it suitable for the model
+    img_array = np.expand_dims(img_array, axis=0)
+
+    # Set the input tensor to the image data
+    interpreter.set_tensor(input_details[0]['index'], img_array)
+
+    # Run the model on the image
+    interpreter.invoke()
+
+    # Get the output
+    output_data = interpreter.get_tensor(output_details[0]['index'])
+
+    # Offset
+    output_data += OFFSET
+
+    predictions = tf.nn.tanh(output_data)
+    confidence = 100 * tf.reduce_max(predictions)
+
+    return confidence
 
 
 def train_model(class_names, epochs=40):
@@ -316,13 +397,54 @@ def train_model(class_names, epochs=40):
     with open('static/models/model.tflite', 'wb') as f:
         f.write(tflite_model)
 
+
+def micro_controller_thread():
+    freeze_support()
+
+    load_model(model_path="model.tflite")
+
+    try:
+        ser = serial.Serial(PORT, 9600)
+        print("Connected.")
+    except:
+        print("Not connected.")
+
+    while True:
+        data = ser.readline().decode().strip()  # Read data from the serial port
+        if data == "":  # If the data is empty, wait for an "Enter" character
+            continue
+        
+        move_captured_images_to_unclassified_images()
+        print(f"Capturing {NUM_CAMERAS} images...")
+        file_names_to_check = capture_images(NUM_CAMERAS)
+        update_websocket_images(file_names_to_check)
+        print("Done!")
+
+        min_confidence = 1000
+        for filename in file_names_to_check:
+            confidence = predict_image(os.path.join("images", filename))
+            print(f"Predicted {filename}: {confidence}")
+            if confidence < min_confidence:
+                min_confidence = confidence
+
+        if min_confidence >= 0:
+            print("The worst image most likely belongs to good with a {:.2f} percent confidence.\n\r".format(
+                min_confidence))
+            ser.write("/use".encode())
+        else:
+            print(
+                "The worst image most likely belongs to bad with a {:.2f} percent confidence.\n\r".format(-1 * min_confidence))
+            ser.write("/sortout".encode())
+        print("Received data:", data)  # Print the received data
+
+
 if __name__ == '__main__':
     # Create the "uploads" directory if it doesn't exist
     os.makedirs("uploads", exist_ok=True)
+    os.makedirs("static/captured_images", exist_ok=True)
 
-
-    bg_thread = Thread(target=update_data)
-    bg_thread.daemon = True
-    bg_thread.start()
+    mc_thread = Thread(target=micro_controller_thread)
+    mc_thread.daemon = True
+    mc_thread.start()
 
     socketio.run(app, debug=False, allow_unsafe_werkzeug=True)
