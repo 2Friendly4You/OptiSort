@@ -3,16 +3,22 @@ import shutil
 import zipfile
 import json
 from flask import Flask, render_template, request, jsonify, send_file
+from flask_socketio import SocketIO, emit, send
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from time import sleep
 import threading
+import eventlet
+import random
+from threading import Thread
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
 app.config['MODEL_FOLDER'] = 'static/models'
 app.config['TRAINING_IN_PROGRESS'] = False  # Flag to track training status
+
+socketio = SocketIO(app, async_mode="threading")
 
 # Initialize lists to hold classes
 all_classes = []
@@ -31,6 +37,30 @@ def delete_and_create_folders():
     model_folder = app.config['MODEL_FOLDER']
     shutil.rmtree(model_folder)  # Delete the entire images folder
     os.makedirs(model_folder)    # Recreate the images folder
+
+
+def generate_random_images():
+    image_paths = []
+    for _ in range(5):
+        # Generate random image URLs (replace with your image URLs)
+        random_image_url = f"https://picsum.photos/{random.randint(200, 400)}/{random.randint(200, 400)}/"
+        image_paths.append(random_image_url)
+    return image_paths
+
+
+@socketio.on('my event')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+
+def update_data():
+    while True:
+        images = generate_random_images()
+        text = "This is some random text."
+        socketio.emit('update_images', {'images': images})
+        socketio.emit('update_text', {'text': text})
+        print("Sent data")
+        print(images)
+        sleep(5)  # Update data every 5 seconds
 
 
 @app.route('/')
@@ -70,7 +100,7 @@ def upload():
         # Simulate loading the model and sending scanned classes back
         # In reality, you'd load the model and extract classes here
         # Replace with actual scanned classes
-        
+
         scanned_classes = all_classes
         return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes})
 
@@ -286,8 +316,13 @@ def train_model(class_names, epochs=40):
     with open('static/models/model.tflite', 'wb') as f:
         f.write(tflite_model)
 
-
 if __name__ == '__main__':
     # Create the "uploads" directory if it doesn't exist
     os.makedirs("uploads", exist_ok=True)
-    app.run(debug=False)
+
+
+    bg_thread = Thread(target=update_data)
+    bg_thread.daemon = True
+    bg_thread.start()
+
+    socketio.run(app, debug=False, allow_unsafe_werkzeug=True)

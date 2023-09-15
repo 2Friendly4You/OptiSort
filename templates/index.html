@@ -79,6 +79,20 @@
             </div>
             <div class="col-sm p-3 min-vh-100">
                 <!-- content -->
+
+                <div class="container mt-4">
+                    <h1>Images and Text</h1>
+                    <div class="col">
+                        <div class="row">
+                            <h2>Images</h2>
+                            <div id="image-container"></div>
+                        </div>
+                        <div class="row">
+                            <h2>Text Output</h2>
+                            <div id="text-output"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -130,6 +144,38 @@
             </li>
         </ul>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+
+        var socket = io();
+        socket.on('connect', function () {
+            socket.emit('my event', { data: 'I\'m connected!' });
+            console.log('Connected to flask')
+        });
+
+
+        socket.on('update_images', function (data) {
+            var imageContainer = document.getElementById('image-container');
+            imageContainer.innerHTML = '';
+
+            for (var i = 0; i < data.images.length; i++) {
+                var img = document.createElement('img');
+                img.src = data.images[i];
+                img.style.width = '200px';
+                img.style.margin = '10px';
+                imageContainer.appendChild(img);
+            }
+
+            console.log("Images updatet.")
+        });
+
+        socket.on('update_text', function (data) {
+            var textOutput = document.getElementById('text-output');
+            textOutput.innerHTML = data.text;
+        });
+        
+    </script>
 </body>
 
 </html>
