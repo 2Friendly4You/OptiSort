@@ -442,6 +442,9 @@ if __name__ == '__main__':
     # Create the "uploads" directory if it doesn't exist
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("static/captured_images", exist_ok=True)
+    os.makedirs("static/unclassified_images", exist_ok=True)
+    os.makedirs("static/models", exist_ok=True)
+    os.makedirs("static/images", exist_ok=True)
 
     mc_thread = Thread(target=micro_controller_thread)
     mc_thread.daemon = True
