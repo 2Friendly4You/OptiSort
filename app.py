@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 import zipfile
 import json
@@ -15,8 +16,8 @@ from threading import Thread
 import serial
 import cv2
 from multiprocessing import Pool, freeze_support
-import os
 import time
+import copy
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/images'
@@ -27,6 +28,14 @@ IMG_SIZE = (200, 200)
 NUM_CAMERAS = 5
 OFFSET = -2
 PORT = "COM3"
+
+interpreter = None
+
+input_details = None
+output_details = None
+
+camera_indices = None
+capture_objects = None
 
 socketio = SocketIO(app, async_mode="threading")
 
@@ -40,6 +49,11 @@ training_lock = threading.Lock()
 
 
 def load_model(model_path):
+    global interpreter
+
+    global input_details
+    global output_details
+    
     # Load the TFLite model
     interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
@@ -63,9 +77,17 @@ def delete_and_create_folders():
 def handle_my_custom_event(json):
     print('received json: ' + str(json))
 
-
 def update_websocket_images(images):
-    socketio.emit('update_images', {'images': images})
+    # Create a shallow copy of the images array
+    copied_images = copy.copy(images)
+
+    # Modify the copied array
+    for i in range(len(copied_images)):
+        copied_images[i] = os.path.join("static/captured_images", copied_images[i])
+        copied_images[i] = copied_images[i] + "?" + str(int(time.time()))
+
+    print(copied_images)
+    socketio.emit('update_images', {'images': copied_images})
 
 def update_websocket_text(text):
     socketio.emit('update_text', {'text': text})
@@ -210,47 +232,75 @@ def download_file(filename):
     model_folder = app.config['MODEL_FOLDER']
     return send_file(os.path.join(model_folder, filename), as_attachment=True)
 
+def find_cameras_until_num(num_cameras, max_cameras=20):
+    camera_indices = []
+    capture_objects = []
 
-def capture_camera(camera_index, num_tries=10):
-    for _ in range(num_tries):
-        cap = cv2.VideoCapture(camera_index)
+    for i in range(max_cameras):
+        capture = cv2.VideoCapture(i)
+        if capture.isOpened():
+            camera_indices.append(i)
+            capture_objects.append(capture)
+            if len(camera_indices) == num_cameras:
+                break
 
-        if not cap.isOpened():
-            print(f"Could not open camera {camera_index}")
-            return None
+    if len(camera_indices) != num_cameras:
+        print(f"Required {num_cameras} cameras not found.")
+        sys.exit(1)
 
-        ret, frame = cap.read()
+    return camera_indices, capture_objects
 
-        cap.release()
 
-        if ret:
-            return frame
-
-        time.sleep(0.1)
-
-    print(f"Could not capture frame from camera {camera_index} after {num_tries} tries")
-    return None
-
-def capture_images(num_cameras):
+def capture_and_save_images(camera_indices, max_attempts=5):
     file_names_to_check = []
+    
+    for i, camera_index in enumerate(camera_indices):
+        success = False
+        attempts = 0
 
-    with Pool(num_cameras) as pool:
-        frames = pool.map(capture_camera, range(num_cameras))
+        while not success and attempts < max_attempts:
+            capture = cv2.VideoCapture(camera_index)
+            ret, frame = capture.read()
+            capture.release()  # Release the capture object immediately
 
-    for i, frame in enumerate(frames):
-        if frame is not None:
-            filename = f"camera_{i}_{len(os.listdir('static/captured_images'))}.jpg"
-            cv2.imwrite(os.path.join("static/captured_images", filename), frame)
-            file_names_to_check.append(filename)
+            if ret:
+                filename = f"camera_{i}.jpg"
+                save_path = os.path.join("static/captured_images", filename)
+                cv2.imwrite(save_path, frame)
+                file_names_to_check.append(filename)
+                success = True
+            else:
+                attempts += 1
+                print("Failed")
+                time.sleep(0.5)
 
     return file_names_to_check
 
+
 def move_captured_images_to_unclassified_images():
-    # get all captured images
-    captured_images = os.listdir("static/captured_images")
+    source_directory = "static/captured_images"
+    destination_directory = "static/unclassified_images"
+
+    # Get all captured images
+    captured_images = os.listdir(source_directory)
+
     for image in captured_images:
-        # move captured images to unclassified_images
-        shutil.move(os.path.join("static/captured_images", image), os.path.join("unclassified_images", image))
+        source_path = os.path.join(source_directory, image)
+        destination_path = os.path.join(destination_directory, image)
+
+        # Check if the file already exists in the destination directory
+        if os.path.exists(destination_path):
+            # If it exists, find a unique name
+            base_name, ext = os.path.splitext(image)
+            count = 1
+            while os.path.exists(os.path.join(destination_directory, f"{base_name}_{count}{ext}")):
+                count += 1
+            new_image_name = f"{base_name}_{count}{ext}"
+            destination_path = os.path.join(destination_directory, new_image_name)
+
+        # Move the image to the destination directory
+        shutil.move(source_path, destination_path)
+
 
 # returns a value between -100 and 100
 def predict_image(image_path):
@@ -416,13 +466,12 @@ def micro_controller_thread():
         
         move_captured_images_to_unclassified_images()
         print(f"Capturing {NUM_CAMERAS} images...")
-        file_names_to_check = capture_images(NUM_CAMERAS)
+        file_names_to_check = capture_and_save_images(camera_indices)
         update_websocket_images(file_names_to_check)
-        print("Done!")
 
         min_confidence = 1000
         for filename in file_names_to_check:
-            confidence = predict_image(os.path.join("images", filename))
+            confidence = predict_image(os.path.join("static/captured_images", filename))
             print(f"Predicted {filename}: {confidence}")
             if confidence < min_confidence:
                 min_confidence = confidence
@@ -430,21 +479,24 @@ def micro_controller_thread():
         if min_confidence >= 0:
             print("The worst image most likely belongs to good with a {:.2f} percent confidence.\n\r".format(
                 min_confidence))
-            ser.write("/use".encode())
+            ser.write("/use\n\r".encode())
         else:
             print(
                 "The worst image most likely belongs to bad with a {:.2f} percent confidence.\n\r".format(-1 * min_confidence))
-            ser.write("/sortout".encode())
-        print("Received data:", data)  # Print the received data
+            ser.write("/sortout\n\r".encode())
+        print("Received data:", data)  # Print the received dataave
 
 
 if __name__ == '__main__':
-    # Create the "uploads" directory if it doesn't exist
+    # Create the directorys if it doesn't exist
     os.makedirs("uploads", exist_ok=True)
     os.makedirs("static/captured_images", exist_ok=True)
     os.makedirs("static/unclassified_images", exist_ok=True)
     os.makedirs("static/models", exist_ok=True)
     os.makedirs("static/images", exist_ok=True)
+
+    camera_indices, capture_objects = find_cameras_until_num(NUM_CAMERAS)
+    print(camera_indices)
 
     mc_thread = Thread(target=micro_controller_thread)
     mc_thread.daemon = True
