@@ -18,6 +18,7 @@ import cv2
 from multiprocessing import Pool, freeze_support
 import time
 import copy
+import copy
 
 app = Flask(__name__)
 
@@ -30,7 +31,6 @@ IMG_SIZE = (200, 200)
 NUM_CAMERAS = 0
 OFFSET = -2
 PORT = "COM3"
-
 
 # global vars
 interpreter = None
@@ -78,7 +78,6 @@ def delete_and_create_folders():
 @socketio.on('my event')
 def handle_my_custom_event(json):
     print('received json: ' + str(json))
-
 
 def update_websocket_images(images):
     # Create a shallow copy of the images array
