@@ -24,10 +24,10 @@ app = Flask(__name__)
 # config of program
 UPLOAD_FOLDER = 'static/images'
 MODEL_FOLDER = 'static/models'
-TRAINING_IN_PROGRESS = False # Flag to track training status
+TRAINING_IN_PROGRESS = False  # Flag to track training status
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 5
+NUM_CAMERAS = 0
 OFFSET = -2
 PORT = "COM3"
 
@@ -44,9 +44,9 @@ capture_objects = None
 socketio = SocketIO(app, async_mode="threading")
 
 # Initialize lists to hold classes
-all_classes = []
-selected_classes = []
-rejected_classes = []
+all_classes = ['bad', 'good']
+selected_classes = ['good']
+rejected_classes = ['bad']
 
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
@@ -57,7 +57,7 @@ def load_model(model_path):
 
     global input_details
     global output_details
-    
+
     # Load the TFLite model
     interpreter = tf.lite.Interpreter(model_path=model_path)
     interpreter.allocate_tensors()
@@ -79,17 +79,20 @@ def delete_and_create_folders():
 def handle_my_custom_event(json):
     print('received json: ' + str(json))
 
+
 def update_websocket_images(images):
     # Create a shallow copy of the images array
     copied_images = copy.copy(images)
 
     # Modify the copied array
     for i in range(len(copied_images)):
-        copied_images[i] = os.path.join("static/captured_images", copied_images[i])
+        copied_images[i] = os.path.join(
+            "static/captured_images", copied_images[i])
         copied_images[i] = copied_images[i] + "?" + str(int(time.time()))
 
     print(copied_images)
     socketio.emit('update_images', {'images': copied_images})
+
 
 def update_websocket_text(text):
     socketio.emit('update_text', {'text': text})
@@ -230,9 +233,13 @@ def train_image_classifier():
 def download_file(filename):
     return send_file(os.path.join(MODEL_FOLDER, filename), as_attachment=True)
 
+
 def find_cameras_until_num(num_cameras, max_cameras=20):
     camera_indices = []
     capture_objects = []
+
+    if NUM_CAMERAS == 0:
+        return camera_indices, capture_objects
 
     for i in range(max_cameras):
         capture = cv2.VideoCapture(i)
@@ -251,7 +258,7 @@ def find_cameras_until_num(num_cameras, max_cameras=20):
 
 def capture_and_save_images(camera_indices, max_attempts=5):
     file_names_to_check = []
-    
+
     for i, camera_index in enumerate(camera_indices):
         success = False
         attempts = 0
@@ -294,7 +301,8 @@ def move_captured_images_to_unclassified_images():
             while os.path.exists(os.path.join(destination_directory, f"{base_name}_{count}{ext}")):
                 count += 1
             new_image_name = f"{base_name}_{count}{ext}"
-            destination_path = os.path.join(destination_directory, new_image_name)
+            destination_path = os.path.join(
+                destination_directory, new_image_name)
 
         # Move the image to the destination directory
         shutil.move(source_path, destination_path)
@@ -302,7 +310,8 @@ def move_captured_images_to_unclassified_images():
 
 def predict_image(image_path, all_classes):
     # Load the image you want to predict on
-    img = tf.keras.preprocessing.image.load_img(image_path, target_size=IMG_SIZE)
+    img = tf.keras.preprocessing.image.load_img(
+        image_path, target_size=IMG_SIZE)
 
     # Convert the image to a numpy array
     img_array = tf.keras.preprocessing.image.img_to_array(img)
@@ -326,7 +335,8 @@ def predict_image(image_path, all_classes):
     probabilities = tf.nn.softmax(output_data)
 
     # You can now access the class probabilities as follows:
-    class_probabilities = probabilities[0]  # Assuming a single image is being processed
+    # Assuming a single image is being processed
+    class_probabilities = probabilities[0]
 
     # Find the class with the highest probability
     max_probability_index = np.argmax(class_probabilities)
@@ -373,8 +383,8 @@ def train_model(class_names, epochs=40):
 
     data_augmentation = tf.keras.Sequential([
         tf.keras.layers.RandomFlip('horizontal_and_vertical'),
-        tf.keras.layers.RandomRotation(0.2),
-        tf.keras.layers.RandomZoom(0.2)
+        tf.keras.layers.RandomRotation(0.1),
+        tf.keras.layers.RandomZoom(0.1)
     ])
 
     preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
@@ -469,18 +479,17 @@ def micro_controller_thread():
         data = ser.readline().decode().strip()  # Read data from the serial port
         if data == "":  # If the data is empty, wait for an "Enter" character
             continue
-        
+
         move_captured_images_to_unclassified_images()
         print(f"Capturing {NUM_CAMERAS} images...")
         file_names_to_check = capture_and_save_images(camera_indices)
         update_websocket_images(file_names_to_check)
 
-        
-        
         min_confidence = 1000
         for filename in file_names_to_check:
             print(os.path.join("static/captured_images", filename))
-            confidence = predict_image(os.path.join("static/captured_images", filename), all_classes)
+            confidence = predict_image(os.path.join(
+                "static/captured_images", filename), all_classes)
             print(f"Predicted {filename}: {confidence}")
             if confidence < min_confidence:
                 min_confidence = confidence

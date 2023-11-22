@@ -2,3 +2,4 @@ static/images/
 .metadata/
 static/captured_images/
 static/unclassified_images/
+.vscode/
