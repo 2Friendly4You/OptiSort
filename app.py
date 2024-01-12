@@ -18,7 +18,7 @@ import cv2
 from multiprocessing import Pool, freeze_support
 import time
 import copy
-import copy
+import camera
 
 app = Flask(__name__)
 
@@ -28,8 +28,8 @@ MODEL_FOLDER = 'static/models'
 TRAINING_IN_PROGRESS = False  # Flag to track training status
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 0
-OFFSET = -2
+NUM_CAMERAS = 5
+OFFSET = 0
 PORT = "COM3"
 
 # global vars
@@ -40,6 +40,8 @@ output_details = None
 
 camera_indices = None
 capture_objects = None
+
+camera_manager = None
 
 socketio = SocketIO(app, async_mode="threading")
 
@@ -327,6 +329,8 @@ def predict_image(image_path, all_classes):
     # Get the output
     output_data = interpreter.get_tensor(output_details[0]['index'])
 
+    print(output_data)
+
     # Offset (if needed)
     output_data += OFFSET
 
@@ -481,26 +485,30 @@ def micro_controller_thread():
 
         move_captured_images_to_unclassified_images()
         print(f"Capturing {NUM_CAMERAS} images...")
-        file_names_to_check = capture_and_save_images(camera_indices)
+        #file_names_to_check = capture_and_save_images(camera_indices)
+        file_names_to_check = camera_manager.capture_and_save_images()
         update_websocket_images(file_names_to_check)
 
-        min_confidence = 1000
+        min_confidence = 'good'
         for filename in file_names_to_check:
             print(os.path.join("static/captured_images", filename))
             confidence = predict_image(os.path.join(
                 "static/captured_images", filename), all_classes)
+            print(confidence)
             print(f"Predicted {filename}: {confidence}")
-            if confidence < min_confidence:
-                min_confidence = confidence
+            if confidence[0] == 'bad':
+                min_confidence = 'bad'
+                break
 
-        if min_confidence >= 0:
-            print("The worst image most likely belongs to good with a {:.2f} percent confidence.\n\r".format(
-                min_confidence))
+        if min_confidence == 'good':
+            print("The worst image most likely belongs to good percent confidence.\n\r")
             ser.write("/use\n\r".encode())
+            update_websocket_text("good")
         else:
             print(
-                "The worst image most likely belongs to bad with a {:.2f} percent confidence.\n\r".format(-1 * min_confidence))
+                "The worst image most likely belongs to bad percent confidence.\n\r")
             ser.write("/sortout\n\r".encode())
+            update_websocket_text("bad")
         print("Received data:", data)  # Print the received dataave
 
 
@@ -514,6 +522,8 @@ if __name__ == '__main__':
 
     camera_indices, capture_objects = find_cameras_until_num(NUM_CAMERAS)
     print(camera_indices)
+
+    camera_manager = camera.CameraManager(camera_indices)
 
     mc_thread = Thread(target=micro_controller_thread)
     mc_thread.daemon = True
