@@ -87,8 +87,6 @@ def update_websocket_images(images):
 
     # Modify the copied array
     for i in range(len(copied_images)):
-        copied_images[i] = os.path.join(
-            "static/captured_images", copied_images[i])
         copied_images[i] = copied_images[i] + "?" + str(int(time.time()))
 
     print(copied_images)
@@ -487,13 +485,13 @@ def micro_controller_thread():
         print(f"Capturing {NUM_CAMERAS} images...")
         #file_names_to_check = capture_and_save_images(camera_indices)
         file_names_to_check = camera_manager.capture_and_save_images()
+        time.sleep(1)
         update_websocket_images(file_names_to_check)
 
         min_confidence = 'good'
         for filename in file_names_to_check:
-            print(os.path.join("static/captured_images", filename))
-            confidence = predict_image(os.path.join(
-                "static/captured_images", filename), all_classes)
+            print(filename)
+            confidence = predict_image(filename, all_classes)
             print(confidence)
             print(f"Predicted {filename}: {confidence}")
             if confidence[0] == 'bad':
