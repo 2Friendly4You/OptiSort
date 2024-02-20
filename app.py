@@ -499,15 +499,15 @@ def micro_controller_thread():
                 break
 
         if min_confidence == 'good':
-            print("The worst image most likely belongs to good percent confidence.\n\r")
+            print("The object will not be sort out.\n\r")
             ser.write("g\n\r".encode())
-            update_websocket_text("good")
+            update_websocket_text("don't sort out")
         else:
             print(
-                "The worst image most likely belongs to bad percent confidence.\n\r")
+                "The object will be sorted out.\n\r")
             ser.write("b\n\r".encode())
-            update_websocket_text("bad")
-        print("Received data:", data)  # Print the received dataave
+            update_websocket_text("sort out")
+        print("Received data:", data)  # Print the received data
 
 
 if __name__ == '__main__':
