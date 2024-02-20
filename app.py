@@ -500,12 +500,12 @@ def micro_controller_thread():
 
         if min_confidence == 'good':
             print("The worst image most likely belongs to good percent confidence.\n\r")
-            ser.write("/use\n\r".encode())
+            ser.write("g\n\r".encode())
             update_websocket_text("good")
         else:
             print(
                 "The worst image most likely belongs to bad percent confidence.\n\r")
-            ser.write("/sortout\n\r".encode())
+            ser.write("b\n\r".encode())
             update_websocket_text("bad")
         print("Received data:", data)  # Print the received dataave
 
