@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="{{url_for('static', filename='light-dark-switch.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='light-dark-switch.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto:wght@700&display=swap');
@@ -81,14 +82,14 @@
                 <!-- content -->
 
                 <div class="container mt-4">
-                    <h1>Images and Text</h1>
+                    <h1>Images and Response</h1>
                     <div class="col">
                         <div class="row">
                             <h2>Images</h2>
                             <div id="image-container"></div>
                         </div>
                         <div class="row">
-                            <h2>Text Output</h2>
+                            <h2>Response</h2>
                             <div id="text-output"></div>
                         </div>
                     </div>
