@@ -18,6 +18,23 @@
     </style>
 
     <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
         /* Your inline CSS styles go here */
         body {
             font-family: 'Josefin Sans', sans-serif;
@@ -133,8 +150,12 @@
                     <h1>AI Image Recognition Trainer</h1>
                     <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="class_count">Number of Classes:</label>
+                            <label for="class_count">Number of classes:</label>
                             <input type="number" id="class_count" name="class_count" min="1" required>
+                            <label for="initial_epochs">Number of initial epochs:</label>
+                            <input type="number" id="initial_epochs" min="1" required>
+                            <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
+                            <input type="number" id="fine_tune_epochs" min="1" required>
                         </div>
                         <div id="class-inputs">
                             <!-- Add class card divs dynamically using JavaScript -->

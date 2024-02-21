@@ -168,6 +168,9 @@ def train_image_classifier():
         class_count = int(request.form['class_count'])
         class_names = [
             request.form[f'class_name_{i}'] for i in range(class_count)]
+        
+        initial_epochs = request.form['initial_epochs']
+        finetune_epochs = request.form['finetune_epochs']
 
         # Delete existing folders and create new ones
         delete_and_create_folders()
@@ -349,7 +352,7 @@ def predict_image(image_path, all_classes):
     return class_name, class_probability
 
 
-def train_model(class_names, epochs=40):
+def train_model(class_names, initial_epochs=20, finetune_epochs=20):
     PATH = os.path.join(os.path.dirname("static/images/"))
     print(PATH)
 
@@ -383,9 +386,8 @@ def train_model(class_names, epochs=40):
     validation_dataset = validation_dataset.prefetch(buffer_size=AUTOTUNE)
 
     data_augmentation = tf.keras.Sequential([
-        tf.keras.layers.RandomFlip('horizontal_and_vertical'),
-        tf.keras.layers.RandomRotation(0.1),
-        tf.keras.layers.RandomZoom(0.1)
+        tf.keras.layers.RandomZoom(0.1),
+        tf.keras.layers.RandomBrightness(0.2),
     ])
 
     preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
@@ -426,7 +428,7 @@ def train_model(class_names, epochs=40):
                       from_logits=True),
                   metrics=['accuracy'])
 
-    initial_epochs = int(epochs/2)
+    initial_epochs = int(initial_epochs)
     history = model.fit(train_dataset,
                         epochs=initial_epochs,
                         validation_data=validation_dataset)
@@ -445,7 +447,7 @@ def train_model(class_names, epochs=40):
                       learning_rate=base_learning_rate/10),
                   metrics=['accuracy'])
 
-    fine_tune_epochs = int(epochs/2)
+    fine_tune_epochs = int(finetune_epochs)
     total_epochs = initial_epochs + fine_tune_epochs
 
     model.fit(train_dataset,
