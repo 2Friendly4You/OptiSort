@@ -477,7 +477,22 @@ def micro_controller_thread():
         print("Not connected.")
 
     while True:
-        data = ser.readline().decode().strip()  # Read data from the serial port
+        try:
+            data = ser.readline().decode().strip()  # Read data from the serial port
+        except:
+            print("Error reading from serial port.")
+
+            # try to reconnect
+            while True:	
+                try:
+                    ser = serial.Serial(PORT, 9600)
+                    print("Connected.")
+                    break
+                except:
+                    print("Not connected.")
+                    time.sleep(1)
+
+            continue
         if data == "":  # If the data is empty, wait for an "Enter" character
             continue
 
