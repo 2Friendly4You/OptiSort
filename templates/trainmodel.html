@@ -142,20 +142,25 @@
                             </a>
                         </li>
                         <li>
+                            <a href="/documentation" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
+                                data-bs-placement="right" data-bs-original-title="Documentation">
+                                <span class="ms-1"><b>Documentation</b></span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="col-sm p-3 min-vh-100">
                 <div class="container">
-                    <h1>AI Image Recognition Trainer</h1>
+                    <h1>AI Image Trainer</h1>
                     <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="class_count">Number of classes:</label>
                             <input type="number" id="class_count" name="class_count" min="1" required>
                             <label for="initial_epochs">Number of initial epochs:</label>
-                            <input type="number" id="initial_epochs" min="1" required>
+                            <input type="number" id="initial_epochs" min="1" value="20" required>
                             <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
-                            <input type="number" id="fine_tune_epochs" min="1" required>
+                            <input type="number" id="fine_tune_epochs" min="1" value="20" required>
                         </div>
                         <div id="class-inputs">
                             <!-- Add class card divs dynamically using JavaScript -->

@@ -111,6 +111,10 @@ def trainmodel():
 def usemodel():
     return render_template('usemodel.html')
 
+@app.route('/documentation')
+def documentation():
+    return render_template('documentation.html')
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
