@@ -4,7 +4,7 @@
 OptiSort is a fully automated, AI-based sorting machine designed to identify and separate objects based on visual characteristics. Initially developed for sorting apples by distinguishing between good and spoiled ones, OptiSort's technology has proven to be universally applicable across various sorting tasks. This project was realized as part of a youth research initiative, showcasing the integration of artificial intelligence, mechanical engineering, and software development to solve real-world problems efficiently.
 
 ## Technology Stack
-- **AI and Machine Learning:** Utilizes TensorFlow Lite for image processing and classification tasks.
+- **AI and Machine Learning:** Utilizes TensorFlow for image processing and classification tasks.
 - **Hardware:** Employs standard cameras for optical scanning, a conveyor belt system for object transportation, pneumatic separators, and electronic sliders for physical sorting.
 - **Software:** Developed using Python, with Flask for web interface management. The system's coordination is handled by a microcontroller for mechanical operations and an industrial computer for AI processing.
 
@@ -23,7 +23,7 @@ OptiSort is a fully automated, AI-based sorting machine designed to identify and
 
 ### Installation
 1. Clone the repository to your local machine or industrial computer.
-2. Install the required Python libraries including Flask and TensorFlow Lite.
+2. Install the required Python libraries including Flask and TensorFlow.
 3. Assemble the hardware components according to the provided schematics.
 4. Upload the microcontroller firmware for managing the mechanical parts.
 
