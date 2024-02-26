@@ -19,6 +19,7 @@ from multiprocessing import Pool, freeze_support
 import time
 import copy
 import camera
+import tensorflow as tf
 
 app = Flask(__name__)
 
@@ -33,15 +34,14 @@ OFFSET = 0
 PORT = "COM3"
 
 # global vars
-interpreter = None
-
-input_details = None
-output_details = None
+model = None
 
 camera_indices = None
 capture_objects = None
 
 camera_manager = None
+
+sorting_type = "dominant-reject"
 
 socketio = SocketIO(app, async_mode="threading")
 
@@ -55,18 +55,10 @@ training_lock = threading.Lock()
 
 
 def load_model(model_path):
-    global interpreter
+    # use h5 model
+    global model
 
-    global input_details
-    global output_details
-
-    # Load the TFLite model
-    interpreter = tf.lite.Interpreter(model_path=model_path)
-    interpreter.allocate_tensors()
-
-    # Get input and output tensors
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
+    model = tf.keras.models.load_model(model_path)
 
 
 def delete_and_create_folders():
@@ -76,10 +68,6 @@ def delete_and_create_folders():
     shutil.rmtree(MODEL_FOLDER)  # Delete the entire images folder
     os.makedirs(MODEL_FOLDER)    # Recreate the images folder
 
-
-@socketio.on('my event')
-def handle_my_custom_event(json):
-    print('received json: ' + str(json))
 
 def update_websocket_images(images):
     # Create a shallow copy of the images array
@@ -139,7 +127,7 @@ def upload():
         # In reality, you'd load the model and extract classes here
         # Replace with actual scanned classes
 
-        load_model(os.path.join("uploads", "model.tflite"))
+        load_model(os.path.join("uploads", "model.h5"))
 
         scanned_classes = all_classes
         return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes})
@@ -149,9 +137,11 @@ def upload():
 
 @app.route('/sort', methods=['POST'])
 def sort():
-    global selected_classes, rejected_classes
+    global selected_classes, rejected_classes, sorting_type
     selected_classes = request.form.getlist('selected_classes[]')
     rejected_classes = request.form.getlist('rejected_classes[]')
+    sorting_type = request.form['sorting_type']
+
 
     print(selected_classes)
     print(rejected_classes)
@@ -173,8 +163,8 @@ def train_image_classifier():
         class_names = [
             request.form[f'class_name_{i}'] for i in range(class_count)]
         
-        initial_epochs = request.form['initial_epochs']
-        finetune_epochs = request.form['finetune_epochs']
+        initial_epochs = int(request.form['initial_epochs'])
+        finetune_epochs = int(request.form['finetune_epochs'])
 
         # Delete existing folders and create new ones
         delete_and_create_folders()
@@ -205,7 +195,7 @@ def train_image_classifier():
         sleep(1)
 
         # Now you can train your TensorFlow model using the organized data
-        train_model(class_names)
+        train_model(class_names, initial_epochs, finetune_epochs)
 
         # Create a dictionary to store class data
         class_data = {'class_names': class_names}
@@ -217,11 +207,11 @@ def train_image_classifier():
 
         # Create a zip file containing the trained model, class names, and config file
         model_zip_filename = 'trained_model.zip'
-        model_tflite = "static/models/model.tflite"
+        model_h5 = "static/models/model.h5"
         with zipfile.ZipFile(os.path.join(MODEL_FOLDER, model_zip_filename), 'w') as zipf:
             # Add config file to the zip
             zipf.write(config_file_path, 'config.json')
-            zipf.write(model_tflite, 'model.tflite')  # Add model to the zip
+            zipf.write(model_h5, 'model.h5')  # Add model to the zip
 
         # Send a JSON response with the link to download the trained model
         response_data = {
@@ -229,7 +219,10 @@ def train_image_classifier():
             "download_url": f"/download/{model_zip_filename}"
         }
         return jsonify(response_data)
-
+    except:
+        print("An error occurred during training.")
+        return jsonify({"message": "An error occurred during training."}), 500
+    
     finally:
         # Reset the training flag when training is completed or an error occurs
         TRAINING_IN_PROGRESS = False
@@ -322,38 +315,27 @@ def predict_image(image_path, all_classes):
     # Convert the image to a numpy array
     img_array = tf.keras.preprocessing.image.img_to_array(img)
 
+    # Preprocess the image for MobileNetV2
+    img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
+
     # Add an extra dimension to the array to make it suitable for the model
     img_array = np.expand_dims(img_array, axis=0)
 
-    # Set the input tensor to the image data
-    interpreter.set_tensor(input_details[0]['index'], img_array)
+    # Use the loaded model to make a prediction
+    predictions = model.predict(img_array)
 
-    # Run the model on the image
-    interpreter.invoke()
-
-    # Get the output
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-
-    print(output_data)
-
-    # Offset (if needed)
-    output_data += OFFSET
-
-    # Apply the softmax function to convert the model's output into class probabilities
-    probabilities = tf.nn.softmax(output_data)
-
-    # You can now access the class probabilities as follows:
-    # Assuming a single image is being processed
-    class_probabilities = probabilities[0]
+    # The model's output is directly the class probabilities
+    class_probabilities = predictions[0]
 
     # Find the class with the highest probability
     max_probability_index = np.argmax(class_probabilities)
 
-    # Create a dictionary that maps class name to its probability
+    # Map the class name to its probability
     class_name = all_classes[max_probability_index]
     class_probability = class_probabilities[max_probability_index] * 100
 
     return class_name, class_probability
+
 
 
 def train_model(class_names, initial_epochs=20, finetune_epochs=20):
@@ -459,22 +441,13 @@ def train_model(class_names, initial_epochs=20, finetune_epochs=20):
               initial_epoch=history.epoch[-1],
               validation_data=validation_dataset)
 
-    model.save('static/models/model')
-
-    # Convert the model
-    converter = tf.lite.TFLiteConverter.from_saved_model(
-        'static/models/model')  # path to the SavedModel directory
-    tflite_model = converter.convert()
-
-    # Save the model.
-    with open('static/models/model.tflite', 'wb') as f:
-        f.write(tflite_model)
+    model.save('static/models/model.h5')
 
 
 def micro_controller_thread():
     freeze_support()
 
-    load_model(model_path="model.tflite")
+    load_model(model_path="model.h5")
 
     try:
         ser = serial.Serial(PORT, 9600)
@@ -509,26 +482,54 @@ def micro_controller_thread():
         time.sleep(1)
         update_websocket_images(file_names_to_check)
 
-        min_confidence = 'good'
+
+
+        # Initialize counters for selected and rejected predictions
+        selected_count = 0
+        rejected_count = 0
+
         for filename in file_names_to_check:
             print(filename)
-            confidence = predict_image(filename, all_classes)
-            print(confidence)
-            print(f"Predicted {filename}: {confidence}")
-            if confidence[0] == 'bad':
-                min_confidence = 'bad'
+            class_name, class_probability = predict_image(filename, all_classes)
+            print(f"{class_name}: {class_probability}%")
+            print(f"Predicted {filename}: {class_name}")
+
+            # Increment counters based on prediction
+            if class_name in selected_classes:
+                selected_count += 1
+            if class_name in rejected_classes:
+                rejected_count += 1
+
+            # Handling for 'Dominant-Reject' and 'Dominant-Select' without needing to go through all images
+            if sorting_type == 'dominant-reject' and class_name in rejected_classes:
+                break
+            if sorting_type == 'dominant-select' and class_name in selected_classes:
                 break
 
-        if min_confidence == 'good':
-            print("The object will not be sort out.\n\r")
+        # Decision making based on sorting type
+        decision = 'undecided'  # Initial state
+        if sorting_type == 'average':
+            if selected_count >= rejected_count:
+                decision = 'selected'
+            else:
+                decision = 'rejected'
+        elif sorting_type == 'dominant-select':
+            decision = 'rejected' if selected_count == 0 else 'selected'
+        else:  # 'dominant-reject'
+            decision = 'selected' if rejected_count == 0 else 'rejected'
+
+        # Execute actions based on the final decision
+        if decision == 'selected':
+            print("The object will not be sorted out.\n\r")
             ser.write("g\n\r".encode())
             update_websocket_text("don't sort out")
         else:
-            print(
-                "The object will be sorted out.\n\r")
+            print("The object will be sorted out.\n\r")
             ser.write("b\n\r".encode())
             update_websocket_text("sort out")
-        print("Received data:", data)  # Print the received data
+
+        print("Received data:", data)  # Assuming 'data' is defined and received elsewhere in your code.
+
 
 
 if __name__ == '__main__':
