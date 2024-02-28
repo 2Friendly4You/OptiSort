@@ -3,3 +3,5 @@ static/images/
 static/captured_images/
 static/unclassified_images/
 .vscode/
+static/bootstrap-5.3.3-dist/
+__pycache__/
