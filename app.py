@@ -26,7 +26,6 @@ app = Flask(__name__)
 
 # config of program
 UPLOAD_FOLDER = os.path.join("static", "images")
-MODEL_FOLDER = os.path.join("static", "models")
 
 # Flag to track training status
 TRAINING_IN_PROGRESS = False
@@ -60,9 +59,6 @@ training_lock = threading.Lock()
 def delete_and_create_folders():
     shutil.rmtree(UPLOAD_FOLDER)  # Delete the entire images folder
     os.makedirs(UPLOAD_FOLDER)    # Recreate the images folder
-
-    shutil.rmtree(MODEL_FOLDER)  # Delete the entire images folder
-    os.makedirs(MODEL_FOLDER)    # Recreate the images folder
 
 
 def update_websocket_images(images):
@@ -123,15 +119,67 @@ def remove_all_unclassified_images():
 
 @app.route('/get-trained-models')
 def current_settings_and_model():
-    json_data = {}
-    models = os.listdir("models")
-    # go through each model and get the config file and add it to the list of json to return
-    for model in models:
+    models_list = []
+    models_dir = os.listdir("models")
+    # Go through each model and get the config file and add it to the list of json to return
+    for model in models_dir:
         config_file_path = os.path.join("models", model, "config.json")
-        with open(config_file_path, 'r') as config_file:
-            data = json.load(config_file)
-            json_data[model] = data
-    return jsonify(json_data), 200
+        try:
+            with open(config_file_path, 'r') as config_file:
+                data = json.load(config_file)
+                # Optionally, add the model name to the data if it's not already included
+                data['model_name'] = model
+                models_list.append(data)
+        except FileNotFoundError:
+            print(f"Config file not found for model: {model}")
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON for model: {model}")
+
+    return jsonify({"models": models_list}), 200
+
+@app.route('/delete-model', methods=['DELETE'])
+def delete_model():
+    data = request.get_json()
+    model_name = data['model_name']
+    model_path = os.path.join("models", model_name)
+    if os.path.exists(model_path):
+        shutil.rmtree(model_path)
+        return jsonify({"message": "Model deleted successfully."}), 200
+    else:
+        return jsonify({"message": "Model not found."}), 404
+    
+@app.route('/load-model', methods=['POST'])
+def load_model():
+    data = request.get_json()
+    model_name = data['model_name']
+    model_path = os.path.join("models", model_name)
+
+    # load class names for rejection and selection
+    global selected_classes
+    global rejected_classes
+    global sorting_type
+    global all_classes
+
+    # {"model_name": "Test", "class_count": "2", "initial_epochs": "20", "finetune_epochs": "20", "sorting_type": "dominant-reject", "class_names": ["Apples", "Banana"], "classes": [{"class_name": "Apples", "selected_or_rejected": "select", "images": ["00000013.JPG", "00000015.JPG", "00000017.JPG", "00000019.JPG"]}, {"class_name": "Banana", "selected_or_rejected": "reject", "images": ["00000014.JPG", "00000016.JPG", "00000018.JPG", "00000020.JPG"]}]}
+
+    with open(os.path.join(model_path, "config.json"), 'r') as config_file:
+        data = json.load(config_file)
+        class_names = data['class_names']
+        all_classes = class_names
+        selected_classes = [c['class_name'] for c in data['classes'] if c['selected_or_rejected'] == "select"]
+        rejected_classes = [c['class_name'] for c in data['classes'] if c['selected_or_rejected'] == "reject"]
+        sorting_type = data['sorting_type']
+
+        print(selected_classes)
+        print(rejected_classes)
+        print(sorting_type)
+        print(all_classes)
+
+    if os.path.exists(model_path):
+        mf.load_model(model_path)
+        return jsonify({"message": "Model loaded successfully."}), 200
+    else:
+        return jsonify({"message": "Model not found."}), 404
 
 
 @app.route('/train', methods=['POST'])
@@ -175,7 +223,6 @@ def train_image_classifier():
     TRAINING_IN_PROGRESS = True
 
     try:
-
         delete_and_create_folders()
 
         # Iterate over provided classes data
@@ -200,13 +247,14 @@ def train_image_classifier():
         TRAINING_IN_PROGRESS = False
         return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
     except Exception as e:
+        # If an error occurs, delete the model folder and return an error message
+        if os.path.exists(model_path):
+            shutil.rmtree(model_path)
         print(e)
-        TRAINING_IN_PROGRESS = False
         return jsonify({"message": "An error occurred during training."}), 500
     finally:
         TRAINING_IN_PROGRESS = False
         
-
 
 def find_cameras_until_num(num_cameras, max_cameras=20):
     camera_indices = []
@@ -374,7 +422,6 @@ if __name__ == '__main__':
     os.makedirs("models", exist_ok=True)
     os.makedirs("static/captured_images", exist_ok=True)
     os.makedirs("static/unclassified_images", exist_ok=True)
-    os.makedirs("static/models", exist_ok=True)
     os.makedirs("static/images", exist_ok=True)
 
     camera_indices, capture_objects = find_cameras_until_num(NUM_CAMERAS)

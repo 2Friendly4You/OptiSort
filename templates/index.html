@@ -39,6 +39,14 @@
         body {
             font-family: 'Josefin Sans', sans-serif;
         }
+
+        .class-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+        }
     </style>
 </head>
 
@@ -86,8 +94,9 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/documentation" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
-                                data-bs-placement="right" data-bs-original-title="Documentation">
+                            <a href="/documentation" class="nav-link py-3 px-2 text-dark" title=""
+                                data-bs-toggle="tooltip" data-bs-placement="right"
+                                data-bs-original-title="Documentation">
                                 <span class="ms-1"><b>Documentation</b></span>
                             </a>
                         </li>
@@ -191,13 +200,57 @@
             textOutput.innerHTML = data.text;
         });
 
-        // get all models from server
+        // Fetch trained models from the server and display them
         fetch('/get-trained-models')
             .then(response => response.json())
             .then(data => {
                 var trainedModels = document.getElementById('trained-models');
-                trainedModels.innerHTML = data.models;
+                if (data && data.models) {
+                    data.models.forEach(model => {
+                        var card = document.createElement('div');
+                        card.classList.add('class-card');
+                        card.innerHTML = `<h3>${model.model_name}</h3>` +
+                            `<p>Classes: ${model.class_names.join(', ')}</p>` +
+                            `<p>Initial Epochs: ${model.initial_epochs}</p>` +
+                            `<p>Fine-tune Epochs: ${model.finetune_epochs}</p>` +
+                            `<button class="delete-btn" data-model-name="${model.model_name}">Delete</button>`;
+                        trainedModels.appendChild(card);
+                    });
+
+                    // Add event listeners to each delete button after they have been added to the DOM
+                    document.querySelectorAll('.delete-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            const modelName = this.getAttribute('data-model-name');
+                            fetch('/delete-model', {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ model_name: modelName })
+                            })
+                                .then(response => {
+                                    if (response.ok) {
+                                        return response.json();
+                                    }
+                                    throw new Error('Failed to delete model');
+                                })
+                                .then(data => {
+                                    console.log(data.message);
+                                    // Optionally, remove the model card from the DOM or refresh the page to reflect the deletion
+                                    this.parentNode.remove(); // Removes the model card
+                                })
+                                .catch(error => console.error('Error:', error));
+                        });
+                    });
+                } else {
+                    console.error('No models data found in response');
+                    trainedModels.innerHTML = '<p>No models data found.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching models:', error);
             });
+
     </script>
 </body>
 
