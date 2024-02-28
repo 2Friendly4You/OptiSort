@@ -29,7 +29,7 @@ MODEL_FOLDER = 'static/models'
 TRAINING_IN_PROGRESS = False  # Flag to track training status
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 5
+NUM_CAMERAS = 0
 OFFSET = 0
 PORT = "COM3"
 
@@ -103,6 +103,10 @@ def usemodel():
 def documentation():
     return render_template('documentation.html')
 
+@app.route('/current-settings-and-models')
+def current_settings_and_model():
+    # currently loaded models are in the uploads folder
+    return jsonify({"selected_classes": selected_classes, "rejected_classes": rejected_classes, "sorting_type": sorting_type, "model": model}), 200
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -110,29 +114,36 @@ def upload():
 
     # Handle the uploaded zip file
     zip_file = request.files['zip_file']
+
+    # Get the name of the zip file without the extension
+    zip_file_name = os.path.splitext(zip_file.filename)[0]
+
     if zip_file:
-        # Save the zip file to the file system
-        zip_file.save(os.path.join("uploads", zip_file.filename))
+        # create new folder with the name of the zip file, if it doesn't exist. if it exists, return error
+        if not os.path.exists(os.path.join("uploads", zip_file_name)):
+            os.makedirs(os.path.join("uploads", zip_file_name))
+        else:
+            return jsonify({"message": "A zip file with the same name already exists. Delete it from the main page."}), 400
+
+        # Save the zip file to this folder
+        zip_file.save(os.path.join("uploads", zip_file_name, zip_file.filename))
 
         # Unpack the zip file
-        with zipfile.ZipFile(os.path.join("uploads", zip_file.filename), 'r') as zip_ref:
-            zip_ref.extractall("uploads")
+        with zipfile.ZipFile(os.path.join("uploads", zip_file_name, zip_file.filename), 'r') as zip_ref:
+            zip_ref.extractall(path=os.path.join("uploads", zip_file_name))
 
         # Load the all classes JSON
-        with open(os.path.join("uploads", "config.json"), 'r') as json_file:
+        with open(os.path.join("uploads", zip_file_name, "config.json"), 'r') as json_file:
             json_data = json.load(json_file)
             all_classes = json_data["class_names"]
 
-        # Simulate loading the model and sending scanned classes back
-        # In reality, you'd load the model and extract classes here
-        # Replace with actual scanned classes
-
-        load_model(os.path.join("uploads", "model.h5"))
+        # Load the model
+        load_model(os.path.join("uploads", zip_file_name, "model.h5"))
 
         scanned_classes = all_classes
-        return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes})
+        return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes}), 200
 
-    return jsonify({"message": "No zip file uploaded."})
+    return jsonify({"message": "No zip file uploaded."}), 400
 
 
 @app.route('/sort', methods=['POST'])
@@ -146,7 +157,7 @@ def sort():
     print(selected_classes)
     print(rejected_classes)
 
-    return jsonify({"message": "Sorting information saved successfully."})
+    return jsonify({"message": "Sorting information saved successfully."}), 200
 
 
 @app.route('/train', methods=['POST'])
@@ -165,6 +176,8 @@ def train_image_classifier():
         
         initial_epochs = int(request.form['initial_epochs'])
         finetune_epochs = int(request.form['finetune_epochs'])
+
+        model_name = request.form['model_name']
 
         # Delete existing folders and create new ones
         delete_and_create_folders()
@@ -206,7 +219,7 @@ def train_image_classifier():
             json.dump(class_data, config_file)
 
         # Create a zip file containing the trained model, class names, and config file
-        model_zip_filename = 'trained_model.zip'
+        model_zip_filename = f"{model_name}.zip"
         model_h5 = "static/models/model.h5"
         with zipfile.ZipFile(os.path.join(MODEL_FOLDER, model_zip_filename), 'w') as zipf:
             # Add config file to the zip
@@ -218,7 +231,7 @@ def train_image_classifier():
             "message": "Model trained successfully",
             "download_url": f"/download/{model_zip_filename}"
         }
-        return jsonify(response_data)
+        return jsonify(response_data), 200
     except:
         print("An error occurred during training.")
         return jsonify({"message": "An error occurred during training."}), 500

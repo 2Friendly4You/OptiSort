@@ -1,7 +1,7 @@
 static/images/
-.metadata/
 static/captured_images/
 static/unclassified_images/
+.metadata/
 .vscode/
 static/bootstrap-5.3.3-dist/
 __pycache__/

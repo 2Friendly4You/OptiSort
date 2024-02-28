@@ -36,9 +36,6 @@ OptiSort is a fully automated, AI-based sorting machine designed to identify and
 ## Contributing
 Contributions to OptiSort are welcome! Please follow the standard fork-and-pull request workflow. Make sure your code adheres to the existing style and all tests pass before submitting a pull request.
 
-## License
-This project is released under the MIT License. See the LICENSE file for more details.
-
 ## Acknowledgments
 - Mikro Makro Mint Foundation, Baden-Württemberg for financial support.
 - Trumpf Ditzingen for manufacturing support.
