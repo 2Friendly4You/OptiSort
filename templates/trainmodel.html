@@ -68,13 +68,34 @@
             margin-bottom: 10px;
         }
 
+        #unclassified-images-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
         .class-image-container {
             position: relative;
-            width: 100px;
-            height: 100px;
+            width: 200px;
+            height: auto;
             overflow: hidden;
             margin-right: 10px;
             display: inline-block;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+
+            display: flexbox;
+            justify-content: center;
+            align-items: center;
+
+            /* Add a shadow effect to the image container */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .sort-buttons button {
+            margin: 5px;
+            background-color: var(--bs-primary);
+            border: solid 1px var(--bs-primary);
             border-radius: 5px;
         }
 
@@ -88,7 +109,7 @@
             position: absolute;
             top: 0;
             right: 0;
-            background-color: #f44336;
+            background-color: var(--bs-danger);
             color: white;
             border: none;
             padding: 5px 10px;
@@ -141,12 +162,6 @@
                             </a>
                         </li>
                         <li>
-                            <a href="/usemodel" class="nav-link py-3 px-2 text-dark" title="" data-bs-toggle="tooltip"
-                                data-bs-placement="right" data-bs-original-title="Use model">
-                                <span class="ms-1"><b>Use model</b></span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="/documentation" class="nav-link py-3 px-2 text-dark" title=""
                                 data-bs-toggle="tooltip" data-bs-placement="right"
                                 data-bs-original-title="Documentation">
@@ -173,6 +188,8 @@
                             <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
                             <input type="number" id="fine_tune_epochs" min="1" value="20" required>
                             <br>
+                            <br>
+                            <p><strong>Sorting type:</strong></p>
                             <input type="radio" id="average" name="sorting-type" value="average">
                             <label for="average">Average</label>
                             <br>
@@ -192,7 +209,19 @@
                             <!-- Add class card divs dynamically using JavaScript -->
                         </div>
                     </form>
-
+                    <br>
+                    <br>
+                    <div id="unclassified-images">
+                        <div>
+                            <h2>Unclassified Images</h2>
+                            <div id="unclassified-images-container">
+                                <!-- Add unclassified images here -->
+                            </div>
+                        </div>
+                        <button id="load-unclassified-images" class="btn btn-primary">Load unclassified images</button>
+                        <button id="delete-all-unclassified-images" class="btn btn-danger">Delete all
+                            unclassified-images</button>
+                    </div>
                     <br>
                     <br>
                     <br>
@@ -254,113 +283,246 @@
         document.addEventListener("DOMContentLoaded", function () {
             const classInputs = document.getElementById("class-inputs");
             const classCountInput = document.getElementById("class_count");
+            const uploadForm = document.getElementById("upload-form");
+            const trainButton = document.getElementById("train-button");
+            const resultContainer = document.getElementById("result-container");
 
-            classCountInput.addEventListener("input", function () {
-                let classCount = parseInt(classCountInput.value);
-                classInputs.innerHTML = "";
+            // Function to handle class count input changes
+            function handleClassCountChange() {
+                let classCount = parseInt(classCountInput.value, 10);
+                classInputs.innerHTML = ""; // Clear existing inputs
 
-                if (classCount > 100) classCount = 100;
+                classCount = classCount > 40 ? 40 : classCount; // Limit class count to 100
 
                 for (let i = 0; i < classCount; i++) {
-                    const classCard = document.createElement("div");
-                    classCard.classList.add("class-card");
-                    classCard.innerHTML = `
-                <label for="class_name_${i}">Class ${i + 1} Name:</label>
-                <input type="text" id="class_name_${i}" name="class_name_${i}" required>
-                <br>
-                <p>Should be selected or rejected:</p>
-                <input type="radio" id="select_${i}" name="selected-rejected-radio_${i}" value="select" checked>
-                <label for="select_${i}">Select</label>
-                <br>
-                <input type="radio" id="reject_${i}" name="selected-rejected-radio_${i}" value="reject">
-                <label for="reject_${i}">Reject</label>
-                <br>
-                <label for="class_${i}">Images:</label>
-                <input type="file" id="class_${i}" name="class_${i}" accept="image/*" multiple>
-                <br>
-                <br>
-            `;
+                    addClassCard(i); // Add a new class card for each class
+                }
+            }
 
-                    // Add the class card to the container
-                    classInputs.appendChild(classCard);
+            // Function to add a class card
+            function addClassCard(index) {
+                const classCard = document.createElement("div");
+                classCard.classList.add("class-card");
+                classCard.innerHTML = `
+                    <label for="class_name_${index}">Class ${index + 1} Name:</label>
+                    <input type="text" id="class_name_${index}" name="class_name_${index}" required><br>
+                    <p>Should be selected or rejected:</p>
+                    <input type="radio" id="select_${index}" name="selected-rejected-radio_${index}" value="select" checked>
+                    <label for="select_${index}">Select</label><br>
+                    <input type="radio" id="reject_${index}" name="selected-rejected-radio_${index}" value="reject">
+                    <label for="reject_${index}">Reject</label><br>
+                    <label for="class_${index}">Images:</label>
+                    <div class="sorted-images" id="sorted-images-${index}"></div> <!-- Placeholder for sorted images -->`;
 
-                    // Add event listener to handle image selection
-                    const classInput = document.getElementById(`class_${i}`);
-                    classInput.addEventListener("change", function () {
-                        for (const file of classInput.files) {
+                // Append to classInputs or another appropriate parent
+                classInputs.appendChild(classCard);
+
+                // Add listener to update data-class-name on input change
+                const classNameInput = document.getElementById(`class_name_${index}`);
+                const sortedImagesContainer = document.getElementById(`sorted-images-${index}`);
+                classNameInput.addEventListener('input', function () {
+                    sortedImagesContainer.setAttribute('data-class-name', classNameInput.value);
+                });
+            }
+
+            // Function to handle image selection
+            function handleImageSelection(event, classCard) {
+                const files = event.target.files;
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const imageContainer = document.createElement("div");
+                        imageContainer.classList.add("class-image-container");
+
+                        const image = document.createElement("img");
+                        image.classList.add("class-image");
+                        image.src = e.target.result;
+                        imageContainer.appendChild(image);
+
+                        const deleteButton = document.createElement("button");
+                        deleteButton.setAttribute("type", "button");
+                        deleteButton.classList.add("delete-button");
+                        deleteButton.innerHTML = "X";
+                        deleteButton.onclick = function () {
+                            imageContainer.remove();
+                        };
+                        imageContainer.appendChild(deleteButton);
+
+                        classCard.appendChild(imageContainer);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            // Listen to class count changes
+            classCountInput.addEventListener("input", handleClassCountChange);
+
+            // Function to collect form data and send it as JSON
+            function submitFormAsJson(event) {
+                event.preventDefault(); // Prevent default form submission
+                trainButton.disabled = true; // Disable the button to prevent multiple submissions
+
+                const formDataObj = {
+                    model_name: document.getElementById("model_name").value,
+                    class_count: document.getElementById("class_count").value,
+                    initial_epochs: document.getElementById("initial_epochs").value,
+                    fine_tune_epochs: document.getElementById("fine_tune_epochs").value,
+                    sorting_type: document.querySelector('input[name="sorting-type"]:checked').value,
+                    // all class names in an array
+                    class_names: Array.from(document.querySelectorAll('.class-card')).map
+                        ((card, index) => document.getElementById(`class_name_${index}`).value),
+                    classes: Array.from(document.querySelectorAll('.class-card')).map((card, index) => ({
+                        class_name: document.getElementById(`class_name_${index}`).value,
+                        selected_or_rejected: document.querySelector(`input[name="selected-rejected-radio_${index}"]:checked`).value
+                        // Images are handled as part of the event listener for file input
+                    }))
+                };
+
+                const formDataJSON = JSON.stringify(formDataObj);
+
+                $.ajax({
+                    type: "POST",
+                    url: "/train",
+                    data: formDataJSON,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        resultContainer.innerHTML = response.message;
+                        sweetAlert(response.message, "success");
+                        trainButton.disabled = false;
+                    },
+                    error: function (error) {
+                        sweetAlert(error.message, "error");
+                        trainButton.disabled = false;
+                    }
+                });
+            }
+
+            function reloadSortButtons() {
+                // get all class names
+                const classNames = Array.from(document.querySelectorAll('.class-card')).map
+                    ((card, index) => document.getElementById(`class_name_${index}`).value);
+
+                // get all unclassified images sort buttons and update them
+                const sortButtons = document.querySelectorAll('.sort-buttons');
+                sortButtons.forEach(sortButtons => {
+                    sortButtons.innerHTML = "";
+                    classNames.forEach(className => {
+                        const sortButton = document.createElement("button");
+                        sortButton.setAttribute("type", "button");
+                        sortButton.innerHTML = className;
+                        sortButton.onclick = function () {
+                            sortImage(sortButtons, className);
+                        };
+                        sortButtons.appendChild(sortButton);
+                    });
+                });
+            }
+
+            // move image to class on the web page
+            function sortImage(sortButton, className) {
+                const targetClassContainer = document.querySelector(`.sorted-images[data-class-name="${className}"]`);
+                if (targetClassContainer) {
+                    // Move imageContainer to targetClassContainer
+                    const imageContainer = sortButton.closest('.class-image-container');
+                    targetClassContainer.appendChild(imageContainer);
+                } else {
+                    console.error('Target class container not found for className:', className);
+                }
+            }
+
+
+            // Listen to form submission
+            trainButton.addEventListener("click", submitFormAsJson);
+
+            // Function to delete all unclassified images
+            function deleteAllUnclassifiedImages() {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/remove-all-unclassified-images",
+                    success: function (response) {
+                        sweetAlert(response.message, "success");
+                        document.getElementById("unclassified-images-container").innerHTML = "";
+                    },
+                    error: function (error) {
+                        sweetAlert(error.message, "error");
+                    }
+                });
+            }
+
+            // Listen to delete all unclassified images button
+            document.getElementById("delete-all-unclassified-images").addEventListener("click", deleteAllUnclassifiedImages);
+
+            // Function to load unclassified images (a list of unclassified images is returned (only the image names))
+            // load image via /get-unclassified-image/<image_name> and display them in the unclassified-images-container
+            function loadUnclassifiedImages() {
+                $.ajax({
+                    type: "GET",
+                    url: "/get-unclassified-images",
+                    success: function (response) {
+                        const unclassifiedImagesContainer = document.getElementById("unclassified-images-container");
+                        unclassifiedImagesContainer.innerHTML = "";
+                        console.log(response);
+                        response.forEach(imageName => {
                             const imageContainer = document.createElement("div");
                             imageContainer.classList.add("class-image-container");
-                            classCard.appendChild(imageContainer);
+                            imageContainer.innerHTML = `
+                                <img src="/get-unclassified-image/${imageName}" class="class-image">
+                                <button type="button" class="delete-button" onclick="deleteUnclassifiedImage('${imageName}')">X</button>`;
+                            unclassifiedImagesContainer.appendChild(imageContainer);
+                            const sortButtons = document.createElement("div");
+                            sortButtons.classList.add("sort-buttons");
+                            imageContainer.appendChild(sortButtons);
+                        });
+                        reloadSortButtons();
+                    },
+                    error: function (error) {
+                        sweetAlert(error.message, "error");
+                    }
+                });
+            }
 
-                            const image = document.createElement("img");
-                            image.classList.add("class-image");
-                            image.src = URL.createObjectURL(file);
-                            imageContainer.appendChild(image);
+            // Listen to load unclassified images button
+            document.getElementById("load-unclassified-images").addEventListener("click", loadUnclassifiedImages);
 
-                            const deleteButton = document.createElement("button");
-                            deleteButton.classList.add("delete-button");
-                            deleteButton.innerHTML = "&times;"; // Times symbol (×) for delete
-                            imageContainer.appendChild(deleteButton);
+            // Function to delete an unclassified image or move it back to the unclassified images list
+            window.deleteUnclassifiedImage = function (imageName) {
+                // Attempt to find the image in the sorted area first
+                const sortedImageContainer = document.querySelector(`.sorted-images .class-image-container img[src*="${imageName}"]`);
 
-                            // Add event listener to delete the image when the delete button is clicked
-                            deleteButton.addEventListener("click", function () {
-                                imageContainer.remove();
-                            });
+                // If the image is found in the sorted area, move it back to the unclassified list
+                if (sortedImageContainer) {
+                    const unclassifiedImagesContainer = document.getElementById("unclassified-images-container");
+                    const imageContainerToMove = sortedImageContainer.closest('.class-image-container');
+                    unclassifiedImagesContainer.appendChild(imageContainerToMove);
+                } else {
+                    // If the image is not found in the sorted area, it means it's unclassified and should be deleted
+                    $.ajax({
+                        type: "DELETE",
+                        url: `/remove-unclassified-image/${imageName}`,
+                        success: function (response) {
+                            sweetAlert(response.message, "success");
+                            // Remove the image container from the unclassified list
+                            const imageContainerToDelete = document.querySelector(`.class-image-container img[src="/get-unclassified-image/${imageName}"]`).closest('.class-image-container');
+                            imageContainerToDelete.remove();
+                        },
+                        error: function (error) {
+                            sweetAlert(error.message, "error");
+                            imageContainerToDelete.remove();
+                            // reload unclassified images
+                            loadUnclassifiedImages();
                         }
                     });
-
-                    const uploadForm = document.getElementById("upload-form");
-                    const trainButton = document.getElementById("train-button");
-                    const resultContainer = document.getElementById("result-container");
-
-                    trainButton.addEventListener("click", function (event) {
-                        // Prevent the default form submission behavior
-                        event.preventDefault();
-
-                        // Disable the form and train button to prevent multiple submissions
-                        trainButton.disabled = true;
-                        uploadForm.disabled = true;
-
-                        // Serialize the form data
-                        const formData = new FormData(uploadForm);
-
-                        // Send a POST request to the server using AJAX
-                        $.ajax({
-                            type: "POST",
-                            url: "/train",
-                            data: formData,
-                            processData: false,
-                            contentType: false,
-                            success: function (response) {
-                                // Handle the response, e.g., display the result in the result container
-                                resultContainer.innerHTML = response.message;
-
-                                sweetAlert(response.message, "success");
-
-                                // Check if a download link is provided in the response
-                                if (response.download_url) {
-                                    // Automatically redirect to the download link
-                                    window.location.href = response.download_url;
-                                }
-
-                                // Re-enable the form and train button
-                                trainButton.disabled = false;
-                                uploadForm.disabled = false;
-                            },
-                            error: function (error) {
-                                sweetAlert(error.message, "error");
-
-                                // Re-enable the form and train button in case of an error
-                                trainButton.disabled = false;
-                                uploadForm.disabled = false;
-                            },
-                        });
-                    });
                 }
-            });
+            }
+
+
+            // Listen to class count changes
+            classCountInput.addEventListener("input", reloadSortButtons);
+
+            // listen on class name changes
+            classInputs.addEventListener("input", reloadSortButtons);
         });
     </script>
-
 </body>
 
 </html>

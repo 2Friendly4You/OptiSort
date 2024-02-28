@@ -43,7 +43,7 @@ def predict_image(image_path, all_classes):
 
     return class_name, class_probability
 
-def train_model(class_names, initial_epochs=20, finetune_epochs=20):
+def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20):
     PATH = os.path.join(os.path.dirname("static/images/"))
     print(PATH)
 
@@ -146,4 +146,4 @@ def train_model(class_names, initial_epochs=20, finetune_epochs=20):
               initial_epoch=history.epoch[-1],
               validation_data=validation_dataset)
 
-    model.save('static/models/model.h5')
+    model.save(save_path)

@@ -25,9 +25,11 @@ import model_functions as mf
 app = Flask(__name__)
 
 # config of program
-UPLOAD_FOLDER = 'static/images'
-MODEL_FOLDER = 'static/models'
-TRAINING_IN_PROGRESS = False  # Flag to track training status
+UPLOAD_FOLDER = os.path.join("static", "images")
+MODEL_FOLDER = os.path.join("static", "models")
+
+# Flag to track training status
+TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
 NUM_CAMERAS = 0
@@ -88,19 +90,43 @@ def index():
 def trainmodel():
     return render_template('trainmodel.html')
 
-
-@app.route('/usemodel')
-def usemodel():
-    return render_template('usemodel.html')
-
 @app.route('/documentation')
 def documentation():
     return render_template('documentation.html')
 
-@app.route('/current-settings-and-models')
+@app.route('/get-unclassified-image/<image_name>', methods=['GET'])
+def get_unclassified_image(image_name):
+    return send_file(os.path.join("static", "unclassified_images", image_name))
+
+
+@app.route('/get-unclassified-images', methods=['GET'])
+def get_unclassified_images():
+    # return the image names in the unclassified_images folder
+    images = os.listdir(os.path.join("static", "unclassified_images"))
+    return jsonify(images), 200
+
+@app.route('/remove-unclassified-image/<image_name>', methods=['DELETE'])
+def remove_unclassified_image(image_name):
+    os.remove(os.path.join("static", "unclassified_images", image_name))
+    return jsonify({"message": "Image removed."}), 200
+
+@app.route('/remove-all-unclassified-images', methods=['DELETE'])
+def remove_all_unclassified_images():
+    shutil.rmtree(os.path.join("static", "unclassified_images"))
+    os.makedirs(os.path.join("static", "unclassified_images"))
+    return jsonify({"message": "All unclassified images removed."}), 200
+
+@app.route('/get-trained-models')
 def current_settings_and_model():
-    # currently loaded models are in the models folder
-    return jsonify({"selected_classes": selected_classes, "rejected_classes": rejected_classes, "sorting_type": sorting_type, "model": model}), 200
+    json_data = {}
+    models = os.listdir("models")
+    # go through each model and get the config file and add it to the list of json to return
+    for model in models:
+        config_file_path = os.path.join("models", model, "config.json")
+        with open(config_file_path, 'r') as config_file:
+            data = json.load(config_file)
+            json_data[model] = data
+    return jsonify(json_data), 200
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -140,22 +166,26 @@ def upload():
     return jsonify({"message": "No zip file uploaded."}), 400
 
 
-@app.route('/sort', methods=['POST'])
-def sort():
-    global selected_classes, rejected_classes, sorting_type
-    selected_classes = request.form.getlist('selected_classes[]')
-    rejected_classes = request.form.getlist('rejected_classes[]')
-    sorting_type = request.form['sorting_type']
-
-
-    print(selected_classes)
-    print(rejected_classes)
-
-    return jsonify({"message": "Sorting information saved successfully."}), 200
-
-
 @app.route('/train', methods=['POST'])
 def train_image_classifier():
+    global TRAINING_IN_PROGRESS
+
+    data = request.get_json()
+
+    class_count = int(data['class_count'])
+    class_names = data['class_names']
+    
+    initial_epochs = int(data['initial_epochs'])
+    finetune_epochs = int(data['finetune_epochs'])
+
+    model_name = data['model_name']
+
+    # check if model_name already exists
+    if os.path.exists(os.path.join("models", model_name)):
+        return jsonify({"message": "A model with the same name already exists. Delete it from the home page."}), 400
+    else:
+        os.makedirs(os.path.join("models", model_name))
+
     # Check if training is already in progress
     if TRAINING_IN_PROGRESS:
         return jsonify({"message": "Training is already in progress."}), 400
@@ -164,80 +194,29 @@ def train_image_classifier():
     TRAINING_IN_PROGRESS = True
 
     try:
-        class_count = int(request.form['class_count'])
-        class_names = [
-            request.form[f'class_name_{i}'] for i in range(class_count)]
-        
-        initial_epochs = int(request.form['initial_epochs'])
-        finetune_epochs = int(request.form['finetune_epochs'])
-
-        model_name = request.form['model_name']
-
         # Delete existing folders and create new ones
         delete_and_create_folders()
 
-        # Process and save uploaded images for each class in separate folders
-        for i, class_name in enumerate(class_names):
-            class_folder = os.path.join(UPLOAD_FOLDER, class_name)
-            # Create class-specific folder if it doesn't exist
-            os.makedirs(class_folder, exist_ok=True)
-
-            class_input_name = f'class_{i}'
-            uploaded_files = request.files.getlist(class_input_name)
-
-            for file in uploaded_files:
-                if file.filename != '':
-                    # Get the file extension
-                    file_extension = os.path.splitext(file.filename)[1]
-
-                    # Create a unique filename for each image using a counter
-                    image_counter = len(os.listdir(class_folder)) + 1
-                    image_filename = f"image_{image_counter}{file_extension}"
-
-                    # Save the image to the class-specific folder with the unique filename
-                    image_path = os.path.join(class_folder, image_filename)
-                    file.save(image_path)
+        # TO BE DONE: SORT IMAGES INTO FOLDERS
 
         # sleep 1 second
         sleep(1)
 
-        # Now you can train your TensorFlow model using the organized data
-        mf.train_model(class_names, initial_epochs, finetune_epochs)
-
-        # Create a dictionary to store class data
-        class_data = {'class_names': class_names}
-
         # Create a config JSON file with class data
-        config_file_path = os.path.join(MODEL_FOLDER, 'config.json')
+        config_file_path = os.path.join("models", model_name, "config.json")
         with open(config_file_path, 'w') as config_file:
-            json.dump(class_data, config_file)
+            json.dump(data, config_file)
 
-        # Create a zip file containing the trained model, class names, and config file
-        model_zip_filename = f"{model_name}.zip"
-        model_h5 = "static/models/model.h5"
-        with zipfile.ZipFile(os.path.join(MODEL_FOLDER, model_zip_filename), 'w') as zipf:
-            # Add config file to the zip
-            zipf.write(config_file_path, 'config.json')
-            zipf.write(model_h5, 'model.h5')  # Add model to the zip
+        # Now you can train your TensorFlow model using the organized data
+        mf.train_model(class_names, os.path.join("models", model_name, "model.h5"), initial_epochs, finetune_epochs)
 
-        # Send a JSON response with the link to download the trained model
-        response_data = {
-            "message": "Model trained successfully",
-            "download_url": f"/download/{model_zip_filename}"
-        }
-        return jsonify(response_data), 200
+        return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
     except:
-        print("An error occurred during training.")
         return jsonify({"message": "An error occurred during training."}), 500
     
     finally:
         # Reset the training flag when training is completed or an error occurs
         TRAINING_IN_PROGRESS = False
-
-
-@app.route('/download/<filename>', methods=['GET'])
-def download_file(filename):
-    return send_file(os.path.join(MODEL_FOLDER, filename), as_attachment=True)
 
 
 def find_cameras_until_num(num_cameras, max_cameras=20):
@@ -419,4 +398,4 @@ if __name__ == '__main__':
     mc_thread.daemon = True
     mc_thread.start()
 
-    socketio.run(app, host="0.0.0.0", port=5000, debug=False, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", port=5000, debug=True, allow_unsafe_werkzeug=True)
