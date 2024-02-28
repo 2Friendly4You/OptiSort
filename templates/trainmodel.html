@@ -268,6 +268,13 @@
                 <label for="class_name_${i}">Class ${i + 1} Name:</label>
                 <input type="text" id="class_name_${i}" name="class_name_${i}" required>
                 <br>
+                <p>Should be selected or rejected:</p>
+                <input type="radio" id="select_${i}" name="selected-rejected-radio_${i}" value="select" checked>
+                <label for="select_${i}">Select</label>
+                <br>
+                <input type="radio" id="reject_${i}" name="selected-rejected-radio_${i}" value="reject">
+                <label for="reject_${i}">Reject</label>
+                <br>
                 <label for="class_${i}">Images:</label>
                 <input type="file" id="class_${i}" name="class_${i}" accept="image/*" multiple>
                 <br>

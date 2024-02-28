@@ -20,6 +20,7 @@ import time
 import copy
 import camera
 import tensorflow as tf
+import model_functions as mf
 
 app = Flask(__name__)
 
@@ -52,13 +53,6 @@ rejected_classes = ['bad']
 
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
-
-
-def load_model(model_path):
-    # use h5 model
-    global model
-
-    model = tf.keras.models.load_model(model_path)
 
 
 def delete_and_create_folders():
@@ -105,7 +99,7 @@ def documentation():
 
 @app.route('/current-settings-and-models')
 def current_settings_and_model():
-    # currently loaded models are in the uploads folder
+    # currently loaded models are in the models folder
     return jsonify({"selected_classes": selected_classes, "rejected_classes": rejected_classes, "sorting_type": sorting_type, "model": model}), 200
 
 @app.route('/upload', methods=['POST'])
@@ -120,25 +114,25 @@ def upload():
 
     if zip_file:
         # create new folder with the name of the zip file, if it doesn't exist. if it exists, return error
-        if not os.path.exists(os.path.join("uploads", zip_file_name)):
-            os.makedirs(os.path.join("uploads", zip_file_name))
+        if not os.path.exists(os.path.join("models", zip_file_name)):
+            os.makedirs(os.path.join("models", zip_file_name))
         else:
             return jsonify({"message": "A zip file with the same name already exists. Delete it from the main page."}), 400
 
         # Save the zip file to this folder
-        zip_file.save(os.path.join("uploads", zip_file_name, zip_file.filename))
+        zip_file.save(os.path.join("models", zip_file_name, zip_file.filename))
 
         # Unpack the zip file
-        with zipfile.ZipFile(os.path.join("uploads", zip_file_name, zip_file.filename), 'r') as zip_ref:
-            zip_ref.extractall(path=os.path.join("uploads", zip_file_name))
+        with zipfile.ZipFile(os.path.join("models", zip_file_name, zip_file.filename), 'r') as zip_ref:
+            zip_ref.extractall(path=os.path.join("models", zip_file_name))
 
         # Load the all classes JSON
-        with open(os.path.join("uploads", zip_file_name, "config.json"), 'r') as json_file:
+        with open(os.path.join("models", zip_file_name, "config.json"), 'r') as json_file:
             json_data = json.load(json_file)
             all_classes = json_data["class_names"]
 
         # Load the model
-        load_model(os.path.join("uploads", zip_file_name, "model.h5"))
+        mf.load_model(os.path.join("models", zip_file_name, "model.h5"))
 
         scanned_classes = all_classes
         return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes}), 200
@@ -208,7 +202,7 @@ def train_image_classifier():
         sleep(1)
 
         # Now you can train your TensorFlow model using the organized data
-        train_model(class_names, initial_epochs, finetune_epochs)
+        mf.train_model(class_names, initial_epochs, finetune_epochs)
 
         # Create a dictionary to store class data
         class_data = {'class_names': class_names}
@@ -320,147 +314,10 @@ def move_captured_images_to_unclassified_images():
         shutil.move(source_path, destination_path)
 
 
-def predict_image(image_path, all_classes):
-    # Load the image you want to predict on
-    img = tf.keras.preprocessing.image.load_img(
-        image_path, target_size=IMG_SIZE)
-
-    # Convert the image to a numpy array
-    img_array = tf.keras.preprocessing.image.img_to_array(img)
-
-    # Preprocess the image for MobileNetV2
-    img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
-
-    # Add an extra dimension to the array to make it suitable for the model
-    img_array = np.expand_dims(img_array, axis=0)
-
-    # Use the loaded model to make a prediction
-    predictions = model.predict(img_array)
-
-    # The model's output is directly the class probabilities
-    class_probabilities = predictions[0]
-
-    # Find the class with the highest probability
-    max_probability_index = np.argmax(class_probabilities)
-
-    # Map the class name to its probability
-    class_name = all_classes[max_probability_index]
-    class_probability = class_probabilities[max_probability_index] * 100
-
-    return class_name, class_probability
-
-
-
-def train_model(class_names, initial_epochs=20, finetune_epochs=20):
-    PATH = os.path.join(os.path.dirname("static/images/"))
-    print(PATH)
-
-    BATCH_SIZE = 2
-    IMG_SIZE = (200, 200)
-
-    train_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
-                                                                shuffle=True,
-                                                                batch_size=BATCH_SIZE,
-                                                                image_size=IMG_SIZE,
-                                                                validation_split=0.2,
-                                                                seed=123,
-                                                                subset='training')
-
-    validation_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
-                                                                     shuffle=True,
-                                                                     batch_size=BATCH_SIZE,
-                                                                     image_size=IMG_SIZE,
-                                                                     validation_split=0.2,
-                                                                     seed=123,
-                                                                     subset='validation')
-
-    class_names = train_dataset.class_names
-    print(class_names)
-    print('Number of validation batches: %d' %
-          tf.data.experimental.cardinality(validation_dataset))
-
-    AUTOTUNE = tf.data.AUTOTUNE
-
-    train_dataset = train_dataset.prefetch(buffer_size=AUTOTUNE)
-    validation_dataset = validation_dataset.prefetch(buffer_size=AUTOTUNE)
-
-    data_augmentation = tf.keras.Sequential([
-        tf.keras.layers.RandomZoom(0.1),
-        tf.keras.layers.RandomBrightness(0.2),
-    ])
-
-    preprocess_input = tf.keras.applications.mobilenet_v2.preprocess_input
-    rescale = tf.keras.layers.Rescaling(1./127.5, offset=-1)
-
-    # Create the base model from the pre-trained model MobileNet V2
-    IMG_SHAPE = IMG_SIZE + (3,)
-    base_model = tf.keras.applications.MobileNetV2(input_shape=IMG_SHAPE,
-                                                   include_top=False,
-                                                   weights='imagenet')
-
-    image_batch, label_batch = next(iter(train_dataset))
-    feature_batch = base_model(image_batch)
-
-    base_model.trainable = False
-
-    global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
-    feature_batch_average = global_average_layer(feature_batch)
-    print(feature_batch_average.shape)
-
-    prediction_layer = tf.keras.layers.Dense(
-        len(class_names), activation=tf.nn.softmax)
-    prediction_batch = prediction_layer(feature_batch_average)
-    print(prediction_batch.shape)
-
-    inputs = tf.keras.Input(shape=(200, 200, 3))
-    x = data_augmentation(inputs)
-    x = preprocess_input(x)
-    x = base_model(x, training=False)
-    x = global_average_layer(x)
-    x = tf.keras.layers.Dropout(0.2)(x)
-    outputs = prediction_layer(x)
-    model = tf.keras.Model(inputs, outputs)
-
-    base_learning_rate = 0.0001
-    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(
-                      from_logits=True),
-                  metrics=['accuracy'])
-
-    initial_epochs = int(initial_epochs)
-    history = model.fit(train_dataset,
-                        epochs=initial_epochs,
-                        validation_data=validation_dataset)
-
-    base_model.trainable = True
-
-    # Fine-tune from this layer onwards
-    fine_tune_at = 100
-
-    # Freeze all the layers before the `fine_tune_at` layer
-    for layer in base_model.layers[:fine_tune_at]:
-        layer.trainable = False
-
-    model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                  optimizer=tf.keras.optimizers.RMSprop(
-                      learning_rate=base_learning_rate/10),
-                  metrics=['accuracy'])
-
-    fine_tune_epochs = int(finetune_epochs)
-    total_epochs = initial_epochs + fine_tune_epochs
-
-    model.fit(train_dataset,
-              epochs=total_epochs,
-              initial_epoch=history.epoch[-1],
-              validation_data=validation_dataset)
-
-    model.save('static/models/model.h5')
-
-
 def micro_controller_thread():
     freeze_support()
 
-    load_model(model_path="model.h5")
+    mf.load_model(model_path="model.h5")
 
     try:
         ser = serial.Serial(PORT, 9600)
@@ -503,7 +360,7 @@ def micro_controller_thread():
 
         for filename in file_names_to_check:
             print(filename)
-            class_name, class_probability = predict_image(filename, all_classes)
+            class_name, class_probability = mf.predict_image(filename, all_classes, model)
             print(f"{class_name}: {class_probability}%")
             print(f"Predicted {filename}: {class_name}")
 
@@ -547,7 +404,7 @@ def micro_controller_thread():
 
 if __name__ == '__main__':
     # Create the directorys if it doesn't exist
-    os.makedirs("uploads", exist_ok=True)
+    os.makedirs("models", exist_ok=True)
     os.makedirs("static/captured_images", exist_ok=True)
     os.makedirs("static/unclassified_images", exist_ok=True)
     os.makedirs("static/models", exist_ok=True)
