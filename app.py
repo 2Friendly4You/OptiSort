@@ -90,9 +90,11 @@ def index():
 def trainmodel():
     return render_template('trainmodel.html')
 
+
 @app.route('/documentation')
 def documentation():
     return render_template('documentation.html')
+
 
 @app.route('/get-unclassified-image/<image_name>', methods=['GET'])
 def get_unclassified_image(image_name):
@@ -105,16 +107,19 @@ def get_unclassified_images():
     images = os.listdir(os.path.join("static", "unclassified_images"))
     return jsonify(images), 200
 
+
 @app.route('/remove-unclassified-image/<image_name>', methods=['DELETE'])
 def remove_unclassified_image(image_name):
     os.remove(os.path.join("static", "unclassified_images", image_name))
     return jsonify({"message": "Image removed."}), 200
+
 
 @app.route('/remove-all-unclassified-images', methods=['DELETE'])
 def remove_all_unclassified_images():
     shutil.rmtree(os.path.join("static", "unclassified_images"))
     os.makedirs(os.path.join("static", "unclassified_images"))
     return jsonify({"message": "All unclassified images removed."}), 200
+
 
 @app.route('/get-trained-models')
 def current_settings_and_model():
@@ -128,95 +133,79 @@ def current_settings_and_model():
             json_data[model] = data
     return jsonify(json_data), 200
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    global all_classes
-
-    # Handle the uploaded zip file
-    zip_file = request.files['zip_file']
-
-    # Get the name of the zip file without the extension
-    zip_file_name = os.path.splitext(zip_file.filename)[0]
-
-    if zip_file:
-        # create new folder with the name of the zip file, if it doesn't exist. if it exists, return error
-        if not os.path.exists(os.path.join("models", zip_file_name)):
-            os.makedirs(os.path.join("models", zip_file_name))
-        else:
-            return jsonify({"message": "A zip file with the same name already exists. Delete it from the main page."}), 400
-
-        # Save the zip file to this folder
-        zip_file.save(os.path.join("models", zip_file_name, zip_file.filename))
-
-        # Unpack the zip file
-        with zipfile.ZipFile(os.path.join("models", zip_file_name, zip_file.filename), 'r') as zip_ref:
-            zip_ref.extractall(path=os.path.join("models", zip_file_name))
-
-        # Load the all classes JSON
-        with open(os.path.join("models", zip_file_name, "config.json"), 'r') as json_file:
-            json_data = json.load(json_file)
-            all_classes = json_data["class_names"]
-
-        # Load the model
-        mf.load_model(os.path.join("models", zip_file_name, "model.h5"))
-
-        scanned_classes = all_classes
-        return jsonify({"message": "Zip file uploaded and classes extracted successfully.", "scanned_classes": scanned_classes}), 200
-
-    return jsonify({"message": "No zip file uploaded."}), 400
-
 
 @app.route('/train', methods=['POST'])
 def train_image_classifier():
     global TRAINING_IN_PROGRESS
 
-    data = request.get_json()
-
-    class_count = int(data['class_count'])
-    class_names = data['class_names']
-    
-    initial_epochs = int(data['initial_epochs'])
-    finetune_epochs = int(data['finetune_epochs'])
-
-    model_name = data['model_name']
-
-    # check if model_name already exists
-    if os.path.exists(os.path.join("models", model_name)):
-        return jsonify({"message": "A model with the same name already exists. Delete it from the home page."}), 400
-    else:
-        os.makedirs(os.path.join("models", model_name))
-
-    # Check if training is already in progress
     if TRAINING_IN_PROGRESS:
         return jsonify({"message": "Training is already in progress."}), 400
 
-    # Set the training flag to indicate that training is in progress
+    data = request.get_json()
+    model_name = data['model_name']
+
+    # Validate received JSON data
+    required_keys = ['class_count', 'class_names', 'initial_epochs', 'finetune_epochs', 'model_name', 'classes']
+    if not all(key in data for key in required_keys):
+        return jsonify({"message": "Missing data in request."}), 400
+
+    # Extract class_names here to ensure it's defined for later use
+    class_names = data['class_names']
+
+    # Convert and validate integer fields
+    try:
+        class_count = int(data['class_count'])
+        initial_epochs = int(data['initial_epochs'])
+        finetune_epochs = int(data['finetune_epochs'])
+    except ValueError:
+        return jsonify({"message": "Invalid data format for numerical fields."}), 400
+
+    # Validate class_names and classes structure
+    if not isinstance(class_names, list) or not all(isinstance(cn, str) for cn in class_names):
+        return jsonify({"message": "Invalid class_names format."}), 400
+    if not isinstance(data['classes'], list) or not all(isinstance(c, dict) for c in data['classes']):
+        return jsonify({"message": "Invalid classes format."}), 400
+
+    # Check if model_name already exists
+    model_path = os.path.join("models", model_name)
+    if os.path.exists(model_path):
+        return jsonify({"message": "A model with the same name already exists. Delete it from the home page."}), 400
+
+    os.makedirs(model_path)
     TRAINING_IN_PROGRESS = True
 
     try:
-        # Delete existing folders and create new ones
+
         delete_and_create_folders()
 
-        # TO BE DONE: SORT IMAGES INTO FOLDERS
+        # Iterate over provided classes data
+        for class_dict in data['classes']:
+            class_name = class_dict['class_name']
+            os.makedirs(os.path.join(UPLOAD_FOLDER, class_name), exist_ok=True)
+            for image in class_dict['images']:
+                source_path = os.path.join("static", "unclassified_images", image)
+                destination_path = os.path.join(UPLOAD_FOLDER, class_name, image)
+                shutil.move(source_path, destination_path)
 
-        # sleep 1 second
-        sleep(1)
+        # Example sleep to simulate long-running process
+        sleep(4)
 
-        # Create a config JSON file with class data
-        config_file_path = os.path.join("models", model_name, "config.json")
+        # Example config file writing, adjust as necessary
+        config_file_path = os.path.join(model_path, "config.json")
         with open(config_file_path, 'w') as config_file:
             json.dump(data, config_file)
 
-        # Now you can train your TensorFlow model using the organized data
-        mf.train_model(class_names, os.path.join("models", model_name, "model.h5"), initial_epochs, finetune_epochs)
+        mf.train_model(class_names, os.path.join(model_path, "model.h5"), initial_epochs, finetune_epochs)
 
-        return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
-    except:
-        return jsonify({"message": "An error occurred during training."}), 500
-    
-    finally:
-        # Reset the training flag when training is completed or an error occurs
         TRAINING_IN_PROGRESS = False
+        return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
+    except Exception as e:
+        print(e)
+        TRAINING_IN_PROGRESS = False
+        return jsonify({"message": "An error occurred during training."}), 500
+    finally:
+        TRAINING_IN_PROGRESS = False
+        
 
 
 def find_cameras_until_num(num_cameras, max_cameras=20):
@@ -311,7 +300,7 @@ def micro_controller_thread():
             print("Error reading from serial port.")
 
             # try to reconnect
-            while True:	
+            while True:
                 try:
                     ser = serial.Serial(PORT, 9600)
                     print("Connected.")
@@ -326,12 +315,10 @@ def micro_controller_thread():
 
         move_captured_images_to_unclassified_images()
         print(f"Capturing {NUM_CAMERAS} images...")
-        #file_names_to_check = capture_and_save_images(camera_indices)
+        # file_names_to_check = capture_and_save_images(camera_indices)
         file_names_to_check = camera_manager.capture_and_save_images()
         time.sleep(1)
         update_websocket_images(file_names_to_check)
-
-
 
         # Initialize counters for selected and rejected predictions
         selected_count = 0
@@ -339,7 +326,8 @@ def micro_controller_thread():
 
         for filename in file_names_to_check:
             print(filename)
-            class_name, class_probability = mf.predict_image(filename, all_classes, model)
+            class_name, class_probability = mf.predict_image(
+                filename, all_classes, model)
             print(f"{class_name}: {class_probability}%")
             print(f"Predicted {filename}: {class_name}")
 
@@ -377,8 +365,8 @@ def micro_controller_thread():
             ser.write("b\n\r".encode())
             update_websocket_text("sort out")
 
-        print("Received data:", data)  # Assuming 'data' is defined and received elsewhere in your code.
-
+        # Assuming 'data' is defined and received elsewhere in your code.
+        print("Received data:", data)
 
 
 if __name__ == '__main__':
@@ -398,4 +386,5 @@ if __name__ == '__main__':
     mc_thread.daemon = True
     mc_thread.start()
 
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True, allow_unsafe_werkzeug=True)
+    socketio.run(app, host="0.0.0.0", port=5000,
+                 debug=True, allow_unsafe_werkzeug=True)

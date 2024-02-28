@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Image Trainer - OptiSort</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -366,14 +364,17 @@
                     model_name: document.getElementById("model_name").value,
                     class_count: document.getElementById("class_count").value,
                     initial_epochs: document.getElementById("initial_epochs").value,
-                    fine_tune_epochs: document.getElementById("fine_tune_epochs").value,
+                    finetune_epochs: document.getElementById("fine_tune_epochs").value,
                     sorting_type: document.querySelector('input[name="sorting-type"]:checked').value,
                     // all class names in an array
                     class_names: Array.from(document.querySelectorAll('.class-card')).map
                         ((card, index) => document.getElementById(`class_name_${index}`).value),
                     classes: Array.from(document.querySelectorAll('.class-card')).map((card, index) => ({
                         class_name: document.getElementById(`class_name_${index}`).value,
-                        selected_or_rejected: document.querySelector(`input[name="selected-rejected-radio_${index}"]:checked`).value
+                        selected_or_rejected: document.querySelector(`input[name="selected-rejected-radio_${index}"]:checked`).value,
+                        // only image file names are sent
+                        images: Array.from(card.querySelectorAll('.class-image-container img')).map(image => image.src.split('/').pop())
+                            .filter(image => !image.startsWith('data:'))
                         // Images are handled as part of the event listener for file input
                     }))
                 };
