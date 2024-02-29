@@ -97,10 +97,43 @@ def get_unclassified_image(image_name):
     return send_file(os.path.join("static", "unclassified_images", image_name))
 
 
+@app.route('/upload-unclassified-images', methods=['POST'])
+def upload_unclassified_images():
+    if 'images' not in request.files:
+        return jsonify({"message": "No file part"}), 400
+
+    files = request.files.getlist('images')
+
+    upload_folder = os.path.join("static", "unclassified_images")
+    if not os.path.exists(upload_folder):
+        os.makedirs(upload_folder)
+
+    # Get all existing file names and convert them to integers
+    existing_files = [f for f in os.listdir(upload_folder) if os.path.isfile(os.path.join(upload_folder, f))]
+    existing_numbers = [int(f.split('.')[0]) for f in existing_files if f.split('.')[0].isdigit()]
+
+    # Determine the next file number to use
+    next_file_number = max(existing_numbers) + 1 if existing_numbers else 1
+
+    for file in files:
+        if file.filename == '':
+            return jsonify({"message": "No selected file"}), 400
+        if file:
+            # Construct a new filename using the next available number
+            new_filename = f"{next_file_number}.{file.filename.rsplit('.', 1)[1]}"
+            file.save(os.path.join(upload_folder, new_filename))
+            next_file_number += 1  # Increment the file number for the next file
+
+    return jsonify({"message": "Files uploaded successfully."}), 200
+
+
 @app.route('/get-unclassified-images', methods=['GET'])
 def get_unclassified_images():
     # return the image names in the unclassified_images folder
     images = os.listdir(os.path.join("static", "unclassified_images"))
+
+    if len(images) == 0:
+        return jsonify({"message": "No unclassified images found."}), 404
     return jsonify(images), 200
 
 
@@ -137,6 +170,7 @@ def current_settings_and_model():
 
     return jsonify({"models": models_list}), 200
 
+
 @app.route('/delete-model', methods=['DELETE'])
 def delete_model():
     data = request.get_json()
@@ -147,7 +181,8 @@ def delete_model():
         return jsonify({"message": "Model deleted successfully."}), 200
     else:
         return jsonify({"message": "Model not found."}), 404
-    
+
+
 @app.route('/load-model', methods=['POST'])
 def load_model():
     data = request.get_json()
@@ -166,8 +201,10 @@ def load_model():
         data = json.load(config_file)
         class_names = data['class_names']
         all_classes = class_names
-        selected_classes = [c['class_name'] for c in data['classes'] if c['selected_or_rejected'] == "select"]
-        rejected_classes = [c['class_name'] for c in data['classes'] if c['selected_or_rejected'] == "reject"]
+        selected_classes = [c['class_name']
+                            for c in data['classes'] if c['selected_or_rejected'] == "select"]
+        rejected_classes = [c['class_name']
+                            for c in data['classes'] if c['selected_or_rejected'] == "reject"]
         sorting_type = data['sorting_type']
 
         print(selected_classes)
@@ -193,7 +230,8 @@ def train_image_classifier():
     model_name = data['model_name']
 
     # Validate received JSON data
-    required_keys = ['class_count', 'class_names', 'initial_epochs', 'finetune_epochs', 'model_name', 'classes']
+    required_keys = ['class_count', 'class_names',
+                     'initial_epochs', 'finetune_epochs', 'model_name', 'classes']
     if not all(key in data for key in required_keys):
         return jsonify({"message": "Missing data in request."}), 400
 
@@ -230,8 +268,10 @@ def train_image_classifier():
             class_name = class_dict['class_name']
             os.makedirs(os.path.join(UPLOAD_FOLDER, class_name), exist_ok=True)
             for image in class_dict['images']:
-                source_path = os.path.join("static", "unclassified_images", image)
-                destination_path = os.path.join(UPLOAD_FOLDER, class_name, image)
+                source_path = os.path.join(
+                    "static", "unclassified_images", image)
+                destination_path = os.path.join(
+                    UPLOAD_FOLDER, class_name, image)
                 shutil.move(source_path, destination_path)
 
         # Example sleep to simulate long-running process
@@ -242,7 +282,8 @@ def train_image_classifier():
         with open(config_file_path, 'w') as config_file:
             json.dump(data, config_file)
 
-        mf.train_model(class_names, os.path.join(model_path, "model.h5"), initial_epochs, finetune_epochs)
+        mf.train_model(class_names, os.path.join(
+            model_path, "model.h5"), initial_epochs, finetune_epochs)
 
         TRAINING_IN_PROGRESS = False
         return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
@@ -254,7 +295,7 @@ def train_image_classifier():
         return jsonify({"message": "An error occurred during training."}), 500
     finally:
         TRAINING_IN_PROGRESS = False
-        
+
 
 def find_cameras_until_num(num_cameras, max_cameras=20):
     camera_indices = []

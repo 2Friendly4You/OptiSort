@@ -97,6 +97,14 @@
             border-radius: 5px;
         }
 
+        #upload-unclassified-images {
+            margin-top: 10px;
+            background-color: var(--bs-primary);
+            border: solid 1px var(--bs-primary);
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
         .class-image {
             max-width: 100%;
             max-height: 100%;
@@ -216,9 +224,17 @@
                                 <!-- Add unclassified images here -->
                             </div>
                         </div>
+                        <br>
+                        <br>
                         <button id="load-unclassified-images" class="btn btn-primary">Load unclassified images</button>
                         <button id="delete-all-unclassified-images" class="btn btn-danger">Delete all
                             unclassified-images</button>
+                        <br>
+                        <br>
+                        <br>
+                        <input type="file" id="new-unclassified-images" accept="image/*" multiple>
+                        <br>
+                        <button id="upload-unclassified-images">Upload to unclassified images</button>
                     </div>
                     <br>
                     <br>
@@ -379,6 +395,13 @@
                     }))
                 };
 
+                // if one of the input fields is empty, show an error message and enable the train button
+                if (Object.values(formDataObj).some(value => value === "")) {
+                    sweetAlert("Please fill in all fields", "error");
+                    trainButton.disabled = false;
+                    return;
+                }
+
                 const formDataJSON = JSON.stringify(formDataObj);
 
                 $.ajax({
@@ -444,8 +467,8 @@
                         sweetAlert(response.message, "success");
                         document.getElementById("unclassified-images-container").innerHTML = "";
                     },
-                    error: function (error) {
-                        sweetAlert(error.message, "error");
+                    error: function (response) {
+                        sweetAlert(response.responseJSON.message, "error");
                     }
                 });
             }
@@ -476,8 +499,9 @@
                         });
                         reloadSortButtons();
                     },
-                    error: function (error) {
-                        sweetAlert(error.message, "error");
+                    error: function (response) {
+                        console.log(response);
+                        sweetAlert(response.responseJSON.message, "error");
                     }
                 });
             }
@@ -506,8 +530,8 @@
                             const imageContainerToDelete = document.querySelector(`.class-image-container img[src="/get-unclassified-image/${imageName}"]`).closest('.class-image-container');
                             imageContainerToDelete.remove();
                         },
-                        error: function (error) {
-                            sweetAlert(error.message, "error");
+                        error: function (response) {
+                            sweetAlert(response.responseJSON.message, "error");
                             imageContainerToDelete.remove();
                             // reload unclassified images
                             loadUnclassifiedImages();
@@ -522,6 +546,33 @@
 
             // listen on class name changes
             classInputs.addEventListener("input", reloadSortButtons);
+
+            // Function to upload unclassified images
+            function uploadUnclassifiedImages() {
+                const files = document.getElementById("new-unclassified-images").files;
+                const formData = new FormData();
+                Array.from(files).forEach(file => {
+                    formData.append("images", file);
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url: "/upload-unclassified-images",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        sweetAlert(response.message, "success");
+                        loadUnclassifiedImages();
+                    },
+                    error: function (response) {
+                        sweetAlert(response.responseJSON.message, "error");
+                    }
+                });
+            }
+
+            // Listen to upload unclassified images button
+            document.getElementById("upload-unclassified-images").addEventListener("click", uploadUnclassifiedImages);
         });
     </script>
 </body>
