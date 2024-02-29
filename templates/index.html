@@ -8,6 +8,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-5.3.3-dist/css/bootstrap.min.css')}}">
     <script src="{{url_for('static', filename='bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js')}}"></script>
@@ -46,6 +47,16 @@
             padding: 10px;
             margin: 10px;
             display: inline-block;
+        }
+
+        .class-card button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--bs-danger);
+            color: var(--bs-light);
+            cursor: pointer;
         }
     </style>
 </head>
@@ -176,7 +187,6 @@
         </ul>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" crossorigin="anonymous"></script>
     <script type="text/javascript" charset="utf-8">
 
         var socket = io();
@@ -220,26 +230,17 @@
                     // Add event listeners to each delete button after they have been added to the DOM
                     document.querySelectorAll('.delete-btn').forEach(button => {
                         button.addEventListener('click', function () {
-                            const modelName = this.getAttribute('data-model-name');
                             fetch('/delete-model', {
                                 method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ model_name: modelName })
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ model_name: this.getAttribute('data-model-name') })
                             })
-                                .then(response => {
-                                    if (response.ok) {
-                                        return response.json();
-                                    }
-                                    throw new Error('Failed to delete model');
-                                })
-                                .then(data => {
+                                .then(res => res.ok ? res.json().then(data => {
                                     console.log(data.message);
-                                    // Optionally, remove the model card from the DOM or refresh the page to reflect the deletion
-                                    this.parentNode.remove(); // Removes the model card
-                                })
-                                .catch(error => console.error('Error:', error));
+                                    sweetAlert(data.message, 'success');
+                                    this.parentNode.remove();
+                                }) : console.error('Failed to delete model'))
+                                .catch(console.error); // Log any fetch error
                         });
                     });
                 } else {

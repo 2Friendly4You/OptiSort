@@ -1,11 +1,27 @@
 import os
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.callbacks import Callback
+from flask_socketio import SocketIO
 
 model = None
 
 # Define the image size
 IMG_SIZE = (200, 200)
+
+sio = None  # SocketIO object
+
+class ProgressCallback(Callback):
+    def __init__(self, socketio, total_epochs):
+        super().__init__()
+        self.socketio = socketio
+        self.total_epochs = total_epochs
+
+    def on_epoch_end(self, epoch, logs=None):
+        percent_complete = (epoch + 1) / self.total_epochs * 100
+        message = {'percent_complete': percent_complete, 'status': 'training'}
+        # Emit the progress update to all connected clients
+        self.socketio.emit('training_progress', message)
 
 
 def load_model(model_path):
@@ -43,7 +59,7 @@ def predict_image(image_path, all_classes):
 
     return class_name, class_probability
 
-def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20):
+def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, socketio=None):
     PATH = os.path.join(os.path.dirname("static/images/"))
     print(PATH)
 
@@ -120,9 +136,14 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20):
                   metrics=['accuracy'])
 
     initial_epochs = int(initial_epochs)
+
+    total_epochs = initial_epochs + finetune_epochs
+    
+    progress_callback = ProgressCallback(socketio, total_epochs=total_epochs)
     history = model.fit(train_dataset,
                         epochs=initial_epochs,
-                        validation_data=validation_dataset)
+                        validation_data=validation_dataset,
+                        callbacks=[progress_callback])
 
     base_model.trainable = True
 
@@ -144,6 +165,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20):
     model.fit(train_dataset,
               epochs=total_epochs,
               initial_epoch=history.epoch[-1],
-              validation_data=validation_dataset)
+              validation_data=validation_dataset,
+              callbacks=[progress_callback])
 
     model.save(save_path)

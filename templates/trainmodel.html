@@ -8,6 +8,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.js" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="{{url_for('static', filename='bootstrap-5.3.3-dist/css/bootstrap.min.css')}}">
     <script src="{{url_for('static', filename='bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js')}}"></script>
@@ -120,6 +121,61 @@
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            /* Space between spinner and progress bar container */
+        }
+
+        .loading-spinner {
+            border: 16px solid #f3f3f3;
+            border-top: 16px solid #3498db;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-bar-container {
+            width: 60%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 20px;
+            background-color: var(--bs-primary);
+            transition: width 0.4s ease;
+            border-radius: 3px;
+            color: white;
+            text-align: center;
+            line-height: 20px;
         }
     </style>
 </head>
@@ -235,6 +291,12 @@
                         <input type="file" id="new-unclassified-images" accept="image/*" multiple>
                         <br>
                         <button id="upload-unclassified-images">Upload to unclassified images</button>
+                    </div>
+                    <div id="loading-overlay" class="d-none">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-bar-container">
+                            <div class="loading-bar"></div>
+                        </div>
                     </div>
                     <br>
                     <br>
@@ -375,6 +437,9 @@
             function submitFormAsJson(event) {
                 event.preventDefault(); // Prevent default form submission
                 trainButton.disabled = true; // Disable the button to prevent multiple submissions
+                document.getElementById("loading-overlay").classList.remove("d-none");
+                // set the loading bar to 0%
+                updateLoadingBar(0);
 
                 const formDataObj = {
                     model_name: document.getElementById("model_name").value,
@@ -399,6 +464,7 @@
                 if (Object.values(formDataObj).some(value => value === "")) {
                     sweetAlert("Please fill in all fields", "error");
                     trainButton.disabled = false;
+                    document.getElementById("loading-overlay").classList.add("d-none");
                     return;
                 }
 
@@ -413,10 +479,13 @@
                         resultContainer.innerHTML = response.message;
                         sweetAlert(response.message, "success");
                         trainButton.disabled = false;
+                        document.getElementById("loading-overlay").classList.add("d-none");
+                        resetDocument();
                     },
                     error: function (response) {
                         sweetAlert(response.responseJSON.message, "error");
                         trainButton.disabled = false;
+                        document.getElementById("loading-overlay").classList.add("d-none");
                     }
                 });
             }
@@ -460,15 +529,29 @@
 
             // Function to delete all unclassified images
             function deleteAllUnclassifiedImages() {
-                $.ajax({
-                    type: "DELETE",
-                    url: "/remove-all-unclassified-images",
-                    success: function (response) {
-                        sweetAlert(response.message, "success");
-                        document.getElementById("unclassified-images-container").innerHTML = "";
-                    },
-                    error: function (response) {
-                        sweetAlert(response.responseJSON.message, "error");
+                // sweetAlert to confirm the action, if confirmed, send a DELETE request to the server and reset the form
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover the unclassified images and the form will be reset!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/remove-all-unclassified-images",
+                            success: function (response) {
+                                sweetAlert(response.message, "success");
+                                document.getElementById("unclassified-images-container").innerHTML = "";
+                                resetDocument();
+                            },
+                            error: function (response) {
+                                sweetAlert(response.responseJSON.message, "error");
+                            }
+                        });
                     }
                 });
             }
@@ -520,21 +603,34 @@
                     const imageContainerToMove = sortedImageContainer.closest('.class-image-container');
                     unclassifiedImagesContainer.appendChild(imageContainerToMove);
                 } else {
-                    // If the image is not found in the sorted area, it means it's unclassified and should be deleted
-                    $.ajax({
-                        type: "DELETE",
-                        url: `/remove-unclassified-image/${imageName}`,
-                        success: function (response) {
-                            sweetAlert(response.message, "success");
-                            // Remove the image container from the unclassified list
-                            const imageContainerToDelete = document.querySelector(`.class-image-container img[src="/get-unclassified-image/${imageName}"]`).closest('.class-image-container');
-                            imageContainerToDelete.remove();
-                        },
-                        error: function (response) {
-                            sweetAlert(response.responseJSON.message, "error");
-                            imageContainerToDelete.remove();
-                            // reload unclassified images
-                            loadUnclassifiedImages();
+                    // ask the user to confirm the deletion, if confirmed, send a DELETE request to the server and remove the image container from the unclassified list and 
+
+                    Swal.fire({
+                        title: "Are you sure?",
+                        text: "Once deleted, you will not be able to recover the unclassified image!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, delete it!",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                type: "DELETE",
+                                url: `/remove-unclassified-image/${imageName}`,
+                                success: function (response) {
+                                    sweetAlert(response.message, "success");
+                                    // Remove the image container from the unclassified list
+                                    const imageContainerToDelete = document.querySelector(`.class-image-container img[src="/get-unclassified-image/${imageName}"]`).closest('.class-image-container');
+                                    imageContainerToDelete.remove();
+                                },
+                                error: function (response) {
+                                    sweetAlert(response.responseJSON.message, "error");
+                                    imageContainerToDelete.remove();
+                                    // reload unclassified images
+                                    loadUnclassifiedImages();
+                                }
+                            });
                         }
                     });
                 }
@@ -562,6 +658,8 @@
                     contentType: false,
                     processData: false,
                     success: function (response) {
+                        // reset the input field
+                        document.getElementById("new-unclassified-images").value = "";
                         sweetAlert(response.message, "success");
                         loadUnclassifiedImages();
                     },
@@ -574,7 +672,50 @@
             // Listen to upload unclassified images button
             document.getElementById("upload-unclassified-images").addEventListener("click", uploadUnclassifiedImages);
         });
+
+        // reset the document (delete all unclassified images and class inputs) noly the visual part
+        function resetDocument() {
+            document.getElementById("class-inputs").innerHTML = "";
+            document.getElementById("unclassified-images-container").innerHTML = "";
+            document.getElementById("model_name").value = "";
+            document.getElementById("class_count").value = "";
+            document.getElementById("initial_epochs").value = "20";
+            document.getElementById("fine_tune_epochs").value = "20";
+            document.getElementById("average").checked = false;
+            document.getElementById("dominant-select").checked = false;
+            document.getElementById("dominant-reject").checked = true;
+        }
     </script>
+    <script>
+        function updateLoadingBar(percentComplete) {
+            // Select the loading bar element
+            var loadingBar = document.querySelector('.loading-bar');
+
+            // Update its width to match the percent complete
+            loadingBar.style.width = percentComplete + '%';
+
+            // Optionally, update the text content to display the percentage
+            // loadingBar.textContent = percentComplete.toFixed(2) + '%';
+        }
+
+        function setupSocketCommunication() {
+            var socket = io(); // Connect to the Socket.IO server
+
+            // Listen for 'training_progress' events from the server
+            socket.on('training_progress', function (data) {
+                var percentComplete = data.percent_complete;
+
+                // Call updateLoadingBar to adjust the loading bar's progress
+                updateLoadingBar(percentComplete);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setupSocketCommunication();
+        });
+
+    </script>
+
 </body>
 
 </html>

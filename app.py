@@ -283,7 +283,7 @@ def train_image_classifier():
             json.dump(data, config_file)
 
         mf.train_model(class_names, os.path.join(
-            model_path, "model.h5"), initial_epochs, finetune_epochs)
+            model_path, "model.h5"), initial_epochs, finetune_epochs, socketio)
 
         # move images back to unclassified_images
         folder = UPLOAD_FOLDER
