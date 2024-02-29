@@ -31,7 +31,7 @@ UPLOAD_FOLDER = os.path.join("static", "images")
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 0
+NUM_CAMERAS = 5
 OFFSET = 0
 PORT = "COM3"
 
@@ -475,4 +475,4 @@ if __name__ == '__main__':
     mc_thread.start()
 
     socketio.run(app, host="0.0.0.0", port=5000,
-                 debug=True, allow_unsafe_werkzeug=True)
+                 debug=False, allow_unsafe_werkzeug=True)
