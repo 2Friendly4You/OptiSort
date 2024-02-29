@@ -31,7 +31,7 @@ UPLOAD_FOLDER = os.path.join("static", "images")
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 5
+NUM_CAMERAS = 0
 OFFSET = 0
 PORT = "COM3"
 
@@ -284,6 +284,17 @@ def train_image_classifier():
 
         mf.train_model(class_names, os.path.join(
             model_path, "model.h5"), initial_epochs, finetune_epochs)
+
+        # move images back to unclassified_images
+        folder = UPLOAD_FOLDER
+        for subfolder in os.listdir(folder):
+            subfolder_path = os.path.join(folder, subfolder)
+            if os.path.isdir(subfolder_path):
+                for image in os.listdir(subfolder_path):
+                    source_path = os.path.join(subfolder_path, image)
+                    destination_path = os.path.join(
+                        "static", "unclassified_images", image)
+                    shutil.move(source_path, destination_path)
 
         TRAINING_IN_PROGRESS = False
         return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
