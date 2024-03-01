@@ -82,7 +82,9 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, s
                                                                      seed=123,
                                                                      subset='validation')
 
+    # Get the class names
     class_names = train_dataset.class_names
+    
     print(class_names)
     print('Number of validation batches: %d' %
           tf.data.experimental.cardinality(validation_dataset))

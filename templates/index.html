@@ -214,6 +214,8 @@
         fetch('/get-trained-models')
             .then(response => response.json())
             .then(data => {
+                console.log(data);
+
                 var trainedModels = document.getElementById('trained-models');
                 if (data && data.models) {
                     data.models.forEach(model => {

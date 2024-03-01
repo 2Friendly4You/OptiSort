@@ -280,6 +280,9 @@ def train_image_classifier():
         # Example config file writing, adjust as necessary
         config_file_path = os.path.join(model_path, "config.json")
         with open(config_file_path, 'w') as config_file:
+            # sort class_names alphabetically
+            class_names.sort()
+            data['class_names'] = class_names
             json.dump(data, config_file)
 
         mf.train_model(class_names, os.path.join(

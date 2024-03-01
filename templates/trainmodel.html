@@ -129,7 +129,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.4);
+            background-color: rgba(255, 255, 255, 0.3);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -263,6 +263,7 @@
                         </div>
                         <!-- Add a submit button for training -->
                         <button type="submit" id="train-button" class="btn btn-primary">Train Model</button>
+                        <br>
                         <br>
                         <div id="result-container"></div>
                         <br>
@@ -439,6 +440,8 @@
                 document.getElementById("loading-overlay").classList.remove("d-none");
                 // set the loading bar to 0%
                 updateLoadingBar(0);
+                // reset result container
+                resultContainer.innerHTML = "";
 
                 const formDataObj = {
                     model_name: document.getElementById("model_name").value,
@@ -494,8 +497,8 @@
                 const classNames = Array.from(document.querySelectorAll('.class-card input[type="text"]'))
                     .map(input => input.value.trim());
 
-                // Ensure each unclassified image has a sort button for each class
-                document.querySelectorAll('#unclassified-images-container .class-image-container').forEach(container => {
+                // Ensure each image container has a sort button for each class
+                document.querySelectorAll('.class-image-container').forEach(container => {
                     const imageName = container.getAttribute('data-image-id');
                     const sortButtonsContainer = container.querySelector('.sort-buttons');
                     sortButtonsContainer.innerHTML = ''; // Clear existing buttons
