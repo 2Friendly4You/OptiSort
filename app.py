@@ -3,23 +3,24 @@ import sys
 import shutil
 import zipfile
 import json
+from time import sleep
+import threading
+from threading import Thread
+import time
+import copy
+import random
+
 from flask import Flask, render_template, request, jsonify, send_file
 from flask_socketio import SocketIO, emit, send
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-from time import sleep
-import threading
 import eventlet
-import random
-from threading import Thread
 import serial
 import cv2
 from multiprocessing import Pool, freeze_support
-import time
-import copy
+
 import camera
-import tensorflow as tf
 import model_functions as mf
 
 app = Flask(__name__)
