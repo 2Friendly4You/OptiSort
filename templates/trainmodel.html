@@ -252,14 +252,13 @@
                             <br>
                             <br>
                             <p><strong>Sorting type:</strong></p>
-                            <input type="radio" id="average" name="sorting-type" value="average">
+                            <input type="radio" id="average" name="sorting-type" value="average" checked>
                             <label for="average">Average</label>
                             <br>
                             <input type="radio" id="dominant-select" name="sorting-type" value="dominant-select">
                             <label for="dominant-select">Dominant Selected</label>
                             <br>
-                            <input type="radio" id="dominant-reject" name="sorting-type" value="dominant-reject"
-                                checked>
+                            <input type="radio" id="dominant-reject" name="sorting-type" value="dominant-reject">
                             <label for="dominant-reject">Dominant Rejected</label>
                         </div>
                         <!-- Add a submit button for training -->
@@ -567,27 +566,31 @@
                     url: "/get-unclassified-images",
                     success: function (response) {
                         const unclassifiedImagesContainer = document.getElementById("unclassified-images-container");
-                        unclassifiedImagesContainer.innerHTML = "";
-                        console.log(response);
+                        unclassifiedImagesContainer.innerHTML = ""; // Clear current unclassified images
                         response.forEach(imageName => {
-                            const imageContainer = document.createElement("div");
-                            imageContainer.classList.add("class-image-container");
-                            imageContainer.innerHTML = `
-                                <img src="/get-unclassified-image/${imageName}" class="class-image">
-                                <button type="button" class="delete-button" onclick="deleteUnclassifiedImage('${imageName}')">X</button>`;
-                            unclassifiedImagesContainer.appendChild(imageContainer);
-                            const sortButtons = document.createElement("div");
-                            sortButtons.classList.add("sort-buttons");
-                            imageContainer.appendChild(sortButtons);
+                            // Only add if image is not already classified
+                            if (!document.querySelector(`[data-image-id="${imageName}"]`)) {
+                                const imageContainer = document.createElement("div");
+                                imageContainer.setAttribute("data-image-id", imageName); // Use the unique ID or name as an attribute
+                                imageContainer.classList.add("class-image-container");
+                                imageContainer.innerHTML = `
+                        <img src="/get-unclassified-image/${imageName}" class="class-image">
+                        <button type="button" class="delete-button" onclick="deleteUnclassifiedImage('${imageName}')">X</button>`;
+                                unclassifiedImagesContainer.appendChild(imageContainer);
+
+                                const sortButtons = document.createElement("div");
+                                sortButtons.classList.add("sort-buttons");
+                                imageContainer.appendChild(sortButtons);
+                            }
                         });
                         reloadSortButtons();
                     },
                     error: function (response) {
-                        console.log(response);
                         sweetAlert(response.responseJSON.message, "error");
                     }
                 });
             }
+
 
             // Listen to load unclassified images button
             document.getElementById("load-unclassified-images").addEventListener("click", loadUnclassifiedImages);
@@ -626,7 +629,6 @@
                                 },
                                 error: function (response) {
                                     sweetAlert(response.responseJSON.message, "error");
-                                    imageContainerToDelete.remove();
                                     // reload unclassified images
                                     loadUnclassifiedImages();
                                 }
@@ -681,9 +683,9 @@
             document.getElementById("class_count").value = "";
             document.getElementById("initial_epochs").value = "20";
             document.getElementById("fine_tune_epochs").value = "20";
-            document.getElementById("average").checked = false;
+            document.getElementById("average").checked = true;
             document.getElementById("dominant-select").checked = false;
-            document.getElementById("dominant-reject").checked = true;
+            document.getElementById("dominant-reject").checked = false;
         }
     </script>
     <script>
