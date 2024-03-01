@@ -538,8 +538,8 @@
                     text: "Once deleted, you will not be able to recover the unclassified images and the form will be reset!",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
+                    confirmButtonColor: "var(--bs-danger)",
+                    cancelButtonColor: "var(--bs-gray)",
                     confirmButtonText: "Yes, delete it!",
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -609,8 +609,8 @@
                         text: "Once deleted, you will not be able to recover this image!",
                         icon: "warning",
                         showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
+                        confirmButtonColor: "var(--bs-danger)",
+                        cancelButtonColor: "var(--bs-gray)",
                         confirmButtonText: "Yes, delete it!"
                     }).then((result) => {
                         if (result.isConfirmed) {

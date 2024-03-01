@@ -352,34 +352,44 @@
                             // Deactivating all delete buttons
                             document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = true);
 
-                            fetch('/delete-model', {
-                                method: 'DELETE',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ model_name: this.getAttribute('data-model-name') })
-                            })
-                                .then(res => {
-                                    if (res.ok) {
-                                        return res.json().then(data => {
-                                            console.log(data.message);
-                                            sweetAlert(data.message, 'success');
-                                            this.parentNode.remove();
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: "You won't be able to revert this!",
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: 'var(--bs-danger)',
+                                cancelButtonColor: 'var(--bs-gray)',
+                                confirmButtonText: 'Yes, delete it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    fetch('/delete-model', {
+                                        method: 'DELETE',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ model_name: this.getAttribute('data-model-name') })
+                                    })
+                                        .then(res => {
+                                            if (res.ok) {
+                                                return res.json().then(data => {
+                                                    console.log(data.message);
+                                                    sweetAlert(data.message, 'success');
+                                                    this.parentNode.remove();
+                                                });
+                                            } else {
+                                                // Assuming the failure response also returns JSON with a message
+                                                return res.json().then(data => {
+                                                    console.log(data.message);
+                                                    sweetAlert(data.message, 'error'); // Use 'error' for failure
+                                                });
+                                            }
+                                        })
+                                        .catch(error => {
+                                            console.error('Failed to delete model', error);
+                                            sweetAlert('Failed to delete model', 'error'); // Show error message on catch
                                         });
-                                    } else {
-                                        // Assuming the failure response also returns JSON with a message
-                                        return res.json().then(data => {
-                                            console.log(data.message);
-                                            sweetAlert(data.message, 'error'); // Use 'error' for failure
-                                        });
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Failed to delete model', error);
-                                    sweetAlert('Failed to delete model', 'error'); // Show error message on catch
-                                })
-                                .finally(() => {
-                                    // Activating all delete buttons again
-                                    document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = false);
-                                });
+                                }
+                                // Activating all delete buttons again
+                                document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = false);
+                            });
                         });
                     });
 
@@ -435,15 +445,15 @@
             });
 
 
-            function setClassCardActive(modelName) {
-                document.querySelectorAll('.class-card').forEach(card => {
-                    if (card.getAttribute('data-model-name') === modelName) {
-                        card.classList.add('active-class-card');
-                    } else {
-                        card.classList.remove('active-class-card');
-                    }
-                });
-            }
+        function setClassCardActive(modelName) {
+            document.querySelectorAll('.class-card').forEach(card => {
+                if (card.getAttribute('data-model-name') === modelName) {
+                    card.classList.add('active-class-card');
+                } else {
+                    card.classList.remove('active-class-card');
+                }
+            });
+        }
     </script>
 </body>
 
