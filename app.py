@@ -509,7 +509,6 @@ def micro_controller_thread():
             ser.write("b\n\r".encode())
             update_websocket_text("sort out")
 
-        # Assuming 'data' is defined and received elsewhere in your code.
         print("Received data:", data)
 
 
