@@ -328,15 +328,7 @@ def train_image_classifier():
             model_path, "model.h5"), initial_epochs, finetune_epochs, socketio)
 
         # move images back to unclassified_images
-        folder = UPLOAD_FOLDER
-        for subfolder in os.listdir(folder):
-            subfolder_path = os.path.join(folder, subfolder)
-            if os.path.isdir(subfolder_path):
-                for image in os.listdir(subfolder_path):
-                    source_path = os.path.join(subfolder_path, image)
-                    destination_path = os.path.join(
-                        "static", "unclassified_images", image)
-                    shutil.move(source_path, destination_path)
+        move_images(UPLOAD_FOLDER, "static/unclassified_images")
 
         TRAINING_IN_PROGRESS = False
         return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
@@ -397,31 +389,36 @@ def capture_and_save_images(camera_indices, max_attempts=5):
 
     return file_names_to_check
 
-
-def move_captured_images_to_unclassified_images():
-    source_directory = "static/captured_images"
-    destination_directory = "static/unclassified_images"
-
-    # Get all captured images
-    captured_images = os.listdir(source_directory)
-
-    for image in captured_images:
-        source_path = os.path.join(source_directory, image)
-        destination_path = os.path.join(destination_directory, image)
-
-        # Check if the file already exists in the destination directory
-        if os.path.exists(destination_path):
-            # If it exists, find a unique name
-            base_name, ext = os.path.splitext(image)
-            count = 1
-            while os.path.exists(os.path.join(destination_directory, f"{base_name}_{count}{ext}")):
-                count += 1
-            new_image_name = f"{base_name}_{count}{ext}"
-            destination_path = os.path.join(
-                destination_directory, new_image_name)
-
-        # Move the image to the destination directory
-        shutil.move(source_path, destination_path)
+def move_images(source_folder, destination_folder):
+    # Ensure destination folder exists
+    os.makedirs(destination_folder, exist_ok=True)
+    
+    # Initialize the starting file number
+    file_number = 1
+    
+    # Walk through all directories and subdirectories in the source folder
+    for root, dirs, files in os.walk(source_folder):
+        for file in files:
+            # Extract the file extension
+            _, file_extension = os.path.splitext(file)
+            
+            # Construct the full source file path
+            source_file_path = os.path.join(root, file)
+            
+            # Find the next available file number with the original extension in the destination folder
+            while True:
+                destination_file_name = f"{file_number}{file_extension}"
+                destination_file_path = os.path.join(destination_folder, destination_file_name)
+                if not os.path.exists(destination_file_path):
+                    break
+                file_number += 1
+            
+            # Move and rename the file
+            shutil.move(source_file_path, destination_file_path)
+            print(f"Moved and renamed {file} to {destination_file_name}")
+            
+            # Increment the file number for the next iteration
+            file_number += 1
 
 
 def micro_controller_thread():
@@ -460,7 +457,7 @@ def micro_controller_thread():
         if data == "":  # If the data is empty, wait for an "Enter" character
             continue
 
-        move_captured_images_to_unclassified_images()
+        move_images("static/captured_images", "static/unclassified_images")
         print(f"Capturing {NUM_CAMERAS} images...")
         # file_names_to_check = capture_and_save_images(camera_indices)
         file_names_to_check = camera_manager.capture_and_save_images()
