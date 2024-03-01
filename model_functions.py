@@ -30,7 +30,14 @@ def load_model(model_path):
 
     model = tf.keras.models.load_model(model_path)
 
+def unload_model():
+    global model
+    model = None
+
 def predict_image(image_path, all_classes):
+    if model is None:
+        raise ValueError("Model is not loaded")
+
     # Load the image you want to predict on
     img = tf.keras.preprocessing.image.load_img(
         image_path, target_size=IMG_SIZE)

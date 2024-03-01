@@ -75,6 +75,10 @@
             /* make it darker */
             filter: brightness(0.5);
         }
+
+        .active-class-card {
+            border: 2px solid var(--bs-primary);
+        }
     </style>
 </head>
 
@@ -316,7 +320,8 @@
             "model_name": "Objekt",
             "sorting_type": "average"
         }
-    ]
+    ],
+    "current_model": "modellname"
 }
 */
 
@@ -325,12 +330,12 @@
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-
                 var trainedModels = document.getElementById('trained-models');
                 if (data && data.models) {
                     data.models.forEach(model => {
                         var card = document.createElement('div');
                         card.classList.add('class-card');
+                        card.setAttribute('data-model-name', model.model_name);
                         card.innerHTML = `<h3>${model.model_name}</h3>` +
                             `<p>Classes: ${model.class_names.join(', ')}</p>` +
                             `<p>Initial Epochs: ${model.initial_epochs}</p>` +
@@ -393,6 +398,9 @@
                                         return res.json().then(data => {
                                             console.log(data.message);
                                             sweetAlert(data.message, 'success');
+
+                                            // mark the currently loaded model as active, load name from the button
+                                            setClassCardActive(this.getAttribute('data-model-name'));
                                         });
                                     } else {
                                         // Assuming the failure response also returns JSON with a message
@@ -412,6 +420,11 @@
                                 });
                         });
                     });
+
+                    // mark the currently loaded model as active
+                    if (data.current_model && data.current_model.length > 0 && data.current_model !== '') {
+                        setClassCardActive(data.current_model);
+                    }
                 } else {
                     console.error('No models data found in response');
                     trainedModels.innerHTML = '<p>No models data found.</p>';
@@ -421,6 +434,16 @@
                 console.error('Error fetching models:', error);
             });
 
+
+            function setClassCardActive(modelName) {
+                document.querySelectorAll('.class-card').forEach(card => {
+                    if (card.getAttribute('data-model-name') === modelName) {
+                        card.classList.add('active-class-card');
+                    } else {
+                        card.classList.remove('active-class-card');
+                    }
+                });
+            }
     </script>
 </body>
 

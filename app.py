@@ -26,6 +26,8 @@ app = Flask(__name__)
 
 # config of program
 UPLOAD_FOLDER = os.path.join("static", "images")
+# file current_model.conf
+CURRENT_MODEL_CONFIG = "current_model.conf"
 
 # Flag to track training status
 TRAINING_IN_PROGRESS = False
@@ -35,22 +37,20 @@ NUM_CAMERAS = 0
 OFFSET = 0
 PORT = "COM3"
 
-# global vars
-model = None
-
 camera_indices = None
 capture_objects = None
 
 camera_manager = None
 
-sorting_type = "dominant-reject"
-
 socketio = SocketIO(app, async_mode="threading")
 
 # Initialize lists to hold classes
-all_classes = ['bad', 'good']
-selected_classes = ['good']
-rejected_classes = ['bad']
+all_classes = []
+selected_classes = []
+rejected_classes = []
+
+# Initialize sorting type
+sorting_type = ""
 
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
@@ -75,6 +75,59 @@ def update_websocket_images(images):
 
 def update_websocket_text(text):
     socketio.emit('update_text', {'text': text})
+
+
+def get_current_model_config():
+    with open(CURRENT_MODEL_CONFIG, 'r') as file:
+        return file.read()
+
+
+def set_current_model_config(data):
+    with open(CURRENT_MODEL_CONFIG, 'w') as file:
+        file.write(data)
+
+
+def unload_current_model():
+    global all_classes
+    global selected_classes
+    global rejected_classes
+    global sorting_type
+
+    with open(CURRENT_MODEL_CONFIG, 'w') as file:
+        file.write("")
+
+    # unload the model and all variables
+    mf.unload_model()
+
+    all_classes = []
+    selected_classes = []
+    rejected_classes = []
+    sorting_type = ""
+
+def load_model(name):
+    global all_classes
+    global selected_classes
+    global rejected_classes
+    global sorting_type
+
+    if os.path.exists(os.path.join("models", name)) and os.path.exists(os.path.join("models", name, "model.h5")) and os.path.join("models", name, "config.json"):
+        # load class names for rejection and selection
+        with open(os.path.join("models", name, "config.json"), 'r') as config_file:
+            data = json.load(config_file)
+            class_names = data['class_names']
+            all_classes = class_names
+            selected_classes = [c['class_name']
+                                for c in data['classes'] if c['selected_or_rejected'] == "select"]
+            rejected_classes = [c['class_name']
+                                for c in data['classes'] if c['selected_or_rejected'] == "reject"]
+            sorting_type = data['sorting_type']
+
+        # create model path for "model.h5" in the model folder
+        model_path = os.path.join("models", name, "model.h5")
+        mf.load_model(model_path)
+        set_current_model_config(name)
+    else:
+        raise ValueError("Model not found")
 
 
 @app.route('/')
@@ -109,8 +162,10 @@ def upload_unclassified_images():
         os.makedirs(upload_folder)
 
     # Get all existing file names and convert them to integers
-    existing_files = [f for f in os.listdir(upload_folder) if os.path.isfile(os.path.join(upload_folder, f))]
-    existing_numbers = [int(f.split('.')[0]) for f in existing_files if f.split('.')[0].isdigit()]
+    existing_files = [f for f in os.listdir(
+        upload_folder) if os.path.isfile(os.path.join(upload_folder, f))]
+    existing_numbers = [int(f.split('.')[0])
+                        for f in existing_files if f.split('.')[0].isdigit()]
 
     # Determine the next file number to use
     next_file_number = max(existing_numbers) + 1 if existing_numbers else 1
@@ -152,6 +207,9 @@ def remove_all_unclassified_images():
 
 @app.route('/get-trained-models')
 def current_settings_and_model():
+    # Get the current model config
+    current_model = get_current_model_config()
+
     models_list = []
     models_dir = os.listdir("models")
     # Go through each model and get the config file and add it to the list of json to return
@@ -168,7 +226,7 @@ def current_settings_and_model():
         except json.JSONDecodeError:
             print(f"Error decoding JSON for model: {model}")
 
-    return jsonify({"models": models_list}), 200
+    return jsonify({"current_model": current_model, "models": models_list}), 200
 
 
 @app.route('/delete-model', methods=['DELETE'])
@@ -178,50 +236,26 @@ def delete_model():
     model_path = os.path.join("models", model_name)
     if os.path.exists(model_path):
         shutil.rmtree(model_path)
+        # remove the current_model.conf file, if it's the current model
+        current_model = get_current_model_config()
+        if current_model == model_name:
+            unload_current_model()
+
         return jsonify({"message": "Model deleted successfully."}), 200
     else:
         return jsonify({"message": "Model not found."}), 404
 
 
 @app.route('/load-model', methods=['POST'])
-def load_model():
+def load_model_route():
     data = request.get_json()
     model_name = data['model_name']
-    model_path = os.path.join("models", model_name)
 
-    # load class names for rejection and selection
-    global selected_classes
-    global rejected_classes
-    global sorting_type
-    global all_classes
-
-    # {"model_name": "Test", "class_count": "2", "initial_epochs": "20", "finetune_epochs": "20", "sorting_type": "dominant-reject", "class_names": ["Apples", "Banana"], "classes": [{"class_name": "Apples", "selected_or_rejected": "select", "images": ["00000013.JPG", "00000015.JPG", "00000017.JPG", "00000019.JPG"]}, {"class_name": "Banana", "selected_or_rejected": "reject", "images": ["00000014.JPG", "00000016.JPG", "00000018.JPG", "00000020.JPG"]}]}
-
-    with open(os.path.join(model_path, "config.json"), 'r') as config_file:
-        data = json.load(config_file)
-        class_names = data['class_names']
-        all_classes = class_names
-        selected_classes = [c['class_name']
-                            for c in data['classes'] if c['selected_or_rejected'] == "select"]
-        rejected_classes = [c['class_name']
-                            for c in data['classes'] if c['selected_or_rejected'] == "reject"]
-        sorting_type = data['sorting_type']
-
-        print(selected_classes)
-        print(rejected_classes)
-        print(sorting_type)
-        print(all_classes)
-
-    # create model path for "model.h5" in the model folder
-    model_path = os.path.join(model_path, "model.h5")
-
-    if os.path.exists(model_path):
-        mf.load_model(model_path)
-        # return that the model was loaded successfully with the model name
-        message = f"Model \"{model_name}\" loaded successfully."
-        return jsonify({"message": message}), 200
-    else:
-        return jsonify({"message": "Model not found."}), 404
+    try:
+        load_model(model_name)
+        return jsonify({"message": "Model loaded successfully."}), 200
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 404
 
 
 @app.route('/train', methods=['POST'])
@@ -393,7 +427,12 @@ def move_captured_images_to_unclassified_images():
 def micro_controller_thread():
     freeze_support()
 
-    mf.load_model(model_path="model.h5")
+    # load current model
+    current_model = get_current_model_config()
+    if current_model != "":
+        load_model(current_model)
+    else:
+        print("No model loaded.")
 
     try:
         ser = serial.Serial(PORT, 9600)
@@ -435,7 +474,7 @@ def micro_controller_thread():
         for filename in file_names_to_check:
             print(filename)
             class_name, class_probability = mf.predict_image(
-                filename, all_classes, model)
+                filename, all_classes)
             print(f"{class_name}: {class_probability}%")
             print(f"Predicted {filename}: {class_name}")
 
@@ -483,6 +522,11 @@ if __name__ == '__main__':
     os.makedirs("static/captured_images", exist_ok=True)
     os.makedirs("static/unclassified_images", exist_ok=True)
     os.makedirs("static/images", exist_ok=True)
+    
+    # make config file if it doesn't exist
+    if not os.path.exists(CURRENT_MODEL_CONFIG):
+        with open(CURRENT_MODEL_CONFIG, 'w') as file:
+            file.write("")
 
     camera_indices, capture_objects = find_cameras_until_num(NUM_CAMERAS)
     print(camera_indices)

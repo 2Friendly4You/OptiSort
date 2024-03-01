@@ -6,3 +6,4 @@ static/unclassified_images/
 static/bootstrap-5.3.3-dist/
 __pycache__/
 models/
+current_model.conf
