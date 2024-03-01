@@ -65,6 +65,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, s
 
     BATCH_SIZE = 2
     IMG_SIZE = (200, 200)
+    DUPLICATION_FACTOR = 4
 
     train_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
                                                                 shuffle=True,
@@ -73,6 +74,9 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, s
                                                                 validation_split=0.2,
                                                                 seed=123,
                                                                 subset='training')
+    
+    # Get the class names
+    class_names = train_dataset.class_names
 
     validation_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
                                                                      shuffle=True,
@@ -81,9 +85,23 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, s
                                                                      validation_split=0.2,
                                                                      seed=123,
                                                                      subset='validation')
+    
+    def duplicate_and_augment_images(image, label):
+        images, labels = [], []
 
-    # Get the class names
-    class_names = train_dataset.class_names
+        for _ in range(DUPLICATION_FACTOR):
+            # Corrected to use the original image for each augmentation
+            augmented_image = tf.image.random_brightness(image, max_delta=0.4)
+            images.append(augmented_image)
+            labels.append(label)
+        
+        images = tf.stack(images, axis=0)
+        labels = tf.stack(labels, axis=0)
+
+        return images, labels
+    
+    train_dataset = train_dataset.unbatch().map(duplicate_and_augment_images).unbatch().shuffle(1000).batch(BATCH_SIZE)
+    validation_dataset = validation_dataset.unbatch().map(duplicate_and_augment_images).unbatch().shuffle(1000).batch(BATCH_SIZE)
     
     print(class_names)
     print('Number of validation batches: %d' %
