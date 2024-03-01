@@ -129,7 +129,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.4);
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -141,7 +141,7 @@
 
         .loading-spinner {
             border: 16px solid #f3f3f3;
-            border-top: 16px solid #3498db;
+            border-top: 16px solid var(--bs-primary);
             border-radius: 50%;
             width: 120px;
             height: 120px;
@@ -490,35 +490,36 @@
             }
 
             function reloadSortButtons() {
-                // get all class names
-                const classNames = Array.from(document.querySelectorAll('.class-card')).map
-                    ((card, index) => document.getElementById(`class_name_${index}`).value);
+                // Get all class names
+                const classNames = Array.from(document.querySelectorAll('.class-card input[type="text"]'))
+                    .map(input => input.value.trim());
 
-                // get all unclassified images sort buttons and update them
-                const sortButtons = document.querySelectorAll('.sort-buttons');
-                sortButtons.forEach(sortButtons => {
-                    sortButtons.innerHTML = "";
+                // Ensure each unclassified image has a sort button for each class
+                document.querySelectorAll('#unclassified-images-container .class-image-container').forEach(container => {
+                    const imageName = container.getAttribute('data-image-id');
+                    const sortButtonsContainer = container.querySelector('.sort-buttons');
+                    sortButtonsContainer.innerHTML = ''; // Clear existing buttons
+
                     classNames.forEach(className => {
-                        const sortButton = document.createElement("button");
-                        sortButton.setAttribute("type", "button");
-                        sortButton.innerHTML = className;
-                        sortButton.onclick = function () {
-                            sortImage(sortButtons, className);
-                        };
-                        sortButtons.appendChild(sortButton);
+                        const button = document.createElement("button");
+                        button.textContent = className;
+                        button.setAttribute("type", "button");
+                        button.onclick = () => sortImage(imageName, className);
+                        sortButtonsContainer.appendChild(button);
                     });
                 });
             }
 
-            // move image to class on the web page
-            function sortImage(sortButton, className) {
+
+            function sortImage(imageName, className) {
+                const imageContainer = document.querySelector(`div[data-image-id="${imageName}"]`);
                 const targetClassContainer = document.querySelector(`.sorted-images[data-class-name="${className}"]`);
-                if (targetClassContainer) {
-                    // Move imageContainer to targetClassContainer
-                    const imageContainer = sortButton.closest('.class-image-container');
+
+                if (targetClassContainer && imageContainer) {
+                    // Move the imageContainer to the targetClassContainer
                     targetClassContainer.appendChild(imageContainer);
                 } else {
-                    console.error('Target class container not found for className:', className);
+                    console.error('Target class container or image container not found');
                 }
             }
 
@@ -595,48 +596,41 @@
             // Listen to load unclassified images button
             document.getElementById("load-unclassified-images").addEventListener("click", loadUnclassifiedImages);
 
-            // Function to delete an unclassified image or move it back to the unclassified images list
             window.deleteUnclassifiedImage = function (imageName) {
-                // Attempt to find the image in the sorted area first
-                const sortedImageContainer = document.querySelector(`.sorted-images .class-image-container img[src*="${imageName}"]`);
+                const imageContainer = document.querySelector(`div[data-image-id="${imageName}"]`);
 
-                // If the image is found in the sorted area, move it back to the unclassified list
-                if (sortedImageContainer) {
-                    const unclassifiedImagesContainer = document.getElementById("unclassified-images-container");
-                    const imageContainerToMove = sortedImageContainer.closest('.class-image-container');
-                    unclassifiedImagesContainer.appendChild(imageContainerToMove);
-                } else {
-                    // ask the user to confirm the deletion, if confirmed, send a DELETE request to the server and remove the image container from the unclassified list and 
-
+                if (imageContainer.closest('#unclassified-images-container')) {
+                    // If image is in the unclassified images section, confirm deletion
                     Swal.fire({
                         title: "Are you sure?",
-                        text: "Once deleted, you will not be able to recover the unclassified image!",
+                        text: "Once deleted, you will not be able to recover this image!",
                         icon: "warning",
                         showCancelButton: true,
                         confirmButtonColor: "#3085d6",
                         cancelButtonColor: "#d33",
-                        confirmButtonText: "Yes, delete it!",
+                        confirmButtonText: "Yes, delete it!"
                     }).then((result) => {
                         if (result.isConfirmed) {
                             $.ajax({
                                 type: "DELETE",
                                 url: `/remove-unclassified-image/${imageName}`,
                                 success: function (response) {
-                                    sweetAlert(response.message, "success");
                                     // Remove the image container from the unclassified list
-                                    const imageContainerToDelete = document.querySelector(`.class-image-container img[src="/get-unclassified-image/${imageName}"]`).closest('.class-image-container');
-                                    imageContainerToDelete.remove();
+                                    imageContainer.remove();
+                                    sweetAlert(response.message, "success");
                                 },
                                 error: function (response) {
                                     sweetAlert(response.responseJSON.message, "error");
-                                    // reload unclassified images
-                                    loadUnclassifiedImages();
                                 }
                             });
                         }
                     });
+                } else {
+                    // If the image is found in the sorted area, move it back to the unclassified list
+                    const unclassifiedImagesContainer = document.getElementById("unclassified-images-container");
+                    unclassifiedImagesContainer.appendChild(imageContainer);
                 }
-            }
+            };
 
 
             // Listen to class count changes
