@@ -47,6 +47,7 @@
             padding: 10px;
             margin: 10px;
             display: inline-block;
+            max-width: 300px;
         }
 
         .class-card button {
@@ -54,9 +55,25 @@
             padding: 5px 10px;
             border: none;
             border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-btn {
             background-color: var(--bs-danger);
             color: var(--bs-light);
-            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .load-btn {
+            background-color: var(--bs-primary);
+            color: var(--bs-light);
+            margin-right: 5px;
+        }
+
+        .delete-btn:disabled,
+        .load-btn:disabled {
+            /* make it darker */
+            filter: brightness(0.5);
         }
     </style>
 </head>
@@ -210,6 +227,99 @@
             textOutput.innerHTML = data.text;
         });
 
+        /*
+        Example response from the server:
+{
+    "models": [
+        {
+            "class_count": "4",
+            "class_names": [
+                "Number 1",
+                "Number 2",
+                "Number 3",
+                "Number 4"
+            ],
+            "classes": [
+                {
+                    "class_name": "Number 1",
+                    "images": [
+                        "1.png",
+                        "13.png",
+                        "17.png",
+                        "20.png",
+                        "24.jpg",
+                        "28.jpg",
+                        "31.jpg",
+                        "35.jpg",
+                        "39.jpg",
+                        "42.jpg",
+                        "46.jpg",
+                        "8.png"
+                    ],
+                    "selected_or_rejected": "select"
+                },
+                {
+                    "class_name": "Number 2",
+                    "images": [
+                        "10.png",
+                        "14.png",
+                        "18.png",
+                        "21.jpg",
+                        "25.jpg",
+                        "29.jpg",
+                        "32.jpg",
+                        "36.jpg",
+                        "4.png",
+                        "43.jpg",
+                        "5.png",
+                        "9.png"
+                    ],
+                    "selected_or_rejected": "reject"
+                },
+                {
+                    "class_name": "Number 3",
+                    "images": [
+                        "11.png",
+                        "15.png",
+                        "19.png",
+                        "22.jpg",
+                        "26.jpg",
+                        "3.png",
+                        "33.jpg",
+                        "37.jpg",
+                        "40.jpg",
+                        "44.jpg",
+                        "6.png"
+                    ],
+                    "selected_or_rejected": "select"
+                },
+                {
+                    "class_name": "Number 4",
+                    "images": [
+                        "12.png",
+                        "16.png",
+                        "2.png",
+                        "23.jpg",
+                        "27.jpg",
+                        "30.jpg",
+                        "34.jpg",
+                        "38.jpg",
+                        "41.jpg",
+                        "45.jpg",
+                        "7.png"
+                    ],
+                    "selected_or_rejected": "reject"
+                }
+            ],
+            "finetune_epochs": "20",
+            "initial_epochs": "20",
+            "model_name": "Objekt",
+            "sorting_type": "average"
+        }
+    ]
+}
+*/
+
         // Fetch trained models from the server and display them
         fetch('/get-trained-models')
             .then(response => response.json())
@@ -225,24 +335,81 @@
                             `<p>Classes: ${model.class_names.join(', ')}</p>` +
                             `<p>Initial Epochs: ${model.initial_epochs}</p>` +
                             `<p>Fine-tune Epochs: ${model.finetune_epochs}</p>` +
+                            `<p>Sorting Type: ${model.sorting_type}</p>` +
+                            `<p>Class Count: ${model.class_count}</p>` +
+                            `<button class="load-btn" data-model-name="${model.model_name}">Load</button>` +
                             `<button class="delete-btn" data-model-name="${model.model_name}">Delete</button>`;
                         trainedModels.appendChild(card);
                     });
 
-                    // Add event listeners to each delete button after they have been added to the DOM
                     document.querySelectorAll('.delete-btn').forEach(button => {
                         button.addEventListener('click', function () {
+                            // Deactivating all delete buttons
+                            document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = true);
+
                             fetch('/delete-model', {
                                 method: 'DELETE',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ model_name: this.getAttribute('data-model-name') })
                             })
-                                .then(res => res.ok ? res.json().then(data => {
-                                    console.log(data.message);
-                                    sweetAlert(data.message, 'success');
-                                    this.parentNode.remove();
-                                }) : console.error('Failed to delete model'))
-                                .catch(console.error); // Log any fetch error
+                                .then(res => {
+                                    if (res.ok) {
+                                        return res.json().then(data => {
+                                            console.log(data.message);
+                                            sweetAlert(data.message, 'success');
+                                            this.parentNode.remove();
+                                        });
+                                    } else {
+                                        // Assuming the failure response also returns JSON with a message
+                                        return res.json().then(data => {
+                                            console.log(data.message);
+                                            sweetAlert(data.message, 'error'); // Use 'error' for failure
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Failed to delete model', error);
+                                    sweetAlert('Failed to delete model', 'error'); // Show error message on catch
+                                })
+                                .finally(() => {
+                                    // Activating all delete buttons again
+                                    document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = false);
+                                });
+                        });
+                    });
+
+                    document.querySelectorAll('.load-btn').forEach(button => {
+                        button.addEventListener('click', function () {
+                            // Deactivating all load buttons
+                            document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = true);
+
+                            fetch('/load-model', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ model_name: this.getAttribute('data-model-name') })
+                            })
+                                .then(res => {
+                                    if (res.ok) {
+                                        return res.json().then(data => {
+                                            console.log(data.message);
+                                            sweetAlert(data.message, 'success');
+                                        });
+                                    } else {
+                                        // Assuming the failure response also returns JSON with a message
+                                        return res.json().then(data => {
+                                            console.log(data.message);
+                                            sweetAlert(data.message, 'error'); // Use 'error' for failure
+                                        });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Failed to load model', error);
+                                    sweetAlert('Failed to load model', 'error'); // Show error message on catch
+                                })
+                                .finally(() => {
+                                    // Activating all load buttons again
+                                    document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = false);
+                                });
                         });
                     });
                 } else {

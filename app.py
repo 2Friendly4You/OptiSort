@@ -212,9 +212,14 @@ def load_model():
         print(sorting_type)
         print(all_classes)
 
+    # create model path for "model.h5" in the model folder
+    model_path = os.path.join(model_path, "model.h5")
+
     if os.path.exists(model_path):
         mf.load_model(model_path)
-        return jsonify({"message": "Model loaded successfully."}), 200
+        # return that the model was loaded successfully with the model name
+        message = f"Model \"{model_name}\" loaded successfully."
+        return jsonify({"message": message}), 200
     else:
         return jsonify({"message": "Model not found."}), 404
 
