@@ -15,7 +15,6 @@ from flask_socketio import SocketIO, emit, send
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
-import eventlet
 import serial
 import cv2
 from multiprocessing import Pool, freeze_support
