@@ -282,7 +282,7 @@ def train_image_classifier():
 
     # Validate presence of all required keys
     required_keys = ['class_count', 'class_names',
-                     'initial_epochs', 'finetune_epochs', 'model_name', 'classes']
+                     'initial_epochs', 'finetune_epochs', 'model_name', 'classes', 'sorting_type', 'duplication_factor']
     if not all(key in data for key in required_keys):
         return jsonify({"message": "Missing data in request."}), 400
 
@@ -296,7 +296,8 @@ def train_image_classifier():
         class_count = int(data['class_count'])
         initial_epochs = int(data['initial_epochs'])
         finetune_epochs = int(data['finetune_epochs'])
-        if class_count <= 0 or initial_epochs <= 0 or finetune_epochs <= 0:
+        duplication_factor = int(data['duplication_factor'])
+        if class_count <= 0 or initial_epochs <= 0 or finetune_epochs <= 0 or duplication_factor <= 0:
             raise ValueError("Numerical fields must be positive integers.")
     except ValueError as e:
         return jsonify({"message": str(e)}), 400
@@ -342,7 +343,7 @@ def train_image_classifier():
             json.dump(data, config_file)
 
         mf.train_model(class_names, os.path.join(
-            model_path, "model.h5"), initial_epochs, finetune_epochs, socketio)
+            model_path, "model.h5"), initial_epochs, finetune_epochs, duplication_factor, socketio)
         
         # move images back to unclassified_images
         move_images(UPLOAD_FOLDER, "static/unclassified_images")

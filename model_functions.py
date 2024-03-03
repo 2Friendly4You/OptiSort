@@ -66,13 +66,12 @@ def predict_image(image_path, all_classes):
 
     return class_name, class_probability
 
-def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, socketio=None):
+def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, duplication_factor=4, socketio=None):
     PATH = os.path.join(os.path.dirname("static/images/"))
     print(PATH)
 
     BATCH_SIZE = 2
     IMG_SIZE = (200, 200)
-    DUPLICATION_FACTOR = 4
 
     train_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
                                                                 shuffle=True,
@@ -96,7 +95,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, s
     def duplicate_and_augment_images(image, label):
         images, labels = [], []
 
-        for _ in range(DUPLICATION_FACTOR):
+        for _ in range(duplication_factor):
             # Corrected to use the original image for each augmentation
             augmented_image = tf.image.random_brightness(image, max_delta=0.4)
             images.append(augmented_image)

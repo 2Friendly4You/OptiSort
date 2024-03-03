@@ -249,6 +249,8 @@
                             <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
                             <input type="number" id="fine_tune_epochs" min="1" value="20" required>
                             <br>
+                            <label for="duplication_factor">Number of image duplications:</label>
+                            <input type="number" id="duplication_factor" min="1" value="4" required>
                             <br>
                             <p><strong>Sorting type:</strong></p>
                             <input type="radio" id="average" name="sorting-type" value="average" checked>
@@ -448,6 +450,7 @@
                     initial_epochs: document.getElementById("initial_epochs").value,
                     finetune_epochs: document.getElementById("fine_tune_epochs").value,
                     sorting_type: document.querySelector('input[name="sorting-type"]:checked').value,
+                    duplication_factor: document.getElementById("duplication_factor").value,
                     // all class names in an array
                     class_names: Array.from(document.querySelectorAll('.class-card')).map
                         ((card, index) => document.getElementById(`class_name_${index}`).value),
