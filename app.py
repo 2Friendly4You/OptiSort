@@ -9,6 +9,7 @@ from threading import Thread
 import time
 import copy
 import random
+import re
 
 from flask import Flask, render_template, request, jsonify, send_file
 from flask_socketio import SocketIO, emit, send
@@ -109,6 +110,7 @@ def unload_current_model():
     selected_classes = []
     rejected_classes = []
     sorting_type = ""
+
 
 def load_model(name):
     global all_classes
@@ -277,32 +279,36 @@ def train_image_classifier():
         return jsonify({"message": "Training is already in progress."}), 400
 
     data = request.get_json()
-    model_name = data['model_name']
 
-    # Validate received JSON data
+    # Validate presence of all required keys
     required_keys = ['class_count', 'class_names',
                      'initial_epochs', 'finetune_epochs', 'model_name', 'classes']
     if not all(key in data for key in required_keys):
         return jsonify({"message": "Missing data in request."}), 400
 
-    # Extract class_names here to ensure it's defined for later use
-    class_names = data['class_names']
+    # Validate model_name to prevent directory traversal
+    model_name = data['model_name']
+    if not re.match("^[a-zA-Z0-9_]+$", model_name):
+        return jsonify({"message": "Invalid model name. Use only alphanumeric characters and underscores."}), 400
 
-    # Convert and validate integer fields
+    # Convert and validate numerical fields to be positive integers
     try:
         class_count = int(data['class_count'])
         initial_epochs = int(data['initial_epochs'])
         finetune_epochs = int(data['finetune_epochs'])
-    except ValueError:
-        return jsonify({"message": "Invalid data format for numerical fields."}), 400
+        if class_count <= 0 or initial_epochs <= 0 or finetune_epochs <= 0:
+            raise ValueError("Numerical fields must be positive integers.")
+    except ValueError as e:
+        return jsonify({"message": str(e)}), 400
 
     # Validate class_names and classes structure
+    class_names = data['class_names']
     if not isinstance(class_names, list) or not all(isinstance(cn, str) for cn in class_names):
         return jsonify({"message": "Invalid class_names format."}), 400
     if not isinstance(data['classes'], list) or not all(isinstance(c, dict) for c in data['classes']):
         return jsonify({"message": "Invalid classes format."}), 400
 
-    # Check if model_name already exists
+    # Check if model directory already exists
     model_path = os.path.join("models", model_name)
     if os.path.exists(model_path):
         return jsonify({"message": "A model with the same name already exists. Delete it from the home page."}), 400
@@ -324,31 +330,30 @@ def train_image_classifier():
                     UPLOAD_FOLDER, class_name, image)
                 shutil.move(source_path, destination_path)
 
-        # Example sleep to simulate long-running process
-        sleep(4)
+        # Wait till all images are moved
+        sleep(2)
 
-        # Example config file writing, adjust as necessary
+        # Write configuration to a file
         config_file_path = os.path.join(model_path, "config.json")
         with open(config_file_path, 'w') as config_file:
-            # sort class_names alphabetically
+            # sort class_names to ensure consistent order
             class_names.sort()
             data['class_names'] = class_names
             json.dump(data, config_file)
 
         mf.train_model(class_names, os.path.join(
             model_path, "model.h5"), initial_epochs, finetune_epochs, socketio)
-
+        
         # move images back to unclassified_images
         move_images(UPLOAD_FOLDER, "static/unclassified_images")
 
         TRAINING_IN_PROGRESS = False
         return jsonify({"message": "Model trained successfully, you can find it on the home page"}), 200
     except Exception as e:
-        # If an error occurs, delete the model folder and return an error message
+        # If an error occurs, delete the model folder and provide a generic error message
         if os.path.exists(model_path):
             shutil.rmtree(model_path)
-        print(e)
-        return jsonify({"message": "An error occurred during training."}), 500
+        return jsonify({"message": "An error occurred during training. Please try again."}), 500
     finally:
         TRAINING_IN_PROGRESS = False
 
@@ -400,34 +405,36 @@ def capture_and_save_images(camera_indices, max_attempts=5):
 
     return file_names_to_check
 
+
 def move_images(source_folder, destination_folder):
     # Ensure destination folder exists
     os.makedirs(destination_folder, exist_ok=True)
-    
+
     # Initialize the starting file number
     file_number = 1
-    
+
     # Walk through all directories and subdirectories in the source folder
     for root, dirs, files in os.walk(source_folder):
         for file in files:
             # Extract the file extension
             _, file_extension = os.path.splitext(file)
-            
+
             # Construct the full source file path
             source_file_path = os.path.join(root, file)
-            
+
             # Find the next available file number with the original extension in the destination folder
             while True:
                 destination_file_name = f"{file_number}{file_extension}"
-                destination_file_path = os.path.join(destination_folder, destination_file_name)
+                destination_file_path = os.path.join(
+                    destination_folder, destination_file_name)
                 if not os.path.exists(destination_file_path):
                     break
                 file_number += 1
-            
+
             # Move and rename the file
             shutil.move(source_file_path, destination_file_path)
             print(f"Moved and renamed {file} to {destination_file_name}")
-            
+
             # Increment the file number for the next iteration
             file_number += 1
 
@@ -529,7 +536,7 @@ if __name__ == '__main__':
     os.makedirs("static/captured_images", exist_ok=True)
     os.makedirs("static/unclassified_images", exist_ok=True)
     os.makedirs("static/images", exist_ok=True)
-    
+
     # make config file if it doesn't exist
     if not os.path.exists(CURRENT_MODEL_CONFIG):
         with open(CURRENT_MODEL_CONFIG, 'w') as file:
