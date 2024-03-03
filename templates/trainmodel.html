@@ -14,7 +14,7 @@
     <script src="{{url_for('static', filename='light-dark-switch.js')}}"></script>
     <script src="{{url_for('static', filename='tools.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='light-dark-switch.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='icon.png') }}">
+    <link rel="icon" href="{{url_for('static', filename='icon.png')}}">
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Roboto:wght@700&display=swap');
@@ -120,6 +120,18 @@
             cursor: pointer;
         }
 
+        label {
+            margin-bottom: 10px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        output {
+            margin-left: 10px;
+        }
+
         #loading-overlay {
             position: fixed;
             top: 0;
@@ -133,8 +145,9 @@
             justify-content: center;
             align-items: center;
             gap: 20px;
-            /* Space between spinner and progress bar container */
+            overflow-y: auto;
         }
+
 
         .loading-spinner {
             border: 16px solid #f3f3f3;
@@ -241,34 +254,53 @@
                             <label for="class_count">Number of classes:</label>
                             <input type="number" id="class_count" name="class_count" min="1" required>
                             <br>
-                            <label for="initial_epochs">Number of initial epochs:</label>
-                            <input type="number" id="initial_epochs" min="1" value="20" required>
+                            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#more-settings" aria-expanded="false" aria-controls="more-settings">
+                                More Settings
+                            </button>
                             <br>
-                            <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
-                            <input type="number" id="fine_tune_epochs" min="1" value="20" required>
                             <br>
-                            <label for="duplication_factor">Number of image duplications:</label>
-                            <input type="number" id="duplication_factor" min="1" value="4" required>
+                            <div class="collapse" id="more-settings">
+                                <label for="initial_epochs">Number of initial epochs:</label>
+                                <input type="number" id="initial_epochs" min="1" value="20" required>
+                                <br>
+                                <label for="fine_tune_epochs">Number of fine-tune epochs:</label>
+                                <input type="number" id="fine_tune_epochs" min="1" value="20" required>
+                                <br>
+                                <label for="duplication_factor">Number of image duplications:</label>
+                                <input type="number" id="duplication_factor" min="1" value="4" required>
+                                <br>
+                                <label for="validation-split">Validation split of dataset:</label>
+                                <div>
+                                    <input type="range" id="validation-split" min="0.05" max="0.95" step="0.05"
+                                        value="0.2" oninput="this.nextSibling.value = this.value"
+                                        required><output>0.2</output>
+                                </div>
+                                <br>
+                                <label for="sorting-type-container">Sorting type:</label>
+                                <div id="sorting-type-container">
+                                    <input type="radio" id="average" name="sorting-type" value="average" checked>
+                                    <label for="average">Average</label>
+                                    <br>
+                                    <input type="radio" id="dominant-select" name="sorting-type"
+                                        value="dominant-select">
+                                    <label for="dominant-select">Dominant Selected</label>
+                                    <br>
+                                    <input type="radio" id="dominant-reject" name="sorting-type"
+                                        value="dominant-reject">
+                                    <label for="dominant-reject">Dominant Rejected</label>
+                                </div>
+                            </div>
                             <br>
-                            <p><strong>Sorting type:</strong></p>
-                            <input type="radio" id="average" name="sorting-type" value="average" checked>
-                            <label for="average">Average</label>
+                            <!-- Add a submit button for training -->
+                            <button type="submit" id="train-button" class="btn btn-primary">Train Model</button>
                             <br>
-                            <input type="radio" id="dominant-select" name="sorting-type" value="dominant-select">
-                            <label for="dominant-select">Dominant Selected</label>
                             <br>
-                            <input type="radio" id="dominant-reject" name="sorting-type" value="dominant-reject">
-                            <label for="dominant-reject">Dominant Rejected</label>
-                        </div>
-                        <!-- Add a submit button for training -->
-                        <button type="submit" id="train-button" class="btn btn-primary">Train Model</button>
-                        <br>
-                        <br>
-                        <div id="result-container"></div>
-                        <br>
-                        <div id="class-inputs">
-                            <!-- Add class card divs dynamically using JavaScript -->
-                        </div>
+                            <div id="result-container"></div>
+                            <br>
+                            <div id="class-inputs">
+                                <!-- Add class card divs dynamically using JavaScript -->
+                            </div>
                     </form>
                     <br>
                     <br>
@@ -281,13 +313,14 @@
                         </div>
                         <br>
                         <br>
-                        <button id="load-unclassified-images" class="btn btn-primary">Load unclassified images</button>
-                        <button id="delete-all-unclassified-images" class="btn btn-danger">Delete all
+                        <button id="load-unclassified-images" class="btn btn-primary" type="button">Load unclassified images</button>
+                        <button id="delete-all-unclassified-images" class="btn btn-danger" type="button">Delete all
                             unclassified-images</button>
                         <br>
                         <br>
                         <br>
-                        <input type="file" id="new-unclassified-images" accept="image/png, image/jpg, image/jpeg" multiple>
+                        <input type="file" id="new-unclassified-images" accept="image/png, image/jpg, image/jpeg"
+                            multiple>
                         <br>
                         <button id="upload-unclassified-images">Upload to unclassified images</button>
                     </div>
@@ -295,6 +328,9 @@
                         <div class="loading-spinner"></div>
                         <div class="loading-bar-container">
                             <div class="loading-bar"></div>
+                        </div>
+                        <div class="">
+
                         </div>
                     </div>
                     <br>
@@ -449,6 +485,7 @@
                     finetune_epochs: document.getElementById("fine_tune_epochs").value,
                     sorting_type: document.querySelector('input[name="sorting-type"]:checked').value,
                     duplication_factor: document.getElementById("duplication_factor").value,
+                    validation_split: document.getElementById("validation-split").value,
                     // all class names in an array
                     class_names: Array.from(document.querySelectorAll('.class-card')).map
                         ((card, index) => document.getElementById(`class_name_${index}`).value),
@@ -702,7 +739,9 @@
 
             // Listen for 'training_progress' events from the server
             socket.on('training_progress', function (data) {
-                var percentComplete = data.percent_complete;
+                let percentComplete = data.percent_complete;
+
+                console.log(data);
 
                 // Call updateLoadingBar to adjust the loading bar's progress
                 updateLoadingBar(percentComplete);

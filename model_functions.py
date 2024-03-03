@@ -18,8 +18,18 @@ class ProgressCallback(Callback):
         self.total_epochs = total_epochs
 
     def on_epoch_end(self, epoch, logs=None):
+        if logs is None:
+            logs = {}
         percent_complete = (epoch + 1) / self.total_epochs * 100
-        message = {'percent_complete': percent_complete, 'status': 'training'}
+        # Prepare the message with training status, including loss and accuracy metrics
+        message = {
+            'percent_complete': percent_complete,
+            'status': 'training',
+            'loss': logs.get('loss', 0),
+            'accuracy': logs.get('accuracy', 0),
+            'validation_loss': logs.get('val_loss', 0),
+            'validation_accuracy': logs.get('val_accuracy', 0),
+        }
         # Emit the progress update to all connected clients
         self.socketio.emit('training_progress', message)
 
@@ -66,7 +76,7 @@ def predict_image(image_path, all_classes):
 
     return class_name, class_probability
 
-def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, duplication_factor=4, socketio=None):
+def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, duplication_factor=4, validation_split=0.2, socketio=None):
     PATH = os.path.join(os.path.dirname("static/images/"))
     print(PATH)
 
@@ -77,7 +87,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, d
                                                                 shuffle=True,
                                                                 batch_size=BATCH_SIZE,
                                                                 image_size=IMG_SIZE,
-                                                                validation_split=0.2,
+                                                                validation_split=validation_split,
                                                                 seed=123,
                                                                 subset='training')
     
@@ -88,7 +98,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, d
                                                                      shuffle=True,
                                                                      batch_size=BATCH_SIZE,
                                                                      image_size=IMG_SIZE,
-                                                                     validation_split=0.2,
+                                                                     validation_split=validation_split,
                                                                      seed=123,
                                                                      subset='validation')
     
