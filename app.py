@@ -29,6 +29,8 @@ UPLOAD_FOLDER = os.path.join("static", "images")
 # file current_model.conf
 CURRENT_MODEL_CONFIG = "current_model.conf"
 
+ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
+
 # Flag to track training status
 TRAINING_IN_PROGRESS = False
 
@@ -59,6 +61,10 @@ training_lock = threading.Lock()
 def delete_and_create_folders():
     shutil.rmtree(UPLOAD_FOLDER)  # Delete the entire images folder
     os.makedirs(UPLOAD_FOLDER)    # Recreate the images folder
+
+
+def allowed_image(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_IMAGE_EXTENSIONS
 
 
 def update_websocket_images(images):
@@ -169,6 +175,11 @@ def upload_unclassified_images():
 
     # Determine the next file number to use
     next_file_number = max(existing_numbers) + 1 if existing_numbers else 1
+
+    # check if the file is allowed
+    for file in files:
+        if not allowed_image(file.filename):
+            return jsonify({"message": "Invalid file type."}), 400
 
     for file in files:
         if file.filename == '':
