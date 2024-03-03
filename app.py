@@ -287,9 +287,9 @@ def train_image_classifier():
         return jsonify({"message": "Missing data in request."}), 400
 
     # Validate model_name to prevent directory traversal
-    model_name = data['model_name']
-    if not re.match("^[a-zA-Z0-9_]+$", model_name):
-        return jsonify({"message": "Invalid model name. Use only alphanumeric characters and underscores."}), 400
+    model_name = data['model_name'].strip()
+    if not re.match("^[a-zA-Z0-9_ ]+$", model_name):
+        return jsonify({"message": "Invalid model name. Use only alphanumeric characters, underscores, and spaces. No leading or trailing spaces."}), 400
 
     # Convert and validate numerical fields to be positive integers
     try:
@@ -451,9 +451,9 @@ def micro_controller_thread():
 
     try:
         ser = serial.Serial(PORT, 9600)
-        print("Connected.")
+        print("Connected to microcontroller.")
     except:
-        print("Not connected.")
+        print("Not connected to microcontroller.")
 
     while True:
         try:
@@ -465,10 +465,10 @@ def micro_controller_thread():
             while True:
                 try:
                     ser = serial.Serial(PORT, 9600)
-                    print("Connected.")
+                    print("Connected to microcontroller.")
                     break
                 except:
-                    print("Not connected.")
+                    print("Not connected to microcontroller. Retrying...")
                     time.sleep(1)
 
             continue
