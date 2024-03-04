@@ -36,8 +36,7 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 0
-OFFSET = 0
+NUM_CAMERAS = 5
 PORT = "COM3"
 
 camera_indices = None
@@ -489,6 +488,11 @@ def micro_controller_thread():
         # Initialize counters for selected and rejected predictions
         selected_count = 0
         rejected_count = 0
+
+        print(selected_classes)
+        print(rejected_classes)
+        print(sorting_type)
+        print(all_classes)
 
         for filename in file_names_to_check:
             print(filename)

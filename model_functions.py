@@ -56,9 +56,6 @@ def predict_image(image_path, all_classes):
     # Convert the image to a numpy array
     img_array = tf.keras.preprocessing.image.img_to_array(img)
 
-    # Preprocess the image for MobileNetV2
-    img_array = tf.keras.applications.mobilenet_v2.preprocess_input(img_array)
-
     # Add an extra dimension to the array to make it suitable for the model
     img_array = np.expand_dims(img_array, axis=0)
 
@@ -108,7 +105,7 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, d
 
         for _ in range(duplication_factor):
             # Corrected to use the original image for each augmentation
-            augmented_image = tf.image.random_brightness(image, max_delta=0.4)
+            augmented_image = tf.image.random_brightness(image, max_delta=0.2)
             images.append(augmented_image)
             labels.append(label)
         
