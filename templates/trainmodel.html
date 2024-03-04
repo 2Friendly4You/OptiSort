@@ -11,6 +11,7 @@
     <script src="{{url_for('static', filename='jquery-3.7.1.min.js')}}"></script>
     <script src="{{url_for('static', filename='sweetalert2@11.js')}}"></script>
     <script src="{{url_for('static', filename='socket.io.js')}}"></script>
+    <script src="{{url_for('static', filename='chart.js')}}"></script>
     <script src="{{url_for('static', filename='light-dark-switch.js')}}"></script>
     <script src="{{url_for('static', filename='tools.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='light-dark-switch.css') }}">
@@ -133,21 +134,28 @@
         }
 
         #loading-overlay {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.3);
-            z-index: 1000;
+            background-color: var(--bs-dark);
+            /* Darkened background */
+            z-index: 10;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
+            /* Align items to the top */
             align-items: center;
             gap: 20px;
             overflow-y: auto;
+            padding-top: 40px;
+            /* Add some padding at the top */
         }
 
+        .col-sm.p-3.min-vh-100 {
+            position: relative;
+        }
 
         .loading-spinner {
             border: 16px solid #f3f3f3;
@@ -169,7 +177,8 @@
         }
 
         .loading-bar-container {
-            width: 60%;
+            width: 80%;
+            /* Adjusted to 80% of its parent container */
             background-color: #e0e0e0;
             border-radius: 5px;
             padding: 2px;
@@ -186,6 +195,14 @@
             color: white;
             text-align: center;
             line-height: 20px;
+        }
+
+        .metric-charts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 60%;
+            justify-content: center;
         }
     </style>
 </head>
@@ -244,6 +261,20 @@
                 </div>
             </div>
             <div class="col-sm p-3 min-vh-100">
+
+                <div id="loading-overlay" class="d-none">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-bar-container">
+                        <div class="loading-bar"></div>
+                    </div>
+                    <div class="metric-charts">
+                        <canvas id="accuracyChart"></canvas>
+                        <canvas id="lossChart"></canvas>
+                        <canvas id="validationAccuracyChart"></canvas>
+                        <canvas id="validationLossChart"></canvas>
+                    </div>
+                </div>
+
                 <div class="container">
                     <h1>AI Image Trainer</h1>
                     <form id="upload-form" method="POST" action="/train" enctype="multipart/form-data">
@@ -313,7 +344,8 @@
                         </div>
                         <br>
                         <br>
-                        <button id="load-unclassified-images" class="btn btn-primary" type="button">Load unclassified images</button>
+                        <button id="load-unclassified-images" class="btn btn-primary" type="button">Load unclassified
+                            images</button>
                         <button id="delete-all-unclassified-images" class="btn btn-danger" type="button">Delete all
                             unclassified-images</button>
                         <br>
@@ -323,15 +355,6 @@
                             multiple>
                         <br>
                         <button id="upload-unclassified-images">Upload to unclassified images</button>
-                    </div>
-                    <div id="loading-overlay" class="d-none">
-                        <div class="loading-spinner"></div>
-                        <div class="loading-bar-container">
-                            <div class="loading-bar"></div>
-                        </div>
-                        <div class="">
-
-                        </div>
                     </div>
                     <br>
                     <br>
@@ -477,6 +500,8 @@
                 updateLoadingBar(0);
                 // reset result container
                 resultContainer.innerHTML = "";
+                // reset the metric charts
+                resetMetricCharts();
 
                 const formDataObj = {
                     model_name: document.getElementById("model_name").value,
@@ -720,32 +745,184 @@
             document.getElementById("average").checked = true;
             document.getElementById("dominant-select").checked = false;
             document.getElementById("dominant-reject").checked = false;
+            document.getElementById("duplication_factor").value = "4";
+            document.getElementById("validation-split").value = "0.2";
         }
     </script>
     <script>
         function updateLoadingBar(percentComplete) {
-            // Select the loading bar element
             var loadingBar = document.querySelector('.loading-bar');
-
-            // Update its width to match the percent complete
             loadingBar.style.width = percentComplete + '%';
+        }
 
-            // Optionally, update the text content to display the percentage
-            // loadingBar.textContent = percentComplete.toFixed(2) + '%';
+        var socket;
+        var accuracyChart, lossChart, validationAccuracyChart, validationLossChart;
+        var chartsInitialized = false;
+
+        function initializeCharts() {
+            var ctx;
+
+            // Colors for better visibility on dark backgrounds
+            var accuracyBorderColor = 'rgb(0, 255, 0)'; // Bright green
+            var lossBorderColor = 'rgb(255, 165, 0)'; // Orange
+            var validationAccuracyBorderColor = 'rgb(0, 191, 255)'; // Deep sky blue
+            var validationLossBorderColor = 'rgb(255, 105, 180)'; // Hot pink
+            var labelAndGridColor = 'rgba(255, 255, 255, 0.7)'; // Light grey for visibility
+
+            var chartOptions = {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: labelAndGridColor // Y-axis labels color
+                        },
+                        grid: {
+                            color: labelAndGridColor // Y-axis grid color
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: labelAndGridColor // X-axis labels color
+                        },
+                        grid: {
+                            color: labelAndGridColor // X-axis grid color
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: labelAndGridColor // Legend labels (dataset labels)
+                        }
+                    }
+                }
+            };
+
+            // Initialize Accuracy Chart
+            ctx = document.getElementById('accuracyChart').getContext('2d');
+            accuracyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Placeholder for labels
+                    datasets: [{
+                        label: 'Accuracy',
+                        data: [],
+                        fill: false,
+                        borderColor: accuracyBorderColor,
+                        tension: 0.1
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Initialize Loss Chart
+            ctx = document.getElementById('lossChart').getContext('2d');
+            lossChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Placeholder for labels
+                    datasets: [{
+                        label: 'Loss',
+                        data: [],
+                        fill: false,
+                        borderColor: lossBorderColor,
+                        tension: 0.1
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Initialize Validation Accuracy Chart
+            ctx = document.getElementById('validationAccuracyChart').getContext('2d');
+            validationAccuracyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Placeholder for labels
+                    datasets: [{
+                        label: 'Validation Accuracy',
+                        data: [],
+                        fill: false,
+                        borderColor: validationAccuracyBorderColor,
+                        tension: 0.1
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Initialize Validation Loss Chart
+            ctx = document.getElementById('validationLossChart').getContext('2d');
+            validationLossChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Placeholder for labels
+                    datasets: [{
+                        label: 'Validation Loss',
+                        data: [],
+                        fill: false,
+                        borderColor: validationLossBorderColor,
+                        tension: 0.1
+                    }]
+                },
+                options: chartOptions
+            });
+
+            chartsInitialized = true;
         }
 
         function setupSocketCommunication() {
-            var socket = io(); // Connect to the Socket.IO server
+            socket = io();
 
-            // Listen for 'training_progress' events from the server
+            if (!socket) {
+                console.log("Socket.IO not initialized");
+                return;
+            }
+
+            if (!chartsInitialized) {
+                initializeCharts();
+            }
+
             socket.on('training_progress', function (data) {
-                let percentComplete = data.percent_complete;
+                let epoch = data.epoch;
+                let label = 'Epoch ' + (epoch);
 
-                console.log(data);
+                accuracyChart.data.labels.push(label);
+                accuracyChart.data.datasets[0].data.push(data.accuracy);
+                accuracyChart.update();
 
-                // Call updateLoadingBar to adjust the loading bar's progress
-                updateLoadingBar(percentComplete);
+                lossChart.data.labels.push(label);
+                lossChart.data.datasets[0].data.push(data.loss);
+                lossChart.update();
+
+                validationAccuracyChart.data.labels.push(label);
+                validationAccuracyChart.data.datasets[0].data.push(data.validation_accuracy);
+                validationAccuracyChart.update();
+
+                validationLossChart.data.labels.push(label);
+                validationLossChart.data.datasets[0].data.push(data.validation_loss);
+                validationLossChart.update();
+
+                updateLoadingBar(data.percent_complete);
             });
+        }
+
+        function resetMetricCharts() {
+            if (chartsInitialized) {
+                accuracyChart.data.labels = [];
+                accuracyChart.data.datasets[0].data = [];
+                accuracyChart.update();
+
+                lossChart.data.labels = [];
+                lossChart.data.datasets[0].data = [];
+                lossChart.update();
+
+                validationAccuracyChart.data.labels = [];
+                validationAccuracyChart.data.datasets[0].data = [];
+                validationAccuracyChart.update();
+
+                validationLossChart.data.labels = [];
+                validationLossChart.data.datasets[0].data = [];
+                validationLossChart.update();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function () {

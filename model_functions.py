@@ -29,6 +29,7 @@ class ProgressCallback(Callback):
             'accuracy': logs.get('accuracy', 0),
             'validation_loss': logs.get('val_loss', 0),
             'validation_accuracy': logs.get('val_accuracy', 0),
+            'epoch': epoch + 1,
         }
         # Emit the progress update to all connected clients
         self.socketio.emit('training_progress', message)
