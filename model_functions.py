@@ -99,22 +99,21 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, d
                                                                      seed=123,
                                                                      subset='validation')
     
-    def duplicate_and_augment_images(image, label):
+    def duplicate_images(image, label, duplication_factor=4):
         images, labels = [], []
 
         for _ in range(duplication_factor):
-            # Corrected to use the original image for each augmentation
-            augmented_image = tf.image.random_brightness(image, max_delta=0.2)
-            images.append(augmented_image)
+            images.append(image)
             labels.append(label)
         
         images = tf.stack(images, axis=0)
         labels = tf.stack(labels, axis=0)
 
         return images, labels
-    
-    train_dataset = train_dataset.unbatch().map(duplicate_and_augment_images).unbatch().shuffle(1000).batch(BATCH_SIZE)
-    validation_dataset = validation_dataset.unbatch().map(duplicate_and_augment_images).unbatch().shuffle(1000).batch(BATCH_SIZE)
+
+    train_dataset = train_dataset.unbatch().map(lambda image, label: duplicate_images(image, label, duplication_factor)).unbatch().shuffle(1000).batch(BATCH_SIZE)
+    validation_dataset = validation_dataset.unbatch().map(lambda image, label: duplicate_images(image, label, duplication_factor)).unbatch().shuffle(1000).batch(BATCH_SIZE)
+
     
     print(class_names)
     print('Number of validation batches: %d' %
