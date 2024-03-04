@@ -79,7 +79,6 @@ def train_model(class_names, save_path, initial_epochs=20, finetune_epochs=20, d
     print(PATH)
 
     BATCH_SIZE = 2
-    IMG_SIZE = (200, 200)
 
     train_dataset = tf.keras.utils.image_dataset_from_directory(PATH,
                                                                 shuffle=True,
