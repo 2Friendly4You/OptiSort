@@ -30,7 +30,11 @@ OptiSort is a fully automated, AI-based sorting machine designed to identify and
     ```
 3. Assemble the hardware components according to the provided schematics.
 4. Upload the microcontroller firmware for managing the mechanical parts.
-5. Start the start.bat
+5. To start the Flask server, run the following command:
+
+    ```bash
+    OptiSort.bat
+    ```
 
 ## Usage
 1. Start the Flask server on the computer to launch the web interface.
