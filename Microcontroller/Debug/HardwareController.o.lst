@@ -1,0 +1,1111 @@
+   1              	 .cpu cortex-m0
+   2              	 .fpu softvfp
+   3              	 .eabi_attribute 20,1
+   4              	 .eabi_attribute 21,1
+   5              	 .eabi_attribute 23,3
+   6              	 .eabi_attribute 24,1
+   7              	 .eabi_attribute 25,1
+   8              	 .eabi_attribute 26,1
+   9              	 .eabi_attribute 30,6
+  10              	 .eabi_attribute 34,0
+  11              	 .eabi_attribute 18,4
+  12              	 .code 16
+  13              	 .file "HardwareController.c"
+  14              	 .text
+  15              	.Ltext0:
+  16              	 .cfi_sections .debug_frame
+  17              	 .section .text.init,"ax",%progbits
+  18              	 .align 2
+  19              	 .global init
+  20              	 .code 16
+  21              	 .thumb_func
+  23              	init:
+  24              	.LFB36:
+  25              	 .file 1 "../HardwareController.c"
+   1:../HardwareController.c **** #include "XMC1100-LibHaas.h"
+   2:../HardwareController.c **** #include "HardwareController.h"
+   3:../HardwareController.c **** 
+   4:../HardwareController.c **** void init() {
+  26              	 .loc 1 4 0
+  27              	 .cfi_startproc
+  28 0000 80B5     	 push {r7,lr}
+  29              	.LCFI0:
+  30              	 .cfi_def_cfa_offset 8
+  31              	 .cfi_offset 7,-8
+  32              	 .cfi_offset 14,-4
+  33 0002 00AF     	 add r7,sp,#0
+  34              	.LCFI1:
+  35              	 .cfi_def_cfa_register 7
+   5:../HardwareController.c **** 	uart_init();
+  36              	 .loc 1 5 0
+  37 0004 FFF7FEFF 	 bl uart_init
+   6:../HardwareController.c **** 	uart_interrupt_enable();
+  38              	 .loc 1 6 0
+  39 0008 FFF7FEFF 	 bl uart_interrupt_enable
+   7:../HardwareController.c **** 	uart_select_channel(UARTCHANNEL_0);
+  40              	 .loc 1 7 0
+  41 000c 0320     	 mov r0,#3
+  42 000e FFF7FEFF 	 bl uart_select_channel
+   8:../HardwareController.c **** 
+   9:../HardwareController.c **** 	rs232_init();
+  43              	 .loc 1 9 0
+  44 0012 FFF7FEFF 	 bl rs232_init
+  10:../HardwareController.c **** 	rs232_interrupt_enable();
+  45              	 .loc 1 10 0
+  46 0016 FFF7FEFF 	 bl rs232_interrupt_enable
+  11:../HardwareController.c **** 
+  12:../HardwareController.c **** 	bit_init(redLEDport, redLEDpin, OUTP);
+  47              	 .loc 1 12 0
+  48 001a 0120     	 mov r0,#1
+  49 001c 0221     	 mov r1,#2
+  50 001e 0122     	 mov r2,#1
+  51 0020 FFF7FEFF 	 bl bit_init
+  13:../HardwareController.c **** 	bit_init(greenLEDport, greenLEDpin, OUTP);
+  52              	 .loc 1 13 0
+  53 0024 0120     	 mov r0,#1
+  54 0026 0321     	 mov r1,#3
+  55 0028 0122     	 mov r2,#1
+  56 002a FFF7FEFF 	 bl bit_init
+  14:../HardwareController.c **** 	bit_init(LEDstripesport, LEDstripespin, OUTP);
+  57              	 .loc 1 14 0
+  58 002e 0020     	 mov r0,#0
+  59 0030 0421     	 mov r1,#4
+  60 0032 0122     	 mov r2,#1
+  61 0034 FFF7FEFF 	 bl bit_init
+  15:../HardwareController.c **** 	bit_init(laserport, laserpin, OUTP);
+  62              	 .loc 1 15 0
+  63 0038 0020     	 mov r0,#0
+  64 003a 0021     	 mov r1,#0
+  65 003c 0122     	 mov r2,#1
+  66 003e FFF7FEFF 	 bl bit_init
+  16:../HardwareController.c **** 	bit_init(lightbarrier1port, lightbarrier1pin, INP);
+  67              	 .loc 1 16 0
+  68 0042 0220     	 mov r0,#2
+  69 0044 0321     	 mov r1,#3
+  70 0046 0022     	 mov r2,#0
+  71 0048 FFF7FEFF 	 bl bit_init
+  17:../HardwareController.c **** 	bit_init(lightbarrier2port, lightbarrier2pin, INP);
+  72              	 .loc 1 17 0
+  73 004c 0220     	 mov r0,#2
+  74 004e 0221     	 mov r1,#2
+  75 0050 0022     	 mov r2,#0
+  76 0052 FFF7FEFF 	 bl bit_init
+  18:../HardwareController.c **** 	bit_init(lightbarrier3port, lightbarrier3pin, INP);
+  77              	 .loc 1 18 0
+  78 0056 0220     	 mov r0,#2
+  79 0058 0121     	 mov r1,#1
+  80 005a 0022     	 mov r2,#0
+  81 005c FFF7FEFF 	 bl bit_init
+  19:../HardwareController.c **** 	bit_init(relay1port, relay1pin, OUTP);
+  82              	 .loc 1 19 0
+  83 0060 0020     	 mov r0,#0
+  84 0062 0C21     	 mov r1,#12
+  85 0064 0122     	 mov r2,#1
+  86 0066 FFF7FEFF 	 bl bit_init
+  20:../HardwareController.c **** 	bit_init(relay2port, relay2pin, OUTP);
+  87              	 .loc 1 20 0
+  88 006a 0020     	 mov r0,#0
+  89 006c 0D21     	 mov r1,#13
+  90 006e 0122     	 mov r2,#1
+  91 0070 FFF7FEFF 	 bl bit_init
+  21:../HardwareController.c **** 	bit_init(pneumatics1port, pneumatics1pin, OUTP);
+  92              	 .loc 1 21 0
+  93 0074 0020     	 mov r0,#0
+  94 0076 0121     	 mov r1,#1
+  95 0078 0122     	 mov r2,#1
+  96 007a FFF7FEFF 	 bl bit_init
+  22:../HardwareController.c **** 	bit_init(pneumatics2port, pneumatics2pin, OUTP);
+  97              	 .loc 1 22 0
+  98 007e 0020     	 mov r0,#0
+  99 0080 0221     	 mov r1,#2
+ 100 0082 0122     	 mov r2,#1
+ 101 0084 FFF7FEFF 	 bl bit_init
+  23:../HardwareController.c **** 	bit_init_mode(button1port, button1pin, INP, PULLDOWN);
+ 102              	 .loc 1 23 0
+ 103 0088 0120     	 mov r0,#1
+ 104 008a 0521     	 mov r1,#5
+ 105 008c 0022     	 mov r2,#0
+ 106 008e 0223     	 mov r3,#2
+ 107 0090 FFF7FEFF 	 bl bit_init_mode
+  24:../HardwareController.c **** 	bit_init_mode(button2port, button2pin, INP, PULLDOWN);
+ 108              	 .loc 1 24 0
+ 109 0094 0120     	 mov r0,#1
+ 110 0096 0421     	 mov r1,#4
+ 111 0098 0022     	 mov r2,#0
+ 112 009a 0223     	 mov r3,#2
+ 113 009c FFF7FEFF 	 bl bit_init_mode
+  25:../HardwareController.c **** 	bit_init(inductivSensor1Port, inductivSensor1Pin, INP);
+ 114              	 .loc 1 25 0
+ 115 00a0 0020     	 mov r0,#0
+ 116 00a2 0A21     	 mov r1,#10
+ 117 00a4 0022     	 mov r2,#0
+ 118 00a6 FFF7FEFF 	 bl bit_init
+  26:../HardwareController.c **** 	bit_init(inductivSensor2Port, inductivSensor2Pin, INP);
+ 119              	 .loc 1 26 0
+ 120 00aa 0020     	 mov r0,#0
+ 121 00ac 0B21     	 mov r1,#11
+ 122 00ae 0022     	 mov r2,#0
+ 123 00b0 FFF7FEFF 	 bl bit_init
+  27:../HardwareController.c **** 	bit_init(dir1port, dir1pin, OUTP);
+ 124              	 .loc 1 27 0
+ 125 00b4 0020     	 mov r0,#0
+ 126 00b6 0721     	 mov r1,#7
+ 127 00b8 0122     	 mov r2,#1
+ 128 00ba FFF7FEFF 	 bl bit_init
+  28:../HardwareController.c **** 
+  29:../HardwareController.c **** 	pwm1_init();
+ 129              	 .loc 1 29 0
+ 130 00be FFF7FEFF 	 bl pwm1_init
+  30:../HardwareController.c **** 	pwm1_start();
+ 131              	 .loc 1 30 0
+ 132 00c2 FFF7FEFF 	 bl pwm1_start
+  31:../HardwareController.c **** 
+  32:../HardwareController.c **** 	slider(0, SLIDERFORWARD);
+ 133              	 .loc 1 32 0
+ 134 00c6 0020     	 mov r0,#0
+ 135 00c8 0021     	 mov r1,#0
+ 136 00ca FFF7FEFF 	 bl slider
+  33:../HardwareController.c **** 
+  34:../HardwareController.c **** 	bit_write(P0, laserport, OFF);
+ 137              	 .loc 1 34 0
+ 138 00ce 0020     	 mov r0,#0
+ 139 00d0 0021     	 mov r1,#0
+ 140 00d2 0022     	 mov r2,#0
+ 141 00d4 FFF7FEFF 	 bl bit_write
+  35:../HardwareController.c **** 	bit_write(LEDstripesport, LEDstripespin, OFF);
+ 142              	 .loc 1 35 0
+ 143 00d8 0020     	 mov r0,#0
+ 144 00da 0421     	 mov r1,#4
+ 145 00dc 0022     	 mov r2,#0
+ 146 00de FFF7FEFF 	 bl bit_write
+  36:../HardwareController.c **** }
+ 147              	 .loc 1 36 0
+ 148 00e2 BD46     	 mov sp,r7
+ 149              	 
+ 150 00e4 80BD     	 pop {r7,pc}
+ 151              	 .cfi_endproc
+ 152              	.LFE36:
+ 154 00e6 C046     	 .section .text.laser,"ax",%progbits
+ 155              	 .align 2
+ 156              	 .global laser
+ 157              	 .code 16
+ 158              	 .thumb_func
+ 160              	laser:
+ 161              	.LFB37:
+  37:../HardwareController.c **** 
+  38:../HardwareController.c **** void laser(int onOrOff) {
+ 162              	 .loc 1 38 0
+ 163              	 .cfi_startproc
+ 164 0000 80B5     	 push {r7,lr}
+ 165              	.LCFI2:
+ 166              	 .cfi_def_cfa_offset 8
+ 167              	 .cfi_offset 7,-8
+ 168              	 .cfi_offset 14,-4
+ 169 0002 82B0     	 sub sp,sp,#8
+ 170              	.LCFI3:
+ 171              	 .cfi_def_cfa_offset 16
+ 172 0004 00AF     	 add r7,sp,#0
+ 173              	.LCFI4:
+ 174              	 .cfi_def_cfa_register 7
+ 175 0006 7860     	 str r0,[r7,#4]
+  39:../HardwareController.c **** 	onOrOff ?
+  40:../HardwareController.c **** 			bit_write(laserport, laserpin, ON) :
+ 176              	 .loc 1 40 0
+ 177 0008 7B68     	 ldr r3,[r7,#4]
+ 178 000a 002B     	 cmp r3,#0
+ 179 000c 05D0     	 beq .L3
+ 180              	 .loc 1 40 0 is_stmt 0 discriminator 1
+ 181 000e 0020     	 mov r0,#0
+ 182 0010 0021     	 mov r1,#0
+ 183 0012 0122     	 mov r2,#1
+ 184 0014 FFF7FEFF 	 bl bit_write
+ 185 0018 04E0     	 b .L2
+ 186              	.L3:
+  41:../HardwareController.c **** 			bit_write(laserport, laserpin, OFF);
+ 187              	 .loc 1 41 0 is_stmt 1
+ 188 001a 0020     	 mov r0,#0
+ 189 001c 0021     	 mov r1,#0
+ 190 001e 0022     	 mov r2,#0
+ 191 0020 FFF7FEFF 	 bl bit_write
+ 192              	.L2:
+  42:../HardwareController.c **** }
+ 193              	 .loc 1 42 0
+ 194 0024 BD46     	 mov sp,r7
+ 195 0026 02B0     	 add sp,sp,#8
+ 196              	 
+ 197 0028 80BD     	 pop {r7,pc}
+ 198              	 .cfi_endproc
+ 199              	.LFE37:
+ 201 002a C046     	 .section .text.LEDStripes,"ax",%progbits
+ 202              	 .align 2
+ 203              	 .global LEDStripes
+ 204              	 .code 16
+ 205              	 .thumb_func
+ 207              	LEDStripes:
+ 208              	.LFB38:
+  43:../HardwareController.c **** 
+  44:../HardwareController.c **** void LEDStripes(int onOrOff) {
+ 209              	 .loc 1 44 0
+ 210              	 .cfi_startproc
+ 211 0000 80B5     	 push {r7,lr}
+ 212              	.LCFI5:
+ 213              	 .cfi_def_cfa_offset 8
+ 214              	 .cfi_offset 7,-8
+ 215              	 .cfi_offset 14,-4
+ 216 0002 82B0     	 sub sp,sp,#8
+ 217              	.LCFI6:
+ 218              	 .cfi_def_cfa_offset 16
+ 219 0004 00AF     	 add r7,sp,#0
+ 220              	.LCFI7:
+ 221              	 .cfi_def_cfa_register 7
+ 222 0006 7860     	 str r0,[r7,#4]
+  45:../HardwareController.c **** 	onOrOff ?
+  46:../HardwareController.c **** 			bit_write(LEDstripesport, LEDstripespin, OFF) :
+ 223              	 .loc 1 46 0
+ 224 0008 7B68     	 ldr r3,[r7,#4]
+ 225 000a 002B     	 cmp r3,#0
+ 226 000c 05D0     	 beq .L6
+ 227              	 .loc 1 46 0 is_stmt 0 discriminator 1
+ 228 000e 0020     	 mov r0,#0
+ 229 0010 0421     	 mov r1,#4
+ 230 0012 0022     	 mov r2,#0
+ 231 0014 FFF7FEFF 	 bl bit_write
+ 232 0018 04E0     	 b .L5
+ 233              	.L6:
+  47:../HardwareController.c **** 			bit_write(LEDstripesport, LEDstripespin, ON);
+ 234              	 .loc 1 47 0 is_stmt 1
+ 235 001a 0020     	 mov r0,#0
+ 236 001c 0421     	 mov r1,#4
+ 237 001e 0122     	 mov r2,#1
+ 238 0020 FFF7FEFF 	 bl bit_write
+ 239              	.L5:
+  48:../HardwareController.c **** }
+ 240              	 .loc 1 48 0
+ 241 0024 BD46     	 mov sp,r7
+ 242 0026 02B0     	 add sp,sp,#8
+ 243              	 
+ 244 0028 80BD     	 pop {r7,pc}
+ 245              	 .cfi_endproc
+ 246              	.LFE38:
+ 248 002a C046     	 .section .text.redLED,"ax",%progbits
+ 249              	 .align 2
+ 250              	 .global redLED
+ 251              	 .code 16
+ 252              	 .thumb_func
+ 254              	redLED:
+ 255              	.LFB39:
+  49:../HardwareController.c **** 
+  50:../HardwareController.c **** void redLED(int onOrOff) {
+ 256              	 .loc 1 50 0
+ 257              	 .cfi_startproc
+ 258 0000 80B5     	 push {r7,lr}
+ 259              	.LCFI8:
+ 260              	 .cfi_def_cfa_offset 8
+ 261              	 .cfi_offset 7,-8
+ 262              	 .cfi_offset 14,-4
+ 263 0002 82B0     	 sub sp,sp,#8
+ 264              	.LCFI9:
+ 265              	 .cfi_def_cfa_offset 16
+ 266 0004 00AF     	 add r7,sp,#0
+ 267              	.LCFI10:
+ 268              	 .cfi_def_cfa_register 7
+ 269 0006 7860     	 str r0,[r7,#4]
+  51:../HardwareController.c **** 	onOrOff ?
+  52:../HardwareController.c **** 			bit_write(redLEDport, redLEDpin, OFF) :
+ 270              	 .loc 1 52 0
+ 271 0008 7B68     	 ldr r3,[r7,#4]
+ 272 000a 002B     	 cmp r3,#0
+ 273 000c 05D0     	 beq .L9
+ 274              	 .loc 1 52 0 is_stmt 0 discriminator 1
+ 275 000e 0120     	 mov r0,#1
+ 276 0010 0221     	 mov r1,#2
+ 277 0012 0022     	 mov r2,#0
+ 278 0014 FFF7FEFF 	 bl bit_write
+ 279 0018 04E0     	 b .L8
+ 280              	.L9:
+  53:../HardwareController.c **** 			bit_write(redLEDport, redLEDpin, ON);
+ 281              	 .loc 1 53 0 is_stmt 1
+ 282 001a 0120     	 mov r0,#1
+ 283 001c 0221     	 mov r1,#2
+ 284 001e 0122     	 mov r2,#1
+ 285 0020 FFF7FEFF 	 bl bit_write
+ 286              	.L8:
+  54:../HardwareController.c **** }
+ 287              	 .loc 1 54 0
+ 288 0024 BD46     	 mov sp,r7
+ 289 0026 02B0     	 add sp,sp,#8
+ 290              	 
+ 291 0028 80BD     	 pop {r7,pc}
+ 292              	 .cfi_endproc
+ 293              	.LFE39:
+ 295 002a C046     	 .section .text.greenLED,"ax",%progbits
+ 296              	 .align 2
+ 297              	 .global greenLED
+ 298              	 .code 16
+ 299              	 .thumb_func
+ 301              	greenLED:
+ 302              	.LFB40:
+  55:../HardwareController.c **** 
+  56:../HardwareController.c **** void greenLED(int onOrOff) {
+ 303              	 .loc 1 56 0
+ 304              	 .cfi_startproc
+ 305 0000 80B5     	 push {r7,lr}
+ 306              	.LCFI11:
+ 307              	 .cfi_def_cfa_offset 8
+ 308              	 .cfi_offset 7,-8
+ 309              	 .cfi_offset 14,-4
+ 310 0002 82B0     	 sub sp,sp,#8
+ 311              	.LCFI12:
+ 312              	 .cfi_def_cfa_offset 16
+ 313 0004 00AF     	 add r7,sp,#0
+ 314              	.LCFI13:
+ 315              	 .cfi_def_cfa_register 7
+ 316 0006 7860     	 str r0,[r7,#4]
+  57:../HardwareController.c **** 	onOrOff ?
+  58:../HardwareController.c **** 			bit_write(greenLEDport, greenLEDpin, OFF) :
+ 317              	 .loc 1 58 0
+ 318 0008 7B68     	 ldr r3,[r7,#4]
+ 319 000a 002B     	 cmp r3,#0
+ 320 000c 05D0     	 beq .L12
+ 321              	 .loc 1 58 0 is_stmt 0 discriminator 1
+ 322 000e 0120     	 mov r0,#1
+ 323 0010 0321     	 mov r1,#3
+ 324 0012 0022     	 mov r2,#0
+ 325 0014 FFF7FEFF 	 bl bit_write
+ 326 0018 04E0     	 b .L11
+ 327              	.L12:
+  59:../HardwareController.c **** 			bit_write(greenLEDport, greenLEDpin, ON);
+ 328              	 .loc 1 59 0 is_stmt 1
+ 329 001a 0120     	 mov r0,#1
+ 330 001c 0321     	 mov r1,#3
+ 331 001e 0122     	 mov r2,#1
+ 332 0020 FFF7FEFF 	 bl bit_write
+ 333              	.L11:
+  60:../HardwareController.c **** }
+ 334              	 .loc 1 60 0
+ 335 0024 BD46     	 mov sp,r7
+ 336 0026 02B0     	 add sp,sp,#8
+ 337              	 
+ 338 0028 80BD     	 pop {r7,pc}
+ 339              	 .cfi_endproc
+ 340              	.LFE40:
+ 342 002a C046     	 .section .text.productionLine,"ax",%progbits
+ 343              	 .align 2
+ 344              	 .global productionLine
+ 345              	 .code 16
+ 346              	 .thumb_func
+ 348              	productionLine:
+ 349              	.LFB41:
+  61:../HardwareController.c **** 
+  62:../HardwareController.c **** void productionLine(int onOrOff, int direction) {
+ 350              	 .loc 1 62 0
+ 351              	 .cfi_startproc
+ 352 0000 80B5     	 push {r7,lr}
+ 353              	.LCFI14:
+ 354              	 .cfi_def_cfa_offset 8
+ 355              	 .cfi_offset 7,-8
+ 356              	 .cfi_offset 14,-4
+ 357 0002 82B0     	 sub sp,sp,#8
+ 358              	.LCFI15:
+ 359              	 .cfi_def_cfa_offset 16
+ 360 0004 00AF     	 add r7,sp,#0
+ 361              	.LCFI16:
+ 362              	 .cfi_def_cfa_register 7
+ 363 0006 7860     	 str r0,[r7,#4]
+ 364 0008 3960     	 str r1,[r7]
+  63:../HardwareController.c **** 	onOrOff ?
+  64:../HardwareController.c **** 			bit_write(relay1port, relay1pin, OFF) :
+ 365              	 .loc 1 64 0
+ 366 000a 7B68     	 ldr r3,[r7,#4]
+ 367 000c 002B     	 cmp r3,#0
+ 368 000e 05D0     	 beq .L15
+ 369              	 .loc 1 64 0 is_stmt 0 discriminator 1
+ 370 0010 0020     	 mov r0,#0
+ 371 0012 0C21     	 mov r1,#12
+ 372 0014 0022     	 mov r2,#0
+ 373 0016 FFF7FEFF 	 bl bit_write
+ 374 001a 04E0     	 b .L16
+ 375              	.L15:
+  65:../HardwareController.c **** 			bit_write(relay1port, relay1pin, ON);
+ 376              	 .loc 1 65 0 is_stmt 1
+ 377 001c 0020     	 mov r0,#0
+ 378 001e 0C21     	 mov r1,#12
+ 379 0020 0122     	 mov r2,#1
+ 380 0022 FFF7FEFF 	 bl bit_write
+ 381              	.L16:
+  66:../HardwareController.c **** 	direction ?
+  67:../HardwareController.c **** 			bit_write(relay2port, relay2pin, ON) :
+ 382              	 .loc 1 67 0
+ 383 0026 3B68     	 ldr r3,[r7]
+ 384 0028 002B     	 cmp r3,#0
+ 385 002a 05D0     	 beq .L17
+ 386              	 .loc 1 67 0 is_stmt 0 discriminator 1
+ 387 002c 0020     	 mov r0,#0
+ 388 002e 0D21     	 mov r1,#13
+ 389 0030 0122     	 mov r2,#1
+ 390 0032 FFF7FEFF 	 bl bit_write
+ 391 0036 04E0     	 b .L14
+ 392              	.L17:
+  68:../HardwareController.c **** 			bit_write(relay2port, relay2pin, OFF);
+ 393              	 .loc 1 68 0 is_stmt 1
+ 394 0038 0020     	 mov r0,#0
+ 395 003a 0D21     	 mov r1,#13
+ 396 003c 0022     	 mov r2,#0
+ 397 003e FFF7FEFF 	 bl bit_write
+ 398              	.L14:
+  69:../HardwareController.c **** }
+ 399              	 .loc 1 69 0
+ 400 0042 BD46     	 mov sp,r7
+ 401 0044 02B0     	 add sp,sp,#8
+ 402              	 
+ 403 0046 80BD     	 pop {r7,pc}
+ 404              	 .cfi_endproc
+ 405              	.LFE41:
+ 407              	 .section .text.lightBarrier1,"ax",%progbits
+ 408              	 .align 2
+ 409              	 .global lightBarrier1
+ 410              	 .code 16
+ 411              	 .thumb_func
+ 413              	lightBarrier1:
+ 414              	.LFB42:
+  70:../HardwareController.c **** 
+  71:../HardwareController.c **** int lightBarrier1(void) {
+ 415              	 .loc 1 71 0
+ 416              	 .cfi_startproc
+ 417 0000 80B5     	 push {r7,lr}
+ 418              	.LCFI17:
+ 419              	 .cfi_def_cfa_offset 8
+ 420              	 .cfi_offset 7,-8
+ 421              	 .cfi_offset 14,-4
+ 422 0002 82B0     	 sub sp,sp,#8
+ 423              	.LCFI18:
+ 424              	 .cfi_def_cfa_offset 16
+ 425 0004 00AF     	 add r7,sp,#0
+ 426              	.LCFI19:
+ 427              	 .cfi_def_cfa_register 7
+  72:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier1port, lightbarrier1pin);
+ 428              	 .loc 1 72 0
+ 429 0006 0220     	 mov r0,#2
+ 430 0008 0321     	 mov r1,#3
+ 431 000a FFF7FEFF 	 bl bit_read
+ 432 000e 031C     	 mov r3,r0
+ 433 0010 7B60     	 str r3,[r7,#4]
+  73:../HardwareController.c **** 	delay_ms(LED_TOLERANCE_MILLIS);
+ 434              	 .loc 1 73 0
+ 435 0012 0520     	 mov r0,#5
+ 436 0014 FFF7FEFF 	 bl delay_ms
+  74:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+ 437              	 .loc 1 74 0
+ 438 0018 0220     	 mov r0,#2
+ 439 001a 0321     	 mov r1,#3
+ 440 001c FFF7FEFF 	 bl bit_read
+ 441 0020 031C     	 mov r3,r0
+ 442 0022 3B60     	 str r3,[r7]
+  75:../HardwareController.c **** 
+  76:../HardwareController.c **** 	// implements tolerance
+  77:../HardwareController.c **** 
+  78:../HardwareController.c **** 	while (temp1 != temp2) {
+ 443              	 .loc 1 78 0
+ 444 0024 0AE0     	 b .L20
+ 445              	.L21:
+  79:../HardwareController.c **** 		temp1 = temp2;
+ 446              	 .loc 1 79 0
+ 447 0026 3B68     	 ldr r3,[r7]
+ 448 0028 7B60     	 str r3,[r7,#4]
+  80:../HardwareController.c **** 		delay_ms(LED_TOLERANCE_MILLIS);
+ 449              	 .loc 1 80 0
+ 450 002a 0520     	 mov r0,#5
+ 451 002c FFF7FEFF 	 bl delay_ms
+  81:../HardwareController.c **** 		temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+ 452              	 .loc 1 81 0
+ 453 0030 0220     	 mov r0,#2
+ 454 0032 0321     	 mov r1,#3
+ 455 0034 FFF7FEFF 	 bl bit_read
+ 456 0038 031C     	 mov r3,r0
+ 457 003a 3B60     	 str r3,[r7]
+ 458              	.L20:
+  78:../HardwareController.c **** 		temp1 = temp2;
+ 459              	 .loc 1 78 0
+ 460 003c 7A68     	 ldr r2,[r7,#4]
+ 461 003e 3B68     	 ldr r3,[r7]
+ 462 0040 9A42     	 cmp r2,r3
+ 463 0042 F0D1     	 bne .L21
+  82:../HardwareController.c **** 	}
+  83:../HardwareController.c **** 
+  84:../HardwareController.c **** 	if (temp1 == 0) {
+ 464              	 .loc 1 84 0
+ 465 0044 7B68     	 ldr r3,[r7,#4]
+ 466 0046 002B     	 cmp r3,#0
+ 467 0048 01D1     	 bne .L22
+  85:../HardwareController.c **** 		return ON;
+ 468              	 .loc 1 85 0
+ 469 004a 0123     	 mov r3,#1
+ 470 004c 00E0     	 b .L23
+ 471              	.L22:
+  86:../HardwareController.c **** 	} else {
+  87:../HardwareController.c **** 		return OFF;
+ 472              	 .loc 1 87 0
+ 473 004e 0023     	 mov r3,#0
+ 474              	.L23:
+  88:../HardwareController.c **** 	}
+  89:../HardwareController.c **** }
+ 475              	 .loc 1 89 0
+ 476 0050 181C     	 mov r0,r3
+ 477 0052 BD46     	 mov sp,r7
+ 478 0054 02B0     	 add sp,sp,#8
+ 479              	 
+ 480 0056 80BD     	 pop {r7,pc}
+ 481              	 .cfi_endproc
+ 482              	.LFE42:
+ 484              	 .section .text.lightBarrier2,"ax",%progbits
+ 485              	 .align 2
+ 486              	 .global lightBarrier2
+ 487              	 .code 16
+ 488              	 .thumb_func
+ 490              	lightBarrier2:
+ 491              	.LFB43:
+  90:../HardwareController.c **** 
+  91:../HardwareController.c **** int lightBarrier2(void) {
+ 492              	 .loc 1 91 0
+ 493              	 .cfi_startproc
+ 494 0000 80B5     	 push {r7,lr}
+ 495              	.LCFI20:
+ 496              	 .cfi_def_cfa_offset 8
+ 497              	 .cfi_offset 7,-8
+ 498              	 .cfi_offset 14,-4
+ 499 0002 82B0     	 sub sp,sp,#8
+ 500              	.LCFI21:
+ 501              	 .cfi_def_cfa_offset 16
+ 502 0004 00AF     	 add r7,sp,#0
+ 503              	.LCFI22:
+ 504              	 .cfi_def_cfa_register 7
+  92:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 505              	 .loc 1 92 0
+ 506 0006 0220     	 mov r0,#2
+ 507 0008 0221     	 mov r1,#2
+ 508 000a FFF7FEFF 	 bl bit_read
+ 509 000e 031C     	 mov r3,r0
+ 510 0010 7B60     	 str r3,[r7,#4]
+  93:../HardwareController.c **** 	delay_ms(LED_TOLERANCE_MILLIS);
+ 511              	 .loc 1 93 0
+ 512 0012 0520     	 mov r0,#5
+ 513 0014 FFF7FEFF 	 bl delay_ms
+  94:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 514              	 .loc 1 94 0
+ 515 0018 0220     	 mov r0,#2
+ 516 001a 0221     	 mov r1,#2
+ 517 001c FFF7FEFF 	 bl bit_read
+ 518 0020 031C     	 mov r3,r0
+ 519 0022 3B60     	 str r3,[r7]
+  95:../HardwareController.c **** 
+  96:../HardwareController.c **** 	// implements tolerance
+  97:../HardwareController.c **** 
+  98:../HardwareController.c **** 	while (temp1 != temp2) {
+ 520              	 .loc 1 98 0
+ 521 0024 0AE0     	 b .L25
+ 522              	.L26:
+  99:../HardwareController.c **** 		temp1 = temp2;
+ 523              	 .loc 1 99 0
+ 524 0026 3B68     	 ldr r3,[r7]
+ 525 0028 7B60     	 str r3,[r7,#4]
+ 100:../HardwareController.c **** 		delay_ms(LED_TOLERANCE_MILLIS);
+ 526              	 .loc 1 100 0
+ 527 002a 0520     	 mov r0,#5
+ 528 002c FFF7FEFF 	 bl delay_ms
+ 101:../HardwareController.c **** 		temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 529              	 .loc 1 101 0
+ 530 0030 0220     	 mov r0,#2
+ 531 0032 0221     	 mov r1,#2
+ 532 0034 FFF7FEFF 	 bl bit_read
+ 533 0038 031C     	 mov r3,r0
+ 534 003a 3B60     	 str r3,[r7]
+ 535              	.L25:
+  98:../HardwareController.c **** 		temp1 = temp2;
+ 536              	 .loc 1 98 0
+ 537 003c 7A68     	 ldr r2,[r7,#4]
+ 538 003e 3B68     	 ldr r3,[r7]
+ 539 0040 9A42     	 cmp r2,r3
+ 540 0042 F0D1     	 bne .L26
+ 102:../HardwareController.c **** 	}
+ 103:../HardwareController.c **** 
+ 104:../HardwareController.c **** 	if (temp1 == 0) {
+ 541              	 .loc 1 104 0
+ 542 0044 7B68     	 ldr r3,[r7,#4]
+ 543 0046 002B     	 cmp r3,#0
+ 544 0048 01D1     	 bne .L27
+ 105:../HardwareController.c **** 		return ON;
+ 545              	 .loc 1 105 0
+ 546 004a 0123     	 mov r3,#1
+ 547 004c 00E0     	 b .L28
+ 548              	.L27:
+ 106:../HardwareController.c **** 	} else {
+ 107:../HardwareController.c **** 		return OFF;
+ 549              	 .loc 1 107 0
+ 550 004e 0023     	 mov r3,#0
+ 551              	.L28:
+ 108:../HardwareController.c **** 	}
+ 109:../HardwareController.c **** }
+ 552              	 .loc 1 109 0
+ 553 0050 181C     	 mov r0,r3
+ 554 0052 BD46     	 mov sp,r7
+ 555 0054 02B0     	 add sp,sp,#8
+ 556              	 
+ 557 0056 80BD     	 pop {r7,pc}
+ 558              	 .cfi_endproc
+ 559              	.LFE43:
+ 561              	 .section .text.lightBarrier3,"ax",%progbits
+ 562              	 .align 2
+ 563              	 .global lightBarrier3
+ 564              	 .code 16
+ 565              	 .thumb_func
+ 567              	lightBarrier3:
+ 568              	.LFB44:
+ 110:../HardwareController.c **** 
+ 111:../HardwareController.c **** int lightBarrier3(void) {
+ 569              	 .loc 1 111 0
+ 570              	 .cfi_startproc
+ 571 0000 80B5     	 push {r7,lr}
+ 572              	.LCFI23:
+ 573              	 .cfi_def_cfa_offset 8
+ 574              	 .cfi_offset 7,-8
+ 575              	 .cfi_offset 14,-4
+ 576 0002 82B0     	 sub sp,sp,#8
+ 577              	.LCFI24:
+ 578              	 .cfi_def_cfa_offset 16
+ 579 0004 00AF     	 add r7,sp,#0
+ 580              	.LCFI25:
+ 581              	 .cfi_def_cfa_register 7
+ 112:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 582              	 .loc 1 112 0
+ 583 0006 0220     	 mov r0,#2
+ 584 0008 0121     	 mov r1,#1
+ 585 000a FFF7FEFF 	 bl bit_read
+ 586 000e 031C     	 mov r3,r0
+ 587 0010 7B60     	 str r3,[r7,#4]
+ 113:../HardwareController.c **** 	delay_ms(LED_TOLERANCE_MILLIS);
+ 588              	 .loc 1 113 0
+ 589 0012 0520     	 mov r0,#5
+ 590 0014 FFF7FEFF 	 bl delay_ms
+ 114:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 591              	 .loc 1 114 0
+ 592 0018 0220     	 mov r0,#2
+ 593 001a 0121     	 mov r1,#1
+ 594 001c FFF7FEFF 	 bl bit_read
+ 595 0020 031C     	 mov r3,r0
+ 596 0022 3B60     	 str r3,[r7]
+ 115:../HardwareController.c **** 
+ 116:../HardwareController.c **** 	// implements tolerance
+ 117:../HardwareController.c **** 
+ 118:../HardwareController.c **** 	while (temp1 != temp2) {
+ 597              	 .loc 1 118 0
+ 598 0024 0AE0     	 b .L30
+ 599              	.L31:
+ 119:../HardwareController.c **** 		temp1 = temp2;
+ 600              	 .loc 1 119 0
+ 601 0026 3B68     	 ldr r3,[r7]
+ 602 0028 7B60     	 str r3,[r7,#4]
+ 120:../HardwareController.c **** 		delay_ms(LED_TOLERANCE_MILLIS);
+ 603              	 .loc 1 120 0
+ 604 002a 0520     	 mov r0,#5
+ 605 002c FFF7FEFF 	 bl delay_ms
+ 121:../HardwareController.c **** 		temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 606              	 .loc 1 121 0
+ 607 0030 0220     	 mov r0,#2
+ 608 0032 0121     	 mov r1,#1
+ 609 0034 FFF7FEFF 	 bl bit_read
+ 610 0038 031C     	 mov r3,r0
+ 611 003a 3B60     	 str r3,[r7]
+ 612              	.L30:
+ 118:../HardwareController.c **** 		temp1 = temp2;
+ 613              	 .loc 1 118 0
+ 614 003c 7A68     	 ldr r2,[r7,#4]
+ 615 003e 3B68     	 ldr r3,[r7]
+ 616 0040 9A42     	 cmp r2,r3
+ 617 0042 F0D1     	 bne .L31
+ 122:../HardwareController.c **** 	}
+ 123:../HardwareController.c **** 
+ 124:../HardwareController.c **** 	if (temp1 == 0) {
+ 618              	 .loc 1 124 0
+ 619 0044 7B68     	 ldr r3,[r7,#4]
+ 620 0046 002B     	 cmp r3,#0
+ 621 0048 01D1     	 bne .L32
+ 125:../HardwareController.c **** 		return ON;
+ 622              	 .loc 1 125 0
+ 623 004a 0123     	 mov r3,#1
+ 624 004c 00E0     	 b .L33
+ 625              	.L32:
+ 126:../HardwareController.c **** 	} else {
+ 127:../HardwareController.c **** 		return OFF;
+ 626              	 .loc 1 127 0
+ 627 004e 0023     	 mov r3,#0
+ 628              	.L33:
+ 128:../HardwareController.c **** 	}
+ 129:../HardwareController.c **** }
+ 629              	 .loc 1 129 0
+ 630 0050 181C     	 mov r0,r3
+ 631 0052 BD46     	 mov sp,r7
+ 632 0054 02B0     	 add sp,sp,#8
+ 633              	 
+ 634 0056 80BD     	 pop {r7,pc}
+ 635              	 .cfi_endproc
+ 636              	.LFE44:
+ 638              	 .section .text.pneumatics1,"ax",%progbits
+ 639              	 .align 2
+ 640              	 .global pneumatics1
+ 641              	 .code 16
+ 642              	 .thumb_func
+ 644              	pneumatics1:
+ 645              	.LFB45:
+ 130:../HardwareController.c **** 
+ 131:../HardwareController.c **** void pneumatics1(int outOrIn) {
+ 646              	 .loc 1 131 0
+ 647              	 .cfi_startproc
+ 648 0000 80B5     	 push {r7,lr}
+ 649              	.LCFI26:
+ 650              	 .cfi_def_cfa_offset 8
+ 651              	 .cfi_offset 7,-8
+ 652              	 .cfi_offset 14,-4
+ 653 0002 82B0     	 sub sp,sp,#8
+ 654              	.LCFI27:
+ 655              	 .cfi_def_cfa_offset 16
+ 656 0004 00AF     	 add r7,sp,#0
+ 657              	.LCFI28:
+ 658              	 .cfi_def_cfa_register 7
+ 659 0006 7860     	 str r0,[r7,#4]
+ 132:../HardwareController.c **** 	outOrIn ?
+ 133:../HardwareController.c **** 			bit_write(pneumatics1port, pneumatics1pin, OUT) :
+ 660              	 .loc 1 133 0
+ 661 0008 7B68     	 ldr r3,[r7,#4]
+ 662 000a 002B     	 cmp r3,#0
+ 663 000c 05D0     	 beq .L35
+ 664              	 .loc 1 133 0 is_stmt 0 discriminator 1
+ 665 000e 0020     	 mov r0,#0
+ 666 0010 0121     	 mov r1,#1
+ 667 0012 0122     	 mov r2,#1
+ 668 0014 FFF7FEFF 	 bl bit_write
+ 669 0018 04E0     	 b .L34
+ 670              	.L35:
+ 134:../HardwareController.c **** 			bit_write(pneumatics1port, pneumatics1pin, IN);
+ 671              	 .loc 1 134 0 is_stmt 1
+ 672 001a 0020     	 mov r0,#0
+ 673 001c 0121     	 mov r1,#1
+ 674 001e 0022     	 mov r2,#0
+ 675 0020 FFF7FEFF 	 bl bit_write
+ 676              	.L34:
+ 135:../HardwareController.c **** }
+ 677              	 .loc 1 135 0
+ 678 0024 BD46     	 mov sp,r7
+ 679 0026 02B0     	 add sp,sp,#8
+ 680              	 
+ 681 0028 80BD     	 pop {r7,pc}
+ 682              	 .cfi_endproc
+ 683              	.LFE45:
+ 685 002a C046     	 .section .text.pneumatics2,"ax",%progbits
+ 686              	 .align 2
+ 687              	 .global pneumatics2
+ 688              	 .code 16
+ 689              	 .thumb_func
+ 691              	pneumatics2:
+ 692              	.LFB46:
+ 136:../HardwareController.c **** 
+ 137:../HardwareController.c **** void pneumatics2(int outOrIn) {
+ 693              	 .loc 1 137 0
+ 694              	 .cfi_startproc
+ 695 0000 80B5     	 push {r7,lr}
+ 696              	.LCFI29:
+ 697              	 .cfi_def_cfa_offset 8
+ 698              	 .cfi_offset 7,-8
+ 699              	 .cfi_offset 14,-4
+ 700 0002 82B0     	 sub sp,sp,#8
+ 701              	.LCFI30:
+ 702              	 .cfi_def_cfa_offset 16
+ 703 0004 00AF     	 add r7,sp,#0
+ 704              	.LCFI31:
+ 705              	 .cfi_def_cfa_register 7
+ 706 0006 7860     	 str r0,[r7,#4]
+ 138:../HardwareController.c **** 	outOrIn ?
+ 139:../HardwareController.c **** 			bit_write(pneumatics2port, pneumatics2pin, OUT) :
+ 707              	 .loc 1 139 0
+ 708 0008 7B68     	 ldr r3,[r7,#4]
+ 709 000a 002B     	 cmp r3,#0
+ 710 000c 05D0     	 beq .L38
+ 711              	 .loc 1 139 0 is_stmt 0 discriminator 1
+ 712 000e 0020     	 mov r0,#0
+ 713 0010 0221     	 mov r1,#2
+ 714 0012 0122     	 mov r2,#1
+ 715 0014 FFF7FEFF 	 bl bit_write
+ 716 0018 04E0     	 b .L37
+ 717              	.L38:
+ 140:../HardwareController.c **** 			bit_write(pneumatics2port, pneumatics2pin, IN);
+ 718              	 .loc 1 140 0 is_stmt 1
+ 719 001a 0020     	 mov r0,#0
+ 720 001c 0221     	 mov r1,#2
+ 721 001e 0022     	 mov r2,#0
+ 722 0020 FFF7FEFF 	 bl bit_write
+ 723              	.L37:
+ 141:../HardwareController.c **** }
+ 724              	 .loc 1 141 0
+ 725 0024 BD46     	 mov sp,r7
+ 726 0026 02B0     	 add sp,sp,#8
+ 727              	 
+ 728 0028 80BD     	 pop {r7,pc}
+ 729              	 .cfi_endproc
+ 730              	.LFE46:
+ 732 002a C046     	 .section .text.readButton1,"ax",%progbits
+ 733              	 .align 2
+ 734              	 .global readButton1
+ 735              	 .code 16
+ 736              	 .thumb_func
+ 738              	readButton1:
+ 739              	.LFB47:
+ 142:../HardwareController.c **** 
+ 143:../HardwareController.c **** int readButton1(void) {
+ 740              	 .loc 1 143 0
+ 741              	 .cfi_startproc
+ 742 0000 80B5     	 push {r7,lr}
+ 743              	.LCFI32:
+ 744              	 .cfi_def_cfa_offset 8
+ 745              	 .cfi_offset 7,-8
+ 746              	 .cfi_offset 14,-4
+ 747 0002 00AF     	 add r7,sp,#0
+ 748              	.LCFI33:
+ 749              	 .cfi_def_cfa_register 7
+ 144:../HardwareController.c **** 	return !bit_read(button1port, button1pin);
+ 750              	 .loc 1 144 0
+ 751 0004 0120     	 mov r0,#1
+ 752 0006 0521     	 mov r1,#5
+ 753 0008 FFF7FEFF 	 bl bit_read
+ 754 000c 031C     	 mov r3,r0
+ 755 000e 5A42     	 neg r2,r3
+ 756 0010 5341     	 adc r3,r3,r2
+ 757 0012 DBB2     	 uxtb r3,r3
+ 145:../HardwareController.c **** }
+ 758              	 .loc 1 145 0
+ 759 0014 181C     	 mov r0,r3
+ 760 0016 BD46     	 mov sp,r7
+ 761              	 
+ 762 0018 80BD     	 pop {r7,pc}
+ 763              	 .cfi_endproc
+ 764              	.LFE47:
+ 766 001a C046     	 .section .text.readButton2,"ax",%progbits
+ 767              	 .align 2
+ 768              	 .global readButton2
+ 769              	 .code 16
+ 770              	 .thumb_func
+ 772              	readButton2:
+ 773              	.LFB48:
+ 146:../HardwareController.c **** 
+ 147:../HardwareController.c **** int readButton2(void) {
+ 774              	 .loc 1 147 0
+ 775              	 .cfi_startproc
+ 776 0000 80B5     	 push {r7,lr}
+ 777              	.LCFI34:
+ 778              	 .cfi_def_cfa_offset 8
+ 779              	 .cfi_offset 7,-8
+ 780              	 .cfi_offset 14,-4
+ 781 0002 00AF     	 add r7,sp,#0
+ 782              	.LCFI35:
+ 783              	 .cfi_def_cfa_register 7
+ 148:../HardwareController.c **** 	return !bit_read(button2port, button2pin);
+ 784              	 .loc 1 148 0
+ 785 0004 0120     	 mov r0,#1
+ 786 0006 0421     	 mov r1,#4
+ 787 0008 FFF7FEFF 	 bl bit_read
+ 788 000c 031C     	 mov r3,r0
+ 789 000e 5A42     	 neg r2,r3
+ 790 0010 5341     	 adc r3,r3,r2
+ 791 0012 DBB2     	 uxtb r3,r3
+ 149:../HardwareController.c **** }
+ 792              	 .loc 1 149 0
+ 793 0014 181C     	 mov r0,r3
+ 794 0016 BD46     	 mov sp,r7
+ 795              	 
+ 796 0018 80BD     	 pop {r7,pc}
+ 797              	 .cfi_endproc
+ 798              	.LFE48:
+ 800 001a C046     	 .section .text.readInductivSensor1,"ax",%progbits
+ 801              	 .align 2
+ 802              	 .global readInductivSensor1
+ 803              	 .code 16
+ 804              	 .thumb_func
+ 806              	readInductivSensor1:
+ 807              	.LFB49:
+ 150:../HardwareController.c **** 
+ 151:../HardwareController.c **** int readInductivSensor1(void) {
+ 808              	 .loc 1 151 0
+ 809              	 .cfi_startproc
+ 810 0000 80B5     	 push {r7,lr}
+ 811              	.LCFI36:
+ 812              	 .cfi_def_cfa_offset 8
+ 813              	 .cfi_offset 7,-8
+ 814              	 .cfi_offset 14,-4
+ 815 0002 00AF     	 add r7,sp,#0
+ 816              	.LCFI37:
+ 817              	 .cfi_def_cfa_register 7
+ 152:../HardwareController.c **** 	return bit_read(inductivSensor1Port, inductivSensor1Pin);
+ 818              	 .loc 1 152 0
+ 819 0004 0020     	 mov r0,#0
+ 820 0006 0A21     	 mov r1,#10
+ 821 0008 FFF7FEFF 	 bl bit_read
+ 822 000c 031C     	 mov r3,r0
+ 153:../HardwareController.c **** }
+ 823              	 .loc 1 153 0
+ 824 000e 181C     	 mov r0,r3
+ 825 0010 BD46     	 mov sp,r7
+ 826              	 
+ 827 0012 80BD     	 pop {r7,pc}
+ 828              	 .cfi_endproc
+ 829              	.LFE49:
+ 831              	 .section .text.readInductivSensor2,"ax",%progbits
+ 832              	 .align 2
+ 833              	 .global readInductivSensor2
+ 834              	 .code 16
+ 835              	 .thumb_func
+ 837              	readInductivSensor2:
+ 838              	.LFB50:
+ 154:../HardwareController.c **** 
+ 155:../HardwareController.c **** int readInductivSensor2(void) {
+ 839              	 .loc 1 155 0
+ 840              	 .cfi_startproc
+ 841 0000 80B5     	 push {r7,lr}
+ 842              	.LCFI38:
+ 843              	 .cfi_def_cfa_offset 8
+ 844              	 .cfi_offset 7,-8
+ 845              	 .cfi_offset 14,-4
+ 846 0002 00AF     	 add r7,sp,#0
+ 847              	.LCFI39:
+ 848              	 .cfi_def_cfa_register 7
+ 156:../HardwareController.c **** 	return bit_read(inductivSensor2Port, inductivSensor2Pin);
+ 849              	 .loc 1 156 0
+ 850 0004 0020     	 mov r0,#0
+ 851 0006 0B21     	 mov r1,#11
+ 852 0008 FFF7FEFF 	 bl bit_read
+ 853 000c 031C     	 mov r3,r0
+ 157:../HardwareController.c **** }
+ 854              	 .loc 1 157 0
+ 855 000e 181C     	 mov r0,r3
+ 856 0010 BD46     	 mov sp,r7
+ 857              	 
+ 858 0012 80BD     	 pop {r7,pc}
+ 859              	 .cfi_endproc
+ 860              	.LFE50:
+ 862              	 .section .text.slider,"ax",%progbits
+ 863              	 .align 2
+ 864              	 .global slider
+ 865              	 .code 16
+ 866              	 .thumb_func
+ 868              	slider:
+ 869              	.LFB51:
+ 158:../HardwareController.c **** 
+ 159:../HardwareController.c **** void slider(int velocity, int direction) {
+ 870              	 .loc 1 159 0
+ 871              	 .cfi_startproc
+ 872 0000 80B5     	 push {r7,lr}
+ 873              	.LCFI40:
+ 874              	 .cfi_def_cfa_offset 8
+ 875              	 .cfi_offset 7,-8
+ 876              	 .cfi_offset 14,-4
+ 877 0002 82B0     	 sub sp,sp,#8
+ 878              	.LCFI41:
+ 879              	 .cfi_def_cfa_offset 16
+ 880 0004 00AF     	 add r7,sp,#0
+ 881              	.LCFI42:
+ 882              	 .cfi_def_cfa_register 7
+ 883 0006 7860     	 str r0,[r7,#4]
+ 884 0008 3960     	 str r1,[r7]
+ 160:../HardwareController.c **** 	direction ?
+ 161:../HardwareController.c **** 			bit_write(dir1port, dir1pin, SLIDERBACKWARD) :
+ 885              	 .loc 1 161 0
+ 886 000a 3B68     	 ldr r3,[r7]
+ 887 000c 002B     	 cmp r3,#0
+ 888 000e 05D0     	 beq .L49
+ 889              	 .loc 1 161 0 is_stmt 0 discriminator 1
+ 890 0010 0020     	 mov r0,#0
+ 891 0012 0721     	 mov r1,#7
+ 892 0014 0122     	 mov r2,#1
+ 893 0016 FFF7FEFF 	 bl bit_write
+ 894 001a 04E0     	 b .L50
+ 895              	.L49:
+ 162:../HardwareController.c **** 			bit_write(dir1port, dir1pin, SLIDERFORWARD);
+ 896              	 .loc 1 162 0 is_stmt 1
+ 897 001c 0020     	 mov r0,#0
+ 898 001e 0721     	 mov r1,#7
+ 899 0020 0022     	 mov r2,#0
+ 900 0022 FFF7FEFF 	 bl bit_write
+ 901              	.L50:
+ 163:../HardwareController.c **** 	// inverse velocity by 50000
+ 164:../HardwareController.c **** 	pwm1_duty_cycle(50000 - velocity);
+ 902              	 .loc 1 164 0
+ 903 0026 7B68     	 ldr r3,[r7,#4]
+ 904 0028 9BB2     	 uxth r3,r3
+ 905 002a 044A     	 ldr r2,.L51
+ 906 002c D31A     	 sub r3,r2,r3
+ 907 002e 9BB2     	 uxth r3,r3
+ 908 0030 181C     	 mov r0,r3
+ 909 0032 FFF7FEFF 	 bl pwm1_duty_cycle
+ 165:../HardwareController.c **** }
+ 910              	 .loc 1 165 0
+ 911 0036 BD46     	 mov sp,r7
+ 912 0038 02B0     	 add sp,sp,#8
+ 913              	 
+ 914 003a 80BD     	 pop {r7,pc}
+ 915              	.L52:
+ 916              	 .align 2
+ 917              	.L51:
+ 918 003c 50C3FFFF 	 .word -15536
+ 919              	 .cfi_endproc
+ 920              	.LFE51:
+ 922              	 .text
+ 923              	.Letext0:
+ 924              	 .file 2 "../XMC1100-LibHaas.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 HardwareController.c
+    {standard input}:18     .text.init:00000000 $t
+    {standard input}:23     .text.init:00000000 init
+    {standard input}:868    .text.slider:00000000 slider
+    {standard input}:155    .text.laser:00000000 $t
+    {standard input}:160    .text.laser:00000000 laser
+    {standard input}:202    .text.LEDStripes:00000000 $t
+    {standard input}:207    .text.LEDStripes:00000000 LEDStripes
+    {standard input}:249    .text.redLED:00000000 $t
+    {standard input}:254    .text.redLED:00000000 redLED
+    {standard input}:296    .text.greenLED:00000000 $t
+    {standard input}:301    .text.greenLED:00000000 greenLED
+    {standard input}:343    .text.productionLine:00000000 $t
+    {standard input}:348    .text.productionLine:00000000 productionLine
+    {standard input}:408    .text.lightBarrier1:00000000 $t
+    {standard input}:413    .text.lightBarrier1:00000000 lightBarrier1
+    {standard input}:485    .text.lightBarrier2:00000000 $t
+    {standard input}:490    .text.lightBarrier2:00000000 lightBarrier2
+    {standard input}:562    .text.lightBarrier3:00000000 $t
+    {standard input}:567    .text.lightBarrier3:00000000 lightBarrier3
+    {standard input}:639    .text.pneumatics1:00000000 $t
+    {standard input}:644    .text.pneumatics1:00000000 pneumatics1
+    {standard input}:686    .text.pneumatics2:00000000 $t
+    {standard input}:691    .text.pneumatics2:00000000 pneumatics2
+    {standard input}:733    .text.readButton1:00000000 $t
+    {standard input}:738    .text.readButton1:00000000 readButton1
+    {standard input}:767    .text.readButton2:00000000 $t
+    {standard input}:772    .text.readButton2:00000000 readButton2
+    {standard input}:801    .text.readInductivSensor1:00000000 $t
+    {standard input}:806    .text.readInductivSensor1:00000000 readInductivSensor1
+    {standard input}:832    .text.readInductivSensor2:00000000 $t
+    {standard input}:837    .text.readInductivSensor2:00000000 readInductivSensor2
+    {standard input}:863    .text.slider:00000000 $t
+    {standard input}:918    .text.slider:0000003c $d
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+uart_init
+uart_interrupt_enable
+uart_select_channel
+rs232_init
+rs232_interrupt_enable
+bit_init
+bit_init_mode
+pwm1_init
+pwm1_start
+bit_write
+bit_read
+delay_ms
+pwm1_duty_cycle
