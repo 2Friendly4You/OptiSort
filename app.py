@@ -54,6 +54,12 @@ rejected_classes = []
 # Initialize sorting type
 sorting_type = ""
 
+# There are two modes. They either just make images and save them or the images get evaluated by the model
+# If the images are just made, the microcontroller will be sent a signal to do nothing
+# if 0 the images will be evaluated by the model
+# if 1 the images will just be made and saved
+ai_evaluation_mode = 0
+
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
 
@@ -216,6 +222,17 @@ def remove_all_unclassified_images():
     os.makedirs(os.path.join("static", "unclassified_images"))
     return jsonify({"message": "All unclassified images removed."}), 200
 
+@app.route('/get-ai-evaluation-mode', methods=['GET'])
+def get_aievaluationmode():
+    return jsonify({"ai_evaluation_mode": ai_evaluation_mode}), 200
+
+# set the ai_evaluation_mode
+@app.route('/set-ai-evaluation-mode', methods=['POST'])
+def set_aievaluationmode():
+    global ai_evaluation_mode
+    data = request.get_json()
+    ai_evaluation_mode = data['ai_evaluation_mode']
+    return jsonify({"message": "AI evaluation mode set."}), 200
 
 @app.route('/get-trained-models')
 def current_settings_and_model():
@@ -489,10 +506,12 @@ def micro_controller_thread():
         selected_count = 0
         rejected_count = 0
 
-        print(selected_classes)
-        print(rejected_classes)
-        print(sorting_type)
-        print(all_classes)
+        # check for the mode
+        if ai_evaluation_mode == 1:
+            print("The images are saved.\n\r")
+            ser.write("n\n\r".encode())
+            update_websocket_text("Images are saved.")
+            continue
 
         for filename in file_names_to_check:
             print(filename)
@@ -528,11 +547,11 @@ def micro_controller_thread():
         # Execute actions based on the final decision
         if decision == 'selected':
             print("The object will not be sorted out.\n\r")
-            ser.write("g\n\r".encode())
+            ser.write("d\n\r".encode())
             update_websocket_text("don't sort out")
         else:
             print("The object will be sorted out.\n\r")
-            ser.write("b\n\r".encode())
+            ser.write("s\n\r".encode())
             update_websocket_text("sort out")
 
         print("Received data:", data)
