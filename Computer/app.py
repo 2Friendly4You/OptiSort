@@ -36,7 +36,7 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 5
+NUM_CAMERAS = 0
 PORT = "COM3"
 
 camera_indices = None
@@ -87,6 +87,16 @@ def update_websocket_images(images):
 
 def update_websocket_text(text):
     socketio.emit('update_text', {'text': text})
+
+
+@socketio.on('change_mode')
+def handle_mode_change(data):
+    global ai_evaluation_mode
+    ai_evaluation_mode = data['mode']
+    emit_mode_change(ai_evaluation_mode)
+
+def emit_mode_change(mode):
+    socketio.emit('mode_changed', {'mode': mode})
 
 
 def get_current_model_config():
