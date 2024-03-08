@@ -20,266 +20,266 @@
   20              	 .thumb_func
   22              	XMC_FLASH_IsBusy:
   23              	.LFB47:
-  24              	 .file 1 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc/xmc_flash.h"
-   1:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
-   2:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @file xmc_flash.h
-   3:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @date 2015-06-20
-   4:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-   5:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @cond
-   6:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
-   7:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMClib v2.1.18 - XMC Peripheral Driver Library 
-   8:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-   9:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Copyright (c) 2015-2018, Infineon Technologies AG
-  10:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * All rights reserved.                        
-  11:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *                                             
-  12:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
-  13:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * following conditions are met:   
-  14:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
-  15:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
-  16:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * disclaimer.                        
-  17:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * 
-  18:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
-  19:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
-  20:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * 
-  21:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
-  22:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * products derived from this software without specific prior written permission.                  
-  23:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
-  24:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
-  25:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
-  26:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
-  27:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
-  28:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
-  29:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-  30:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
-  31:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
-  32:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
-  33:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
-  34:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
-  35:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-  36:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Change History
-  37:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * --------------
-  38:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-  39:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * 2014-12-10:
-  40:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Initial <br>
-  41:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * 2015-02-20:
-  42:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Updated for Documentation related changes<br>
-  43:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * 2015-06-20: 
-  44:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Removed version macros and declaration of GetDriverVersion API 
-  45:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @endcond 
-  46:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-  47:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
-  48:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  49:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  50:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #ifndef XMC_FLASH_H
-  51:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #define XMC_FLASH_H
-  52:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  53:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**************************************************************************************************
-  54:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * HEADER FILES
-  55:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
-  56:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  57:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #include "xmc_common.h"
-  58:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  59:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #if UC_FAMILY == XMC1
-  60:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  #include "xmc1_flash.h"
-  61:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #endif
-  62:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  
-  63:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #if UC_FAMILY == XMC4
-  64:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  #include "xmc4_flash.h"
-  65:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #endif
-  66:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  67:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
-  68:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @addtogroup XMClib XMC Peripheral Library
-  69:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @{
-  70:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
-  71:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  72:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
-  73:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @addtogroup FLASH
-  74:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @brief Flash driver for XMC microcontroller family.
-  75:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
-  76:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Flash is a non volatile memory module used to store instruction code or constant data.
-  77:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * The flash low level driver provides support to the following functionalities of flash memory.<BR
-  78:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <OL>
-  79:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
-  80:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to program a page. ( XMC_FLASH_ProgramPage() )</LI><BR>
-  81:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to support read and write protection. ( XMC_FLASH_InstallProtection(), 
-  82:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_ConfirmProtection(), XMC_FLASH_VerifyReadProtection(), XMC_FLASH_VerifyWriteProtection
-  83:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to erase sector. ( XMC_FLASH_EraseSector() ) </LI><BR> 
-  84:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
-  85:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
-  86:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to program and verify pages. ( XMC_FLASH_ProgramPage(), XMC_FLASH_Program
-  87:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *  XMC_FLASH_ProgramVerifyPage() )</LI><BR>
-  88:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to write and verify blocks. ( XMC_FLASH_WriteBlocks(), XMC_FLASH_VerifyBl
-  89:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to read data in terms of word and blocks. ( XMC_FLASH_ReadBlocks(), XMC_F
-  90:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * </LI><BR> 
-  91:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to erase page. ( XMC_FLASH_ErasePage() ) </LI><BR> 
-  92:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
-  93:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * </OL>
-  94:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @{
-  95:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
-  96:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
-  97:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /*******************************************************************************
-  98:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * API PROTOTYPE
-  99:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *******************************************************************************/
- 100:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #ifdef __cplusplus
- 101:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** extern "C" {
- 102:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** #endif
- 103:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 104:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 105:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 106:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
- 107:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 108:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
- 109:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 110:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 111:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
- 112:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Clears the previous error status by reseting the ECC and VERR error status bits of NVMSTATUS reg
- 113:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Call this API before starting any flash programming / erase related APIs to ensure all previous 
- 114:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 115:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
- 116:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Clears the previous error status by reseting the FSR status register.\n\n  Call this API before 
- 117:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * programming / erase related APIs to ensure all previous errors are cleared.
- 118:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 119:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 120:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 121:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * None 
- 122:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 123:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 124:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_ClearStatus(void);
- 125:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 126:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 127:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 128:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
- 129:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 130:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return uint32_t Status of the previous flash operation.
- 131:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 132:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 133:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
- 134:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Informs the status of flash by reading the NVMSTATUS register.\n\n  It indicates the ECC, VERR(v
- 135:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * WRPERR (Write protocol error) errors as well as the current flash state. After calling the flash
- 136:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * operation related APIs, call this API to get the verification status. The return value of this A
- 137:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * against the members of @ref XMC_FLASH_STATUS_t enumeration to get the relevant status.
- 138:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 139:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
- 140:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Informs the status of flash by reading the FSR register.\n\n  It indicates the error status such
- 141:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * PROER, PFDBER, ORIER, VER errors as well as the current flash state. After calling the flash rea
- 142:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * operation related APIs, call this API to verify flash status. The return value of this API shall
- 143:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * the members of @ref XMC_FLASH_STATUS_t enumeration to get the relevant status.
- 144:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 145:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 146:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 147:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * None
- 148:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 149:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 150:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** uint32_t XMC_FLASH_GetStatus(void);
- 151:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 152:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 153:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 154:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param event_msk ORed values of @ref XMC_FLASH_EVENT_t enumeration
- 155:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 156:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
- 157:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 158:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 159:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Enables the particular flash events as specified in the input parameter.\n
- 160:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 161:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 162:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_DisableEvent()\n\n\n
- 163:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 164:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 165:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_EnableEvent(const uint32_t event_msk);
- 166:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 167:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 168:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 169:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param event_msk ORed values of @ref XMC_FLASH_EVENT_t enumeration
- 170:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 171:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
- 172:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 173:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 174:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Disables the particular flash events as specified in the input parameter.\n
- 175:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 176:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 177:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_EnableEvent()\n\n\n
- 178:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 179:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 180:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_DisableEvent(const uint32_t event_msk);
- 181:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 182:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 183:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 184:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param address    Pointer to the starting address of flash page from where the programming start
- 185:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param data       Pointer to the source address where targeted data is located.
- 186:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 187:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
- 188:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 189:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 190:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
- 191:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Programs a single flash page associated with the specified \a address.\n\n XMC1000 Flash can be 
- 192:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * page (256 bytes) using this API. It calls the Flash Firmware routine \a XMC1000_NvmProgVerify(un
- 193:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * to perform the programming. Refer XMC1000 reference manual of for more details on flash firmware
- 194:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * (Section 25.3). Call XMC_FLASH_GetStatus() API after calling this API, to verify the programming
- 195:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 196:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
- 197:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Programs a single flash page associated with the specified \a address.\n\n  XMC4000 flash can be
- 198:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * granularity of 256 bytes page using this API. Before entering into page write process, it clears
- 199:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * bits inside status register. It starts the write process by issuing the page mode command follow
- 200:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * command which loads the targeted \a data blocks into internal assembly buffer. Finally, it issue
- 201:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * command which programs the \a data into flash. Call XMC_FLASH_GetStatus() API after calling this
- 202:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * programming operation.\n
- 203:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 204:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 205:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Note:</b><br>
- 206:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Flash will be busy state during write is ongoing, hence no operations allowed until it completes
- 207:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 208:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 209:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * None 
- 210:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 211:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 212:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_ProgramPage(uint32_t *address, const uint32_t *data);
- 213:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 214:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 215:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 216:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param address Pointer to the starting address of the page to be erased.
- 217:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 218:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
- 219:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 220:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 221:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
- 222:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Erases a complete sector starting from the \a address specified.\n\n  XMC1000 Flash can be erase
- 223:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * of one page = 16 blocks of 16 Bytes = 256 Bytes using this API. It internally calls XMC_FLASH_Er
- 224:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * times starting from the first page of the sector.. Call XMC_FLASH_GetStatus() API after calling 
- 225:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * to verify the erase operation.\n
- 226:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 227:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 228:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
- 229:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Erases a sector associated with the specified \a address.\n\n  Before erase, it clears the error
- 230:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * FSR status register. Issues the erase sector command sequence with the specified starting \a add
- 231:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * erase process. Call XMC_FLASH_GetStatus() API after calling this API, to verify the erase operat
- 232:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 233:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
- 234:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 235:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_ErasePages() \n\n\n
- 236:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 237:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
- 238:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 239:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * None
- 240:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
- 241:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 242:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_EraseSector(uint32_t *address);
- 243:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** 
- 244:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** /**
- 245:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 246:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
- 247:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 248:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * @return true if flash is in busy state else returns \a false.
- 249:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 250:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
- 251:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Checks whether flash is in busy state or not.\n\n  It is checked by calling the XMC_FLASH_GetSta
- 252:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * Refer XMC_FLASH_GetStatus() for more details.\n
- 253:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 254:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
- 255:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_GetStatus()\n\n\n
- 256:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  *
- 257:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****  */
- 258:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** __STATIC_INLINE bool XMC_FLASH_IsBusy(void)
- 259:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** {
+  24              	 .file 1 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc/xmc_flash.h"
+   1:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+   2:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @file xmc_flash.h
+   3:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @date 2015-06-20
+   4:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+   5:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @cond
+   6:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
+   7:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMClib v2.1.18 - XMC Peripheral Driver Library 
+   8:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+   9:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Copyright (c) 2015-2018, Infineon Technologies AG
+  10:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * All rights reserved.                        
+  11:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *                                             
+  12:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
+  13:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * following conditions are met:   
+  14:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
+  15:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
+  16:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * disclaimer.                        
+  17:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * 
+  18:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
+  19:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
+  20:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * 
+  21:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
+  22:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * products derived from this software without specific prior written permission.                  
+  23:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
+  24:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
+  25:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
+  26:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
+  27:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
+  28:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
+  29:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+  30:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
+  31:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *                                                                              
+  32:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
+  33:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
+  34:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
+  35:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+  36:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Change History
+  37:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * --------------
+  38:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+  39:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * 2014-12-10:
+  40:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Initial <br>
+  41:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * 2015-02-20:
+  42:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Updated for Documentation related changes<br>
+  43:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * 2015-06-20: 
+  44:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *     - Removed version macros and declaration of GetDriverVersion API 
+  45:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @endcond 
+  46:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+  47:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+  48:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  49:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  50:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #ifndef XMC_FLASH_H
+  51:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #define XMC_FLASH_H
+  52:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  53:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**************************************************************************************************
+  54:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * HEADER FILES
+  55:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  **************************************************************************************************
+  56:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  57:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #include "xmc_common.h"
+  58:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  59:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #if UC_FAMILY == XMC1
+  60:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  #include "xmc1_flash.h"
+  61:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #endif
+  62:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  
+  63:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #if UC_FAMILY == XMC4
+  64:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  #include "xmc4_flash.h"
+  65:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #endif
+  66:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  67:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+  68:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @addtogroup XMClib XMC Peripheral Library
+  69:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @{
+  70:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+  71:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  72:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+  73:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @addtogroup FLASH
+  74:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @brief Flash driver for XMC microcontroller family.
+  75:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+  76:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Flash is a non volatile memory module used to store instruction code or constant data.
+  77:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * The flash low level driver provides support to the following functionalities of flash memory.<BR
+  78:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <OL>
+  79:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+  80:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to program a page. ( XMC_FLASH_ProgramPage() )</LI><BR>
+  81:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to support read and write protection. ( XMC_FLASH_InstallProtection(), 
+  82:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_ConfirmProtection(), XMC_FLASH_VerifyReadProtection(), XMC_FLASH_VerifyWriteProtection
+  83:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to erase sector. ( XMC_FLASH_EraseSector() ) </LI><BR> 
+  84:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+  85:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+  86:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to program and verify pages. ( XMC_FLASH_ProgramPage(), XMC_FLASH_Program
+  87:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *  XMC_FLASH_ProgramVerifyPage() )</LI><BR>
+  88:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to write and verify blocks. ( XMC_FLASH_WriteBlocks(), XMC_FLASH_VerifyBl
+  89:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides functions to read data in terms of word and blocks. ( XMC_FLASH_ReadBlocks(), XMC_F
+  90:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * </LI><BR> 
+  91:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * <LI>Provides function to erase page. ( XMC_FLASH_ErasePage() ) </LI><BR> 
+  92:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+  93:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * </OL>
+  94:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @{
+  95:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+  96:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+  97:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /*******************************************************************************
+  98:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * API PROTOTYPE
+  99:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *******************************************************************************/
+ 100:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #ifdef __cplusplus
+ 101:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** extern "C" {
+ 102:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** #endif
+ 103:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 104:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 105:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 106:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
+ 107:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 108:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
+ 109:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 110:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 111:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+ 112:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Clears the previous error status by reseting the ECC and VERR error status bits of NVMSTATUS reg
+ 113:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Call this API before starting any flash programming / erase related APIs to ensure all previous 
+ 114:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 115:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+ 116:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Clears the previous error status by reseting the FSR status register.\n\n  Call this API before 
+ 117:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * programming / erase related APIs to ensure all previous errors are cleared.
+ 118:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 119:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 120:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 121:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * None 
+ 122:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 123:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 124:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_ClearStatus(void);
+ 125:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 126:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 127:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 128:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
+ 129:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 130:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return uint32_t Status of the previous flash operation.
+ 131:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 132:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 133:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+ 134:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Informs the status of flash by reading the NVMSTATUS register.\n\n  It indicates the ECC, VERR(v
+ 135:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * WRPERR (Write protocol error) errors as well as the current flash state. After calling the flash
+ 136:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * operation related APIs, call this API to get the verification status. The return value of this A
+ 137:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * against the members of @ref XMC_FLASH_STATUS_t enumeration to get the relevant status.
+ 138:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 139:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+ 140:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Informs the status of flash by reading the FSR register.\n\n  It indicates the error status such
+ 141:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * PROER, PFDBER, ORIER, VER errors as well as the current flash state. After calling the flash rea
+ 142:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * operation related APIs, call this API to verify flash status. The return value of this API shall
+ 143:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * the members of @ref XMC_FLASH_STATUS_t enumeration to get the relevant status.
+ 144:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 145:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 146:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 147:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * None
+ 148:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 149:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 150:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** uint32_t XMC_FLASH_GetStatus(void);
+ 151:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 152:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 153:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 154:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param event_msk ORed values of @ref XMC_FLASH_EVENT_t enumeration
+ 155:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 156:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
+ 157:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 158:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 159:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Enables the particular flash events as specified in the input parameter.\n
+ 160:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 161:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 162:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_DisableEvent()\n\n\n
+ 163:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 164:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 165:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_EnableEvent(const uint32_t event_msk);
+ 166:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 167:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 168:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 169:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param event_msk ORed values of @ref XMC_FLASH_EVENT_t enumeration
+ 170:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 171:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
+ 172:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 173:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 174:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Disables the particular flash events as specified in the input parameter.\n
+ 175:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 176:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 177:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_EnableEvent()\n\n\n
+ 178:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 179:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 180:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_DisableEvent(const uint32_t event_msk);
+ 181:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 182:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 183:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 184:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param address    Pointer to the starting address of flash page from where the programming start
+ 185:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param data       Pointer to the source address where targeted data is located.
+ 186:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 187:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
+ 188:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 189:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 190:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+ 191:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Programs a single flash page associated with the specified \a address.\n\n XMC1000 Flash can be 
+ 192:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * page (256 bytes) using this API. It calls the Flash Firmware routine \a XMC1000_NvmProgVerify(un
+ 193:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * to perform the programming. Refer XMC1000 reference manual of for more details on flash firmware
+ 194:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * (Section 25.3). Call XMC_FLASH_GetStatus() API after calling this API, to verify the programming
+ 195:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 196:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+ 197:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Programs a single flash page associated with the specified \a address.\n\n  XMC4000 flash can be
+ 198:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * granularity of 256 bytes page using this API. Before entering into page write process, it clears
+ 199:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * bits inside status register. It starts the write process by issuing the page mode command follow
+ 200:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * command which loads the targeted \a data blocks into internal assembly buffer. Finally, it issue
+ 201:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * command which programs the \a data into flash. Call XMC_FLASH_GetStatus() API after calling this
+ 202:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * programming operation.\n
+ 203:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 204:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 205:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Note:</b><br>
+ 206:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Flash will be busy state during write is ongoing, hence no operations allowed until it completes
+ 207:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 208:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 209:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * None 
+ 210:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 211:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 212:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_ProgramPage(uint32_t *address, const uint32_t *data);
+ 213:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 214:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 215:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 216:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param address Pointer to the starting address of the page to be erased.
+ 217:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 218:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return None
+ 219:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 220:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 221:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+ 222:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Erases a complete sector starting from the \a address specified.\n\n  XMC1000 Flash can be erase
+ 223:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * of one page = 16 blocks of 16 Bytes = 256 Bytes using this API. It internally calls XMC_FLASH_Er
+ 224:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * times starting from the first page of the sector.. Call XMC_FLASH_GetStatus() API after calling 
+ 225:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * to verify the erase operation.\n
+ 226:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 227:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 228:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+ 229:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Erases a sector associated with the specified \a address.\n\n  Before erase, it clears the error
+ 230:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * FSR status register. Issues the erase sector command sequence with the specified starting \a add
+ 231:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * erase process. Call XMC_FLASH_GetStatus() API after calling this API, to verify the erase operat
+ 232:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 233:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC1
+ 234:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 235:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_ErasePages() \n\n\n
+ 236:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 237:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \if XMC4
+ 238:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 239:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * None
+ 240:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \endif
+ 241:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 242:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** void XMC_FLASH_EraseSector(uint32_t *address);
+ 243:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** 
+ 244:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** /**
+ 245:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 246:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @param None
+ 247:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 248:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * @return true if flash is in busy state else returns \a false.
+ 249:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 250:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Description:</b><br>
+ 251:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Checks whether flash is in busy state or not.\n\n  It is checked by calling the XMC_FLASH_GetSta
+ 252:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * Refer XMC_FLASH_GetStatus() for more details.\n
+ 253:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 254:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * \par<b>Related APIs:</b><BR>
+ 255:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  * XMC_FLASH_GetStatus()\n\n\n
+ 256:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  *
+ 257:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****  */
+ 258:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** __STATIC_INLINE bool XMC_FLASH_IsBusy(void)
+ 259:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** {
   25              	 .loc 1 259 0
   26              	 .cfi_startproc
   27 0000 80B5     	 push {r7,lr}
@@ -290,7 +290,7 @@
   32 0002 00AF     	 add r7,sp,#0
   33              	.LCFI1:
   34              	 .cfi_def_cfa_register 7
- 260:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h ****   return (bool)(XMC_FLASH_GetStatus() & XMC_FLASH_STATUS_BUSY);
+ 260:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h ****   return (bool)(XMC_FLASH_GetStatus() & XMC_FLASH_STATUS_BUSY);
   35              	 .loc 1 260 0
   36 0004 FFF7FEFF 	 bl XMC_FLASH_GetStatus
   37 0008 021C     	 mov r2,r0
@@ -299,7 +299,7 @@
   40 000e 5A1E     	 sub r2,r3,#1
   41 0010 9341     	 sbc r3,r3,r2
   42 0012 DBB2     	 uxtb r3,r3
- 261:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_flash.h **** }
+ 261:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_flash.h **** }
   43              	 .loc 1 261 0
   44 0014 181C     	 mov r0,r3
   45 0016 BD46     	 mov sp,r7
@@ -1258,11 +1258,11 @@
  756              	.LFE59:
  758              	 .text
  759              	.Letext0:
- 760              	 .file 3 "c:\\users\\follower\\downloads\\dave-ide-4.4.2-64bit\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 761              	 .file 4 "c:\\users\\follower\\downloads\\dave-ide-4.4.2-64bit\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 762              	 .file 5 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1100.h"
- 763              	 .file 6 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1000_RomFunctionTable.h"
- 764              	 .file 7 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc/xmc1_flash.h"
+ 760              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 761              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 762              	 .file 5 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1100.h"
+ 763              	 .file 6 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1000_RomFunctionTable.h"
+ 764              	 .file 7 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc/xmc1_flash.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 xmc1_flash.c
     {standard input}:18     .text.XMC_FLASH_IsBusy:00000000 $t

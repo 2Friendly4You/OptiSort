@@ -20,180 +20,180 @@
   20              	 .thumb_func
   22              	XMC_PRNG_SetRandomDataBlockSize:
   23              	.LFB41:
-  24              	 .file 1 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc/xmc_prng.h"
-   1:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-   2:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
-   3:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @file xmc_prng.h
-   4:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @date 2015-06-20
-   5:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-   6:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @cond
-   7:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
-   8:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * XMClib v2.1.18 - XMC Peripheral Driver Library 
-   9:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  10:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Copyright (c) 2015-2018, Infineon Technologies AG
-  11:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * All rights reserved.                        
-  12:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *                                             
-  13:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
-  14:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * following conditions are met:   
-  15:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
-  16:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
-  17:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * disclaimer.                        
-  18:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * 
-  19:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
-  20:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
-  21:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * 
-  22:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
-  23:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * products derived from this software without specific prior written permission.                  
-  24:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
-  25:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
-  26:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
-  27:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
-  28:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
-  29:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
-  30:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
-  31:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
-  32:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
-  33:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
-  34:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
-  35:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
-  36:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  37:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Change History
-  38:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * --------------
-  39:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  40:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * 2015-02-20:
-  41:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Initial <br>
-  42:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Documentation updates <br>
-  43:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  44:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * 2015-06-20:
-  45:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Removed version macros and declaration of GetDriverVersion API <br>
-  46:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  47:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @endcond
-  48:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
-  49:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  
-  50:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #ifndef XMC_PRNG_H
-  51:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #define XMC_PRNG_H
-  52:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  53:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
-  54:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * HEADER FILES
-  55:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
-  56:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  57:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #include "xmc_common.h"
-  58:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  59:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #if defined (PRNG) 
-  60:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  61:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
-  62:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @addtogroup XMClib XMC Peripheral Library
-  63:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @{
-  64:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
-  65:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  66:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
-  67:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @addtogroup PRNG
-  68:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @brief Pseudo Random Number Generator (PRNG) driver for XMC1000 microcontroller family
-  69:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
-  70:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The pseudo random bit generator (PRNG) provides random data with fast generation times.
-  71:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG has to be initialized by the user software before use. The initialization consists
-  72:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * of two basic phases: key-loading and warm-up.
-  73:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *  
-  74:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The PRNG low level driver provides functions to configure and initialize the PRNG hardware
-  75:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * peripheral.
-  76:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @{
-  77:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */  
-  78:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  79:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
-  80:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * MACROS
-  81:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
-  82:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  
-  83:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
-  84:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Byte mask value for random data block size
-  85:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */ 
-  86:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #define XMC_PRNG_RDBS_BYTE_READ_MASK (0x00FFU)
-  87:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  88:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
-  89:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * ENUMS
-  90:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
-  91:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
-  92:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
-  93:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG key load operation modes
-  94:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
-  95:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_KEY_LOAD_OP_MODE {
-  96:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_STRM_MODE = 0U, /**< Streaming mode (default) */
-  97:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_KLD_MODE  = 1U  /**< Loading mode */
-  98:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_KEY_LOAD_OP_MODE_t;
-  99:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 100:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 101:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG data block size
- 102:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 103:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_DATA_BLOCK_SIZE {
- 104:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_RESET = 0U, /**< Reset state (no random data block size defined) */
- 105:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_BYTE  = 1U, /**< BYTE (8-bit) */
- 106:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_WORD  = 2U  /**< WORD (16-bit) */
- 107:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_DATA_BLOCK_SIZE_t;
- 108:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 109:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 110:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG driver initialization status
- 111:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 112:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_INIT_STATUS {
- 113:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_NOT_INITIALIZED = 0U, /**< Reset state or Non-initialized state (Same as XMC_PRNG_RDBS_R
- 114:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_INITIALIZED     = 1U  /**< Initialized state */
- 115:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_INIT_STATUS_t;
- 116:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 117:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
- 118:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * DATA STRUCTURES
- 119:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
- 120:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 121:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 122:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Key words and data block size configuration values of PRNG <br>
- 123:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 124:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The structure presents a convenient way to set/obtain the key word and data block configuration
- 125:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * values of PRNG.
- 126:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The XMC_PRNG_Init() can be used to populate the structure with the key word and data block
- 127:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * configuration values of the PRNG module.
- 128:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */ 
- 129:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** typedef struct XMC_PRNG_INIT
- 130:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
- 131:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   uint16_t key_words[5];                 /**< Keywords */
- 132:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_DATA_BLOCK_SIZE_t block_size; /**< Block size */
- 133:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_INIT_t;
- 134:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 135:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
- 136:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * API PROTOTYPES
- 137:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
- 138:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 139:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #ifdef __cplusplus
- 140:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** extern "C" {
- 141:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** #endif
- 142:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 143:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 144:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @param prng Pointer to a constant instance of ::XMC_PRNG_INIT_t, pointing to
- 145:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *             the initialization configuration.
- 146:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return XMC_PRNG_INIT_STATUS_t XMC_PRNG_INITIALIZED if initialized,
- 147:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *                                XMC_PRNG_NOT_INITIALIZED otherwise.
- 148:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 149:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 150:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Initialize the PRNG peripheral with the configured key words and block size <br>
- 151:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 152:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 153:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function configures block size for key loading mode, enables key loading mode,
- 154:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * loads key words (80 bits) and wait till RDV is set, enables the streaming mode and
- 155:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * waits for warmup phase. This function programmes the CTRL and WORD registers. 
- 156:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 157:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** XMC_PRNG_INIT_STATUS_t XMC_PRNG_Init(const XMC_PRNG_INIT_t *prng);
- 158:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 159:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 160:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 161:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 162:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @param block_size Block size of type ::XMC_PRNG_DATA_BLOCK_SIZE_t for read access
- 163:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
- 164:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 165:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 166:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Programming Random Block Size <br>
- 167:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 168:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 169:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function sets the random data block size as byte or word by programming CTRL.RDBS bitfield.
- 170:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * block_size = 0 for Reset state, block_size = 1 for 'byte' and block_size = 2 for 'word'.
- 171:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 172:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_SetRandomDataBlockSize(XMC_PRNG_DATA_BLOCK_SIZE_t block_size)
- 173:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
+  24              	 .file 1 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc/xmc_prng.h"
+   1:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+   2:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+   3:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @file xmc_prng.h
+   4:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @date 2015-06-20
+   5:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+   6:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @cond
+   7:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+   8:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * XMClib v2.1.18 - XMC Peripheral Driver Library 
+   9:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  10:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Copyright (c) 2015-2018, Infineon Technologies AG
+  11:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * All rights reserved.                        
+  12:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *                                             
+  13:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistribution and use in source and binary forms, with or without modification,are permitted pr
+  14:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * following conditions are met:   
+  15:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
+  16:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistributions of source code must retain the above copyright notice, this list of conditions a
+  17:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * disclaimer.                        
+  18:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * 
+  19:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Redistributions in binary form must reproduce the above copyright notice, this list of condition
+  20:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * disclaimer in the documentation and/or other materials provided with the distribution.          
+  21:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * 
+  22:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Neither the name of the copyright holders nor the names of its contributors may be used to endor
+  23:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * products derived from this software without specific prior written permission.                  
+  24:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
+  25:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR I
+  26:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTI
+  27:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE  FOR ANY DIRECT, IN
+  28:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBS
+  29:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THE
+  30:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * WHETHER IN CONTRACT, STRICT LIABILITY,OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY
+  31:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                            
+  32:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *                                                                              
+  33:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * To improve the quality of the software, users are encouraged to share modifications, enhancement
+  34:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Infineon Technologies AG dave@infineon.com).                                                    
+  35:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+  36:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  37:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Change History
+  38:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * --------------
+  39:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  40:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * 2015-02-20:
+  41:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Initial <br>
+  42:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Documentation updates <br>
+  43:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  44:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * 2015-06-20:
+  45:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *     - Removed version macros and declaration of GetDriverVersion API <br>
+  46:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  47:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @endcond
+  48:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+  49:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  
+  50:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #ifndef XMC_PRNG_H
+  51:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #define XMC_PRNG_H
+  52:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  53:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
+  54:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * HEADER FILES
+  55:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+  56:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  57:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #include "xmc_common.h"
+  58:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  59:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #if defined (PRNG) 
+  60:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  61:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+  62:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @addtogroup XMClib XMC Peripheral Library
+  63:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @{
+  64:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+  65:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  66:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+  67:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @addtogroup PRNG
+  68:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @brief Pseudo Random Number Generator (PRNG) driver for XMC1000 microcontroller family
+  69:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+  70:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The pseudo random bit generator (PRNG) provides random data with fast generation times.
+  71:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG has to be initialized by the user software before use. The initialization consists
+  72:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * of two basic phases: key-loading and warm-up.
+  73:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *  
+  74:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The PRNG low level driver provides functions to configure and initialize the PRNG hardware
+  75:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * peripheral.
+  76:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @{
+  77:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */  
+  78:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  79:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
+  80:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * MACROS
+  81:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+  82:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  
+  83:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+  84:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Byte mask value for random data block size
+  85:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */ 
+  86:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #define XMC_PRNG_RDBS_BYTE_READ_MASK (0x00FFU)
+  87:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  88:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
+  89:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * ENUMS
+  90:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+  91:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+  92:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+  93:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG key load operation modes
+  94:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+  95:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_KEY_LOAD_OP_MODE {
+  96:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_STRM_MODE = 0U, /**< Streaming mode (default) */
+  97:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_KLD_MODE  = 1U  /**< Loading mode */
+  98:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_KEY_LOAD_OP_MODE_t;
+  99:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 100:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 101:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG data block size
+ 102:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 103:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_DATA_BLOCK_SIZE {
+ 104:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_RESET = 0U, /**< Reset state (no random data block size defined) */
+ 105:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_BYTE  = 1U, /**< BYTE (8-bit) */
+ 106:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_RDBS_WORD  = 2U  /**< WORD (16-bit) */
+ 107:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_DATA_BLOCK_SIZE_t;
+ 108:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 109:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 110:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * PRNG driver initialization status
+ 111:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 112:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** typedef enum XMC_PRNG_INIT_STATUS {
+ 113:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_NOT_INITIALIZED = 0U, /**< Reset state or Non-initialized state (Same as XMC_PRNG_RDBS_R
+ 114:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_INITIALIZED     = 1U  /**< Initialized state */
+ 115:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_INIT_STATUS_t;
+ 116:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 117:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
+ 118:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * DATA STRUCTURES
+ 119:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+ 120:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 121:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 122:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Key words and data block size configuration values of PRNG <br>
+ 123:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 124:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The structure presents a convenient way to set/obtain the key word and data block configuration
+ 125:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * values of PRNG.
+ 126:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The XMC_PRNG_Init() can be used to populate the structure with the key word and data block
+ 127:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * configuration values of the PRNG module.
+ 128:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */ 
+ 129:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** typedef struct XMC_PRNG_INIT
+ 130:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
+ 131:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   uint16_t key_words[5];                 /**< Keywords */
+ 132:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   XMC_PRNG_DATA_BLOCK_SIZE_t block_size; /**< Block size */
+ 133:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** } XMC_PRNG_INIT_t;
+ 134:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 135:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**************************************************************************************************
+ 136:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * API PROTOTYPES
+ 137:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  **************************************************************************************************
+ 138:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 139:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #ifdef __cplusplus
+ 140:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** extern "C" {
+ 141:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** #endif
+ 142:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 143:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 144:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @param prng Pointer to a constant instance of ::XMC_PRNG_INIT_t, pointing to
+ 145:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *             the initialization configuration.
+ 146:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return XMC_PRNG_INIT_STATUS_t XMC_PRNG_INITIALIZED if initialized,
+ 147:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *                                XMC_PRNG_NOT_INITIALIZED otherwise.
+ 148:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 149:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 150:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Initialize the PRNG peripheral with the configured key words and block size <br>
+ 151:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 152:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 153:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function configures block size for key loading mode, enables key loading mode,
+ 154:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * loads key words (80 bits) and wait till RDV is set, enables the streaming mode and
+ 155:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * waits for warmup phase. This function programmes the CTRL and WORD registers. 
+ 156:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 157:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** XMC_PRNG_INIT_STATUS_t XMC_PRNG_Init(const XMC_PRNG_INIT_t *prng);
+ 158:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 159:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 160:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 161:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 162:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @param block_size Block size of type ::XMC_PRNG_DATA_BLOCK_SIZE_t for read access
+ 163:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
+ 164:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 165:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 166:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Programming Random Block Size <br>
+ 167:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 168:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 169:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function sets the random data block size as byte or word by programming CTRL.RDBS bitfield.
+ 170:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * block_size = 0 for Reset state, block_size = 1 for 'byte' and block_size = 2 for 'word'.
+ 171:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 172:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_SetRandomDataBlockSize(XMC_PRNG_DATA_BLOCK_SIZE_t block_size)
+ 173:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
   25              	 .loc 1 173 0
   26              	 .cfi_startproc
   27 0000 80B5     	 push {r7,lr}
@@ -210,7 +210,7 @@
   38 0006 021C     	 mov r2,r0
   39 0008 FB1D     	 add r3,r7,#7
   40 000a 1A70     	 strb r2,[r3]
- 174:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL = (uint16_t)((PRNG->CTRL & (uint32_t)~PRNG_CTRL_RDBS_Msk) |
+ 174:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL = (uint16_t)((PRNG->CTRL & (uint32_t)~PRNG_CTRL_RDBS_Msk) |
   41              	 .loc 1 174 0
   42 000c 0849     	 ldr r1,.L2
   43 000e 084B     	 ldr r3,.L2
@@ -227,8 +227,8 @@
   54 0024 1343     	 orr r3,r2
   55 0026 9BB2     	 uxth r3,r3
   56 0028 8B81     	 strh r3,[r1,#12]
- 175:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****                           ((uint32_t)block_size << (uint32_t)PRNG_CTRL_RDBS_Pos));
- 176:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** }
+ 175:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****                           ((uint32_t)block_size << (uint32_t)PRNG_CTRL_RDBS_Pos));
+ 176:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** }
   57              	 .loc 1 176 0
   58 002a BD46     	 mov sp,r7
   59 002c 02B0     	 add sp,sp,#8
@@ -246,20 +246,20 @@
   72              	 .thumb_func
   74              	XMC_PRNG_CheckValidStatus:
   75              	.LFB42:
- 177:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 178:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 179:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
- 180:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 181:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 182:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Checks the validity (CHK.RDV bit) of the generated random data <br>
- 183:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 184:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 185:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function checks the validity (CHK.RDV bit) of the generated random data.
- 186:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * In key loading mode, this value indicates if the next partial key word can be written
- 187:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * to PRNG_WORD or not.
- 188:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 189:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE uint16_t XMC_PRNG_CheckValidStatus(void)
- 190:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
+ 177:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 178:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 179:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
+ 180:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 181:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 182:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Checks the validity (CHK.RDV bit) of the generated random data <br>
+ 183:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 184:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 185:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function checks the validity (CHK.RDV bit) of the generated random data.
+ 186:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * In key loading mode, this value indicates if the next partial key word can be written
+ 187:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * to PRNG_WORD or not.
+ 188:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 189:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE uint16_t XMC_PRNG_CheckValidStatus(void)
+ 190:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
   76              	 .loc 1 190 0
   77              	 .cfi_startproc
   78 0000 80B5     	 push {r7,lr}
@@ -270,7 +270,7 @@
   83 0002 00AF     	 add r7,sp,#0
   84              	.LCFI4:
   85              	 .cfi_def_cfa_register 7
- 191:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   return (PRNG->CHK & PRNG_CHK_RDV_Msk);
+ 191:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   return (PRNG->CHK & PRNG_CHK_RDV_Msk);
   86              	 .loc 1 191 0
   87 0004 044B     	 ldr r3,.L6
   88 0006 9B88     	 ldrh r3,[r3,#4]
@@ -278,7 +278,7 @@
   90 000a 0122     	 mov r2,#1
   91 000c 1340     	 and r3,r2
   92 000e 9BB2     	 uxth r3,r3
- 192:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** }
+ 192:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** }
   93              	 .loc 1 192 0
   94 0010 181C     	 mov r0,r3
   95 0012 BD46     	 mov sp,r7
@@ -296,23 +296,23 @@
  108              	 .thumb_func
  110              	XMC_PRNG_EnableKeyLoadingMode:
  111              	.LFB43:
- 193:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 194:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 195:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
- 196:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 197:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 198:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Enables the PRNG key loading mode <br>
- 199:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 200:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 201:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function initializes the key loading by setting the bit CTRL.KLD. In this mode, Register WOR
- 202:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * acts as always as a 16 bit destination register. After the complete key has been loaded, the CTR
- 203:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * must be set to '0' to prepare the following warmup phase.
- 204:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 205:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Related APIs:</b><br>
- 206:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * XMC_PRNG_EnableStreamingMode()
- 207:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 208:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_EnableKeyLoadingMode(void)
- 209:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
+ 193:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 194:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 195:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
+ 196:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 197:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 198:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Enables the PRNG key loading mode <br>
+ 199:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 200:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 201:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function initializes the key loading by setting the bit CTRL.KLD. In this mode, Register WOR
+ 202:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * acts as always as a 16 bit destination register. After the complete key has been loaded, the CTR
+ 203:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * must be set to '0' to prepare the following warmup phase.
+ 204:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 205:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Related APIs:</b><br>
+ 206:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * XMC_PRNG_EnableStreamingMode()
+ 207:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 208:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_EnableKeyLoadingMode(void)
+ 209:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
  112              	 .loc 1 209 0
  113              	 .cfi_startproc
  114 0000 80B5     	 push {r7,lr}
@@ -323,7 +323,7 @@
  119 0002 00AF     	 add r7,sp,#0
  120              	.LCFI6:
  121              	 .cfi_def_cfa_register 7
- 210:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL |= (uint16_t)PRNG_CTRL_KLD_Msk;
+ 210:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL |= (uint16_t)PRNG_CTRL_KLD_Msk;
  122              	 .loc 1 210 0
  123 0004 044A     	 ldr r2,.L9
  124 0006 044B     	 ldr r3,.L9
@@ -333,7 +333,7 @@
  128 000e 0B43     	 orr r3,r1
  129 0010 9BB2     	 uxth r3,r3
  130 0012 9381     	 strh r3,[r2,#12]
- 211:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** }
+ 211:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** }
  131              	 .loc 1 211 0
  132 0014 BD46     	 mov sp,r7
  133              	 
@@ -350,22 +350,22 @@
  145              	 .thumb_func
  147              	XMC_PRNG_EnableStreamingMode:
  148              	.LFB44:
- 212:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 213:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 214:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
- 215:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 216:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 217:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Enables the Streaming mode <br>
- 218:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 219:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 220:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function enables the streaming mode and disables the PRNG key loading mode by resetting the
- 221:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * CTRL.KLD bit. 
- 222:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 223:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Related APIs:</b><br>
- 224:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * XMC_PRNG_EnableKeyLoadingMode()
- 225:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 226:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_EnableStreamingMode(void)
- 227:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
+ 212:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 213:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 214:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
+ 215:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 216:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 217:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Enables the Streaming mode <br>
+ 218:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 219:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 220:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function enables the streaming mode and disables the PRNG key loading mode by resetting the
+ 221:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * CTRL.KLD bit. 
+ 222:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 223:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Related APIs:</b><br>
+ 224:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * XMC_PRNG_EnableKeyLoadingMode()
+ 225:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 226:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_EnableStreamingMode(void)
+ 227:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
  149              	 .loc 1 227 0
  150              	 .cfi_startproc
  151 0000 80B5     	 push {r7,lr}
@@ -376,7 +376,7 @@
  156 0002 00AF     	 add r7,sp,#0
  157              	.LCFI8:
  158              	 .cfi_def_cfa_register 7
- 228:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL &= (uint16_t)~PRNG_CTRL_KLD_Msk;
+ 228:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->CTRL &= (uint16_t)~PRNG_CTRL_KLD_Msk;
  159              	 .loc 1 228 0
  160 0004 044A     	 ldr r2,.L12
  161 0006 044B     	 ldr r3,.L12
@@ -386,7 +386,7 @@
  165 000e 8B43     	 bic r3,r1
  166 0010 9BB2     	 uxth r3,r3
  167 0012 9381     	 strh r3,[r2,#12]
- 229:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** }
+ 229:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** }
  168              	 .loc 1 229 0
  169 0014 BD46     	 mov sp,r7
  170              	 
@@ -403,22 +403,22 @@
  182              	 .thumb_func
  184              	XMC_PRNG_LoadKeyWords:
  185              	.LFB45:
- 230:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** 
- 231:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** /**
- 232:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @param key Key word to load into PRNG WORD register
- 233:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
- 234:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 235:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
- 236:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * Loads a partial key word to the PRNG WORD register <br>
- 237:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  *
- 238:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
- 239:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * The function loads partial key word to WORD registr. These partial
- 240:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * words are sequentially written and loading a key word will take 16 clock
- 241:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * cycles. The CHK.RDV bit is set to '0' while loading is in progress. '1' indicates
- 242:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  * that the next partial key word can be written to WORD register. 
- 243:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****  */
- 244:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_LoadKeyWords(uint16_t key)
- 245:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** {
+ 230:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** 
+ 231:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** /**
+ 232:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @param key Key word to load into PRNG WORD register
+ 233:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * @return None
+ 234:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 235:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par<b>Description: </b><br>
+ 236:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * Loads a partial key word to the PRNG WORD register <br>
+ 237:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  *
+ 238:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * \par
+ 239:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * The function loads partial key word to WORD registr. These partial
+ 240:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * words are sequentially written and loading a key word will take 16 clock
+ 241:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * cycles. The CHK.RDV bit is set to '0' while loading is in progress. '1' indicates
+ 242:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  * that the next partial key word can be written to WORD register. 
+ 243:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****  */
+ 244:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** __STATIC_INLINE void XMC_PRNG_LoadKeyWords(uint16_t key)
+ 245:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** {
  186              	 .loc 1 245 0
  187              	 .cfi_startproc
  188 0000 80B5     	 push {r7,lr}
@@ -435,13 +435,13 @@
  199 0006 021C     	 mov r2,r0
  200 0008 BB1D     	 add r3,r7,#6
  201 000a 1A80     	 strh r2,[r3]
- 246:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->WORD = key;
+ 246:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h ****   PRNG->WORD = key;
  202              	 .loc 1 246 0
  203 000c 034A     	 ldr r2,.L15
  204 000e BB1D     	 add r3,r7,#6
  205 0010 1B88     	 ldrh r3,[r3]
  206 0012 1380     	 strh r3,[r2]
- 247:C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/XMCLib/inc\xmc_prng.h **** }
+ 247:C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/XMCLib/inc\xmc_prng.h **** }
  207              	 .loc 1 247 0
  208 0014 BD46     	 mov sp,r7
  209 0016 02B0     	 add sp,sp,#8
@@ -710,9 +710,9 @@
  367              	.LFE47:
  369              	 .text
  370              	.Letext0:
- 371              	 .file 3 "c:\\users\\follower\\downloads\\dave-ide-4.4.2-64bit\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 372              	 .file 4 "c:\\users\\follower\\downloads\\dave-ide-4.4.2-64bit\\dave-ide-4.4.2-64bit\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 373              	 .file 5 "C:/Workspaces/DAVE-4.4.2-64Bit/JuFo/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1100.h"
+ 371              	 .file 3 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 372              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 373              	 .file 5 "C:/Users/Public/OptiSort/OptiSort/Microcontroller/Libraries/CMSIS/Infineon/XMC1100_series/Include/XMC1100.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 xmc_prng.c
     {standard input}:18     .text.XMC_PRNG_SetRandomDataBlockSize:00000000 $t

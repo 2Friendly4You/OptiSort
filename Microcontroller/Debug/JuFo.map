@@ -1,16 +1,16 @@
 Archive member included because of file (symbol)
 
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
                               ./Startup/system_XMC1100.o (__aeabi_uidiv)
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
                               ./Libraries/XMCLib/src/xmc1_scu.o (__aeabi_idiv)
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
-                              c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o) (__aeabi_idiv0)
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+                              c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o) (__aeabi_idiv0)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
                               ./Libraries/Newlib/syscalls.o (__errno)
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
-                              c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o) (_impure_ptr)
-c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                              c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o) (_impure_ptr)
+c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
                               ./Startup/startup_XMC1100.o (__libc_init_array)
 
 Allocating common symbols
@@ -42,8 +42,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x28 ./Libraries/XMCLib/src/xmc1_eru.o
  .debug_ranges  0x00000000       0x18 ./Libraries/XMCLib/src/xmc1_eru.o
- .debug_line    0x00000000      0x1af ./Libraries/XMCLib/src/xmc1_eru.o
- .debug_str     0x00000000      0x258 ./Libraries/XMCLib/src/xmc1_eru.o
+ .debug_line    0x00000000      0x18d ./Libraries/XMCLib/src/xmc1_eru.o
+ .debug_str     0x00000000      0x266 ./Libraries/XMCLib/src/xmc1_eru.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc1_eru.o
  .debug_frame   0x00000000       0x50 ./Libraries/XMCLib/src/xmc1_eru.o
  .ARM.attributes
@@ -83,8 +83,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x80 ./Libraries/XMCLib/src/xmc1_flash.o
  .debug_ranges  0x00000000       0x70 ./Libraries/XMCLib/src/xmc1_flash.o
- .debug_line    0x00000000      0x3dd ./Libraries/XMCLib/src/xmc1_flash.o
- .debug_str     0x00000000      0x60a ./Libraries/XMCLib/src/xmc1_flash.o
+ .debug_line    0x00000000      0x3c9 ./Libraries/XMCLib/src/xmc1_flash.o
+ .debug_str     0x00000000      0x618 ./Libraries/XMCLib/src/xmc1_flash.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc1_flash.o
  .debug_frame   0x00000000      0x1a4 ./Libraries/XMCLib/src/xmc1_flash.o
  .ARM.attributes
@@ -102,8 +102,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x28 ./Libraries/XMCLib/src/xmc1_gpio.o
  .debug_ranges  0x00000000       0x18 ./Libraries/XMCLib/src/xmc1_gpio.o
- .debug_line    0x00000000      0x1d4 ./Libraries/XMCLib/src/xmc1_gpio.o
- .debug_str     0x00000000      0x7a0 ./Libraries/XMCLib/src/xmc1_gpio.o
+ .debug_line    0x00000000      0x1b2 ./Libraries/XMCLib/src/xmc1_gpio.o
+ .debug_str     0x00000000      0x7ae ./Libraries/XMCLib/src/xmc1_gpio.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc1_gpio.o
  .debug_frame   0x00000000       0x58 ./Libraries/XMCLib/src/xmc1_gpio.o
  .ARM.attributes
@@ -137,8 +137,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x68 ./Libraries/XMCLib/src/xmc1_rtc.o
  .debug_ranges  0x00000000       0x58 ./Libraries/XMCLib/src/xmc1_rtc.o
- .debug_line    0x00000000      0x30c ./Libraries/XMCLib/src/xmc1_rtc.o
- .debug_str     0x00000000      0x570 ./Libraries/XMCLib/src/xmc1_rtc.o
+ .debug_line    0x00000000      0x2f8 ./Libraries/XMCLib/src/xmc1_rtc.o
+ .debug_str     0x00000000      0x57e ./Libraries/XMCLib/src/xmc1_rtc.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc1_rtc.o
  .debug_frame   0x00000000      0x13c ./Libraries/XMCLib/src/xmc1_rtc.o
  .ARM.attributes
@@ -224,8 +224,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000      0x128 ./Libraries/XMCLib/src/xmc1_scu.o
  .debug_ranges  0x00000000      0x118 ./Libraries/XMCLib/src/xmc1_scu.o
- .debug_line    0x00000000      0x534 ./Libraries/XMCLib/src/xmc1_scu.o
- .debug_str     0x00000000      0xba3 ./Libraries/XMCLib/src/xmc1_scu.o
+ .debug_line    0x00000000      0x520 ./Libraries/XMCLib/src/xmc1_scu.o
+ .debug_str     0x00000000      0xbb1 ./Libraries/XMCLib/src/xmc1_scu.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc1_scu.o
  .debug_frame   0x00000000      0x42c ./Libraries/XMCLib/src/xmc1_scu.o
  .ARM.attributes
@@ -238,7 +238,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_acmp.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_acmp.o
- .debug_str     0x00000000      0x193 ./Libraries/XMCLib/src/xmc_acmp.o
+ .debug_str     0x00000000      0x1a1 ./Libraries/XMCLib/src/xmc_acmp.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_acmp.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_acmp.o
@@ -250,7 +250,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_bccu.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_bccu.o
- .debug_str     0x00000000      0x193 ./Libraries/XMCLib/src/xmc_bccu.o
+ .debug_str     0x00000000      0x1a1 ./Libraries/XMCLib/src/xmc_bccu.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_bccu.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_bccu.o
@@ -262,7 +262,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_can.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_can.o
- .debug_str     0x00000000      0x192 ./Libraries/XMCLib/src/xmc_can.o
+ .debug_str     0x00000000      0x1a0 ./Libraries/XMCLib/src/xmc_can.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_can.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_can.o
@@ -345,8 +345,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000      0x128 ./Libraries/XMCLib/src/xmc_ccu4.o
  .debug_ranges  0x00000000      0x118 ./Libraries/XMCLib/src/xmc_ccu4.o
- .debug_line    0x00000000      0x58c ./Libraries/XMCLib/src/xmc_ccu4.o
- .debug_str     0x00000000     0x179c ./Libraries/XMCLib/src/xmc_ccu4.o
+ .debug_line    0x00000000      0x578 ./Libraries/XMCLib/src/xmc_ccu4.o
+ .debug_str     0x00000000     0x17aa ./Libraries/XMCLib/src/xmc_ccu4.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_ccu4.o
  .debug_frame   0x00000000      0x458 ./Libraries/XMCLib/src/xmc_ccu4.o
  .ARM.attributes
@@ -359,7 +359,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_ccu8.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_ccu8.o
- .debug_str     0x00000000      0x193 ./Libraries/XMCLib/src/xmc_ccu8.o
+ .debug_str     0x00000000      0x1a1 ./Libraries/XMCLib/src/xmc_ccu8.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_ccu8.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_ccu8.o
@@ -396,8 +396,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x78 ./Libraries/XMCLib/src/xmc_common.o
  .debug_ranges  0x00000000       0x68 ./Libraries/XMCLib/src/xmc_common.o
- .debug_line    0x00000000      0x2c3 ./Libraries/XMCLib/src/xmc_common.o
- .debug_str     0x00000000      0x336 ./Libraries/XMCLib/src/xmc_common.o
+ .debug_line    0x00000000      0x2a1 ./Libraries/XMCLib/src/xmc_common.o
+ .debug_str     0x00000000      0x344 ./Libraries/XMCLib/src/xmc_common.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_common.o
  .debug_frame   0x00000000      0x190 ./Libraries/XMCLib/src/xmc_common.o
  .ARM.attributes
@@ -439,8 +439,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x88 ./Libraries/XMCLib/src/xmc_eru.o
  .debug_ranges  0x00000000       0x78 ./Libraries/XMCLib/src/xmc_eru.o
- .debug_line    0x00000000      0x29d ./Libraries/XMCLib/src/xmc_eru.o
- .debug_str     0x00000000      0xc16 ./Libraries/XMCLib/src/xmc_eru.o
+ .debug_line    0x00000000      0x27b ./Libraries/XMCLib/src/xmc_eru.o
+ .debug_str     0x00000000      0xc24 ./Libraries/XMCLib/src/xmc_eru.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_eru.o
  .debug_frame   0x00000000      0x1f0 ./Libraries/XMCLib/src/xmc_eru.o
  .ARM.attributes
@@ -458,8 +458,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x28 ./Libraries/XMCLib/src/xmc_gpio.o
  .debug_ranges  0x00000000       0x18 ./Libraries/XMCLib/src/xmc_gpio.o
- .debug_line    0x00000000      0x1c7 ./Libraries/XMCLib/src/xmc_gpio.o
- .debug_str     0x00000000      0x6ee ./Libraries/XMCLib/src/xmc_gpio.o
+ .debug_line    0x00000000      0x1a5 ./Libraries/XMCLib/src/xmc_gpio.o
+ .debug_str     0x00000000      0x6fc ./Libraries/XMCLib/src/xmc_gpio.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_gpio.o
  .debug_frame   0x00000000       0x54 ./Libraries/XMCLib/src/xmc_gpio.o
  .ARM.attributes
@@ -509,8 +509,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0xa8 ./Libraries/XMCLib/src/xmc_i2c.o
  .debug_ranges  0x00000000       0x98 ./Libraries/XMCLib/src/xmc_i2c.o
- .debug_line    0x00000000      0x372 ./Libraries/XMCLib/src/xmc_i2c.o
- .debug_str     0x00000000      0xc26 ./Libraries/XMCLib/src/xmc_i2c.o
+ .debug_line    0x00000000      0x350 ./Libraries/XMCLib/src/xmc_i2c.o
+ .debug_str     0x00000000      0xc34 ./Libraries/XMCLib/src/xmc_i2c.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_i2c.o
  .debug_frame   0x00000000      0x250 ./Libraries/XMCLib/src/xmc_i2c.o
  .ARM.attributes
@@ -546,8 +546,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x70 ./Libraries/XMCLib/src/xmc_i2s.o
  .debug_ranges  0x00000000       0x60 ./Libraries/XMCLib/src/xmc_i2s.o
- .debug_line    0x00000000      0x33c ./Libraries/XMCLib/src/xmc_i2s.o
- .debug_str     0x00000000      0xac8 ./Libraries/XMCLib/src/xmc_i2s.o
+ .debug_line    0x00000000      0x328 ./Libraries/XMCLib/src/xmc_i2s.o
+ .debug_str     0x00000000      0xad6 ./Libraries/XMCLib/src/xmc_i2s.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_i2s.o
  .debug_frame   0x00000000      0x170 ./Libraries/XMCLib/src/xmc_i2s.o
  .ARM.attributes
@@ -560,7 +560,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_ledts.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_ledts.o
- .debug_str     0x00000000      0x194 ./Libraries/XMCLib/src/xmc_ledts.o
+ .debug_str     0x00000000      0x1a2 ./Libraries/XMCLib/src/xmc_ledts.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_ledts.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_ledts.o
@@ -572,7 +572,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_math.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_math.o
- .debug_str     0x00000000      0x193 ./Libraries/XMCLib/src/xmc_math.o
+ .debug_str     0x00000000      0x1a1 ./Libraries/XMCLib/src/xmc_math.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_math.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_math.o
@@ -593,8 +593,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x38 ./Libraries/XMCLib/src/xmc_pau.o
  .debug_ranges  0x00000000       0x28 ./Libraries/XMCLib/src/xmc_pau.o
- .debug_line    0x00000000      0x1db ./Libraries/XMCLib/src/xmc_pau.o
- .debug_str     0x00000000      0x4a4 ./Libraries/XMCLib/src/xmc_pau.o
+ .debug_line    0x00000000      0x1b9 ./Libraries/XMCLib/src/xmc_pau.o
+ .debug_str     0x00000000      0x4b2 ./Libraries/XMCLib/src/xmc_pau.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_pau.o
  .debug_frame   0x00000000       0x90 ./Libraries/XMCLib/src/xmc_pau.o
  .ARM.attributes
@@ -607,7 +607,7 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x18 ./Libraries/XMCLib/src/xmc_posif.o
  .debug_line    0x00000000       0x1d ./Libraries/XMCLib/src/xmc_posif.o
- .debug_str     0x00000000      0x194 ./Libraries/XMCLib/src/xmc_posif.o
+ .debug_str     0x00000000      0x1a2 ./Libraries/XMCLib/src/xmc_posif.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_posif.o
  .ARM.attributes
                 0x00000000       0x31 ./Libraries/XMCLib/src/xmc_posif.o
@@ -632,8 +632,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x48 ./Libraries/XMCLib/src/xmc_prng.o
  .debug_ranges  0x00000000       0x38 ./Libraries/XMCLib/src/xmc_prng.o
- .debug_line    0x00000000      0x280 ./Libraries/XMCLib/src/xmc_prng.o
- .debug_str     0x00000000      0x39c ./Libraries/XMCLib/src/xmc_prng.o
+ .debug_line    0x00000000      0x26c ./Libraries/XMCLib/src/xmc_prng.o
+ .debug_str     0x00000000      0x3aa ./Libraries/XMCLib/src/xmc_prng.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_prng.o
  .debug_frame   0x00000000       0xc4 ./Libraries/XMCLib/src/xmc_prng.o
  .ARM.attributes
@@ -673,8 +673,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x80 ./Libraries/XMCLib/src/xmc_rtc.o
  .debug_ranges  0x00000000       0x70 ./Libraries/XMCLib/src/xmc_rtc.o
- .debug_line    0x00000000      0x375 ./Libraries/XMCLib/src/xmc_rtc.o
- .debug_str     0x00000000      0x487 ./Libraries/XMCLib/src/xmc_rtc.o
+ .debug_line    0x00000000      0x361 ./Libraries/XMCLib/src/xmc_rtc.o
+ .debug_str     0x00000000      0x495 ./Libraries/XMCLib/src/xmc_rtc.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_rtc.o
  .debug_frame   0x00000000      0x1a0 ./Libraries/XMCLib/src/xmc_rtc.o
  .ARM.attributes
@@ -714,8 +714,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x80 ./Libraries/XMCLib/src/xmc_spi.o
  .debug_ranges  0x00000000       0x70 ./Libraries/XMCLib/src/xmc_spi.o
- .debug_line    0x00000000      0x363 ./Libraries/XMCLib/src/xmc_spi.o
- .debug_str     0x00000000      0xcb2 ./Libraries/XMCLib/src/xmc_spi.o
+ .debug_line    0x00000000      0x34f ./Libraries/XMCLib/src/xmc_spi.o
+ .debug_str     0x00000000      0xcc0 ./Libraries/XMCLib/src/xmc_spi.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_spi.o
  .debug_frame   0x00000000      0x1b0 ./Libraries/XMCLib/src/xmc_spi.o
  .ARM.attributes
@@ -751,8 +751,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x70 ./Libraries/XMCLib/src/xmc_uart.o
  .debug_ranges  0x00000000       0x60 ./Libraries/XMCLib/src/xmc_uart.o
- .debug_line    0x00000000      0x319 ./Libraries/XMCLib/src/xmc_uart.o
- .debug_str     0x00000000      0xa96 ./Libraries/XMCLib/src/xmc_uart.o
+ .debug_line    0x00000000      0x305 ./Libraries/XMCLib/src/xmc_uart.o
+ .debug_str     0x00000000      0xaa4 ./Libraries/XMCLib/src/xmc_uart.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_uart.o
  .debug_frame   0x00000000      0x170 ./Libraries/XMCLib/src/xmc_uart.o
  .ARM.attributes
@@ -796,8 +796,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x90 ./Libraries/XMCLib/src/xmc_usic.o
  .debug_ranges  0x00000000       0x80 ./Libraries/XMCLib/src/xmc_usic.o
- .debug_line    0x00000000      0x3b0 ./Libraries/XMCLib/src/xmc_usic.o
- .debug_str     0x00000000      0xd7f ./Libraries/XMCLib/src/xmc_usic.o
+ .debug_line    0x00000000      0x39c ./Libraries/XMCLib/src/xmc_usic.o
+ .debug_str     0x00000000      0xd8d ./Libraries/XMCLib/src/xmc_usic.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_usic.o
  .debug_frame   0x00000000      0x1f0 ./Libraries/XMCLib/src/xmc_usic.o
  .ARM.attributes
@@ -847,8 +847,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0xa8 ./Libraries/XMCLib/src/xmc_vadc.o
  .debug_ranges  0x00000000       0x98 ./Libraries/XMCLib/src/xmc_vadc.o
- .debug_line    0x00000000      0x3cf ./Libraries/XMCLib/src/xmc_vadc.o
- .debug_str     0x00000000      0xd0e ./Libraries/XMCLib/src/xmc_vadc.o
+ .debug_line    0x00000000      0x3bb ./Libraries/XMCLib/src/xmc_vadc.o
+ .debug_str     0x00000000      0xd1c ./Libraries/XMCLib/src/xmc_vadc.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_vadc.o
  .debug_frame   0x00000000      0x250 ./Libraries/XMCLib/src/xmc_vadc.o
  .ARM.attributes
@@ -868,8 +868,8 @@ Discarded input sections
  .debug_aranges
                 0x00000000       0x30 ./Libraries/XMCLib/src/xmc_wdt.o
  .debug_ranges  0x00000000       0x20 ./Libraries/XMCLib/src/xmc_wdt.o
- .debug_line    0x00000000      0x249 ./Libraries/XMCLib/src/xmc_wdt.o
- .debug_str     0x00000000      0x340 ./Libraries/XMCLib/src/xmc_wdt.o
+ .debug_line    0x00000000      0x235 ./Libraries/XMCLib/src/xmc_wdt.o
+ .debug_str     0x00000000      0x34e ./Libraries/XMCLib/src/xmc_wdt.o
  .comment       0x00000000       0x71 ./Libraries/XMCLib/src/xmc_wdt.o
  .debug_frame   0x00000000       0x68 ./Libraries/XMCLib/src/xmc_wdt.o
  .ARM.attributes
@@ -1133,39 +1133,39 @@ Discarded input sections
  .data          0x00000000        0x0 ./main.o
  .bss           0x00000000        0x0 ./main.o
  .comment       0x00000000       0x71 ./main.o
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
- .text          0x00000000      0x1e0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
- .debug_frame   0x00000000       0x20 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+ .text          0x00000000      0x1e0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .debug_frame   0x00000000       0x20 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
  .ARM.attributes
-                0x00000000       0x1e c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
- .text          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
- .text.__errno  0x00000000        0xc c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
- .debug_frame   0x00000000       0x20 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+                0x00000000       0x1e c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_divsi3.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+ .text          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+ .text.__errno  0x00000000        0xc c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+ .debug_frame   0x00000000       0x20 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
  .ARM.attributes
-                0x00000000       0x2c c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
- .text          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                0x00000000       0x2c c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-errno.o)
+ .text          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
  .data.impure_data
-                0x00000000       0x60 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                0x00000000       0x60 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
  .data._impure_ptr
-                0x00000000        0x4 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                0x00000000        0x4 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
  .rodata.str1.1
-                0x00000000        0x2 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                0x00000000        0x2 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
  .rodata._global_impure_ptr
-                0x00000000        0x4 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+                0x00000000        0x4 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
  .ARM.attributes
-                0x00000000       0x2c c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
- .text          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
- .data          0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
- .bss           0x00000000        0x0 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+                0x00000000       0x2c c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-impure.o)
+ .text          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+ .data          0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+ .bss           0x00000000        0x0 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
 
 Memory Configuration
 
@@ -1208,21 +1208,21 @@ LOAD ./Libraries/Newlib/syscalls.o
 LOAD ./HardwareController.o
 LOAD ./XMC1100-LibHaas.o
 LOAD ./main.o
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libm.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libm.a
 START GROUP
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
 END GROUP
 START GROUP
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libnosys.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libnosys.a
 END GROUP
 START GROUP
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
-LOAD c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libnosys.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libc_nano.a
+LOAD c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libnosys.a
 END GROUP
                 0x00000400                stack_size = DEFINED (stack_size)?stack_size:0x400
                 0x00000004                no_init_size = 0x4
@@ -1397,15 +1397,15 @@ END GROUP
                 0x1000304c                sortObject
  .text.test     0x100030f0      0x13c ./main.o
                 0x100030f0                test
- .text          0x1000322c      0x120 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+ .text          0x1000322c      0x120 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
                 0x1000322c                __aeabi_uidiv
                 0x1000322c                __udivsi3
                 0x10003338                __aeabi_uidivmod
- .text          0x1000334c        0x4 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+ .text          0x1000334c        0x4 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
                 0x1000334c                __aeabi_idiv0
                 0x1000334c                __aeabi_ldiv0
  .text.__libc_init_array
-                0x10003350       0x4c c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+                0x10003350       0x4c c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
                 0x10003350                __libc_init_array
  *(.init)
  *(.fini)
@@ -1633,14 +1633,14 @@ Stack           0x2000011c      0x404 load address 0x00000000
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_info     0x00000000     0x3959
+.debug_info     0x00000000     0x3967
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000       0x6b ./Startup/startup_XMC1100.o
- .debug_info    0x0000006b      0x38b ./Startup/system_XMC1100.o
- .debug_info    0x000003f6      0x11f ./Libraries/Newlib/syscalls.o
- .debug_info    0x00000515      0x322 ./HardwareController.o
- .debug_info    0x00000837     0x2e6d ./XMC1100-LibHaas.o
- .debug_info    0x000036a4      0x2b5 ./main.o
+ .debug_info    0x00000000       0x79 ./Startup/startup_XMC1100.o
+ .debug_info    0x00000079      0x38b ./Startup/system_XMC1100.o
+ .debug_info    0x00000404      0x11f ./Libraries/Newlib/syscalls.o
+ .debug_info    0x00000523      0x322 ./HardwareController.o
+ .debug_info    0x00000845     0x2e6d ./XMC1100-LibHaas.o
+ .debug_info    0x000036b2      0x2b5 ./main.o
 
 .debug_abbrev   0x00000000      0x70c
  *(.debug_abbrev)
@@ -1651,14 +1651,14 @@ Stack           0x2000011c      0x404 load address 0x00000000
  .debug_abbrev  0x000002ac      0x2ee ./XMC1100-LibHaas.o
  .debug_abbrev  0x0000059a      0x172 ./main.o
 
-.debug_line     0x00000000     0x1d15
+.debug_line     0x00000000     0x1cb3
  *(.debug_line)
  .debug_line    0x00000000       0xe6 ./Startup/startup_XMC1100.o
- .debug_line    0x000000e6      0x1fc ./Startup/system_XMC1100.o
- .debug_line    0x000002e2       0xe8 ./Libraries/Newlib/syscalls.o
- .debug_line    0x000003ca      0x1e9 ./HardwareController.o
- .debug_line    0x000005b3     0x149c ./XMC1100-LibHaas.o
- .debug_line    0x00001a4f      0x2c6 ./main.o
+ .debug_line    0x000000e6      0x1da ./Startup/system_XMC1100.o
+ .debug_line    0x000002c0       0xd0 ./Libraries/Newlib/syscalls.o
+ .debug_line    0x00000390      0x1e9 ./HardwareController.o
+ .debug_line    0x00000579     0x1496 ./XMC1100-LibHaas.o
+ .debug_line    0x00001a0f      0x2a4 ./main.o
 
 .debug_frame    0x00000000     0x152c
  *(.debug_frame)
@@ -1667,21 +1667,21 @@ Stack           0x2000011c      0x404 load address 0x00000000
  .debug_frame   0x000000cc      0x1fc ./HardwareController.o
  .debug_frame   0x000002c8     0x1174 ./XMC1100-LibHaas.o
  .debug_frame   0x0000143c       0xa4 ./main.o
- .debug_frame   0x000014e0       0x20 c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
- .debug_frame   0x00001500       0x2c c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+ .debug_frame   0x000014e0       0x20 c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+ .debug_frame   0x00001500       0x2c c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
 
-.debug_str      0x00000000     0x1422
+.debug_str      0x00000000     0x1430
  *(.debug_str)
- .debug_str     0x00000000      0x2a8 ./Startup/system_XMC1100.o
-                                0x2ee (size before relaxing)
- .debug_str     0x000002a8       0x6f ./Libraries/Newlib/syscalls.o
-                                0x1e5 (size before relaxing)
- .debug_str     0x00000317      0x106 ./HardwareController.o
-                                0x276 (size before relaxing)
- .debug_str     0x0000041d      0xf80 ./XMC1100-LibHaas.o
-                               0x1228 (size before relaxing)
- .debug_str     0x0000139d       0x85 ./main.o
-                                0x27e (size before relaxing)
+ .debug_str     0x00000000      0x2b6 ./Startup/system_XMC1100.o
+                                0x2fc (size before relaxing)
+ .debug_str     0x000002b6       0x6f ./Libraries/Newlib/syscalls.o
+                                0x1f3 (size before relaxing)
+ .debug_str     0x00000325      0x106 ./HardwareController.o
+                                0x284 (size before relaxing)
+ .debug_str     0x0000042b      0xf80 ./XMC1100-LibHaas.o
+                               0x1236 (size before relaxing)
+ .debug_str     0x000013ab       0x85 ./main.o
+                                0x28c (size before relaxing)
 
 .debug_loc      0x00000000     0x21f0
  *(.debug_loc)
@@ -1731,9 +1731,9 @@ Stack           0x2000011c      0x404 load address 0x00000000
  .ARM.attributes
                 0x000000e5       0x31 ./main.o
  .ARM.attributes
-                0x00000116       0x1e c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
+                0x00000116       0x1e c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_udivsi3.o)
  .ARM.attributes
-                0x00000134       0x1e c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
+                0x00000134       0x1e c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/armv6-m\libgcc.a(_dvmd_tls.o)
  .ARM.attributes
-                0x00000152       0x2c c:/users/follower/downloads/dave-ide-4.4.2-64bit/dave-ide-4.4.2-64bit/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
+                0x00000152       0x2c c:/infineon/tools/dave ide/4.5.0.202105191637/eclipse/arm-gcc-49/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv6-m\libg_nano.a(lib_a-init.o)
 OUTPUT(JuFo.elf elf32-littlearm)

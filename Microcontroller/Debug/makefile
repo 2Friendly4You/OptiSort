@@ -42,8 +42,8 @@ JuFo.siz \
 LIST_FILES = $(addsuffix .o.lst, $(basename $(OBJS))) 
 MAP_FILE = "JuFo.map"
 
-TOOLCHAIN_ROOT=C:/Users/Follower/Downloads/DAVE-IDE-4.4.2-64Bit/DAVE-IDE-4.4.2-64Bit/eclipse/ARM-GCC-49
-PROJECT_LOC=C:/Workspaces/DAVE-4.4.2-64Bit/JuFo
+TOOLCHAIN_ROOT=C:/Infineon/Tools/DAVE IDE/4.5.0.202105191637/eclipse/ARM-GCC-49
+PROJECT_LOC=C:/Users/Public/OptiSort/OptiSort/Microcontroller
 
 # All Target
 all: JuFo.elf secondary-outputs

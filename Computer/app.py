@@ -1,21 +1,16 @@
 import os
 import sys
 import shutil
-import zipfile
 import json
 from time import sleep
 import threading
 from threading import Thread
 import time
 import copy
-import random
 import re
 
 from flask import Flask, render_template, request, jsonify, send_file
 from flask_socketio import SocketIO, emit, send
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
 import serial
 import cv2
 from multiprocessing import Pool, freeze_support
@@ -36,8 +31,8 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 0
-PORT = "COM3"
+NUM_CAMERAS = 5
+PORT = "COM8"
 
 camera_indices = None
 capture_objects = None
