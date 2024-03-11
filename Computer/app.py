@@ -385,16 +385,14 @@ def train_image_classifier():
 
 def find_cameras_until_num(num_cameras, max_cameras=20):
     camera_indices = []
-    capture_objects = []
 
-    if NUM_CAMERAS == 0:
-        return camera_indices, capture_objects
+    if NUM_CAMERAS <= 0:
+        return camera_indices
 
     for i in range(max_cameras):
         capture = cv2.VideoCapture(i)
         if capture.isOpened():
             camera_indices.append(i)
-            capture_objects.append(capture)
             if len(camera_indices) == num_cameras:
                 break
 
@@ -402,33 +400,7 @@ def find_cameras_until_num(num_cameras, max_cameras=20):
         print(f"Required {num_cameras} cameras not found.")
         sys.exit(1)
 
-    return camera_indices, capture_objects
-
-
-def capture_and_save_images(camera_indices, max_attempts=5):
-    file_names_to_check = []
-
-    for i, camera_index in enumerate(camera_indices):
-        success = False
-        attempts = 0
-
-        while not success and attempts < max_attempts:
-            capture = cv2.VideoCapture(camera_index)
-            ret, frame = capture.read()
-            capture.release()  # Release the capture object immediately
-
-            if ret:
-                filename = f"camera_{i}.jpg"
-                save_path = os.path.join("static/captured_images", filename)
-                cv2.imwrite(save_path, frame)
-                file_names_to_check.append(filename)
-                success = True
-            else:
-                attempts += 1
-                print("Failed")
-                time.sleep(0.5)
-
-    return file_names_to_check
+    return camera_indices
 
 
 def move_images(source_folder, destination_folder):
@@ -502,9 +474,8 @@ def micro_controller_thread():
 
         move_images("static/captured_images", "static/unclassified_images")
         print(f"Capturing {NUM_CAMERAS} images...")
-        # file_names_to_check = capture_and_save_images(camera_indices)
+        time.sleep(0.2)
         file_names_to_check = camera_manager.capture_and_save_images()
-        time.sleep(1)
         update_websocket_images(file_names_to_check)
 
         # Initialize counters for selected and rejected predictions
@@ -579,10 +550,11 @@ if __name__ == '__main__':
         with open(CURRENT_MODEL_CONFIG, 'w') as file:
             file.write("")
 
-    camera_indices, capture_objects = find_cameras_until_num(NUM_CAMERAS)
+    camera_indices = find_cameras_until_num(NUM_CAMERAS)
     print(camera_indices)
 
-    camera_manager = camera.CameraManager(camera_indices)
+    camera_manager = camera.CameraBufferManager(camera_indices, 30)
+    camera_manager.start_capturing()
 
     mc_thread = Thread(target=micro_controller_thread)
     mc_thread.daemon = True
