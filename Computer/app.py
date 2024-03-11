@@ -518,48 +518,53 @@ def micro_controller_thread():
             update_websocket_text("Images are saved.")
             continue
 
-        for filename in file_names_to_check:
-            print(filename)
-            class_name, class_probability = mf.predict_image(
-                filename, all_classes)
-            print(f"{class_name}: {class_probability}%")
-            print(f"Predicted {filename}: {class_name}")
+        try:
+            for filename in file_names_to_check:
+                print(filename)
+                class_name, class_probability = mf.predict_image(filename, all_classes)
 
-            # Increment counters based on prediction
-            if class_name in selected_classes:
-                selected_count += 1
-            if class_name in rejected_classes:
-                rejected_count += 1
+                print(f"{class_name}: {class_probability}%")
+                print(f"Predicted {filename}: {class_name}")
 
-            # Handling for 'Dominant-Reject' and 'Dominant-Select' without needing to go through all images
-            if sorting_type == 'dominant-reject' and class_name in rejected_classes:
-                break
-            if sorting_type == 'dominant-select' and class_name in selected_classes:
-                break
+                # Increment counters based on prediction
+                if class_name in selected_classes:
+                    selected_count += 1
+                if class_name in rejected_classes:
+                    rejected_count += 1
 
-        # Decision making based on sorting type
-        decision = 'undecided'  # Initial state
-        if sorting_type == 'average':
-            if selected_count >= rejected_count:
-                decision = 'selected'
+                # Handling for 'Dominant-Reject' and 'Dominant-Select' without needing to go through all images
+                if sorting_type == 'dominant-reject' and class_name in rejected_classes:
+                    break
+                if sorting_type == 'dominant-select' and class_name in selected_classes:
+                    break
+
+            # Decision making based on sorting type
+            decision = 'undecided'  # Initial state
+            if sorting_type == 'average':
+                if selected_count >= rejected_count:
+                    decision = 'selected'
+                else:
+                    decision = 'rejected'
+            elif sorting_type == 'dominant-select':
+                decision = 'rejected' if selected_count == 0 else 'selected'
+            else:  # 'dominant-reject'
+                decision = 'selected' if rejected_count == 0 else 'rejected'
+
+            # Execute actions based on the final decision
+            if decision == 'selected':
+                print("The object will not be sorted out.\n\r")
+                ser.write("d\n\r".encode())
+                update_websocket_text("don't sort out")
             else:
-                decision = 'rejected'
-        elif sorting_type == 'dominant-select':
-            decision = 'rejected' if selected_count == 0 else 'selected'
-        else:  # 'dominant-reject'
-            decision = 'selected' if rejected_count == 0 else 'rejected'
+                print("The object will be sorted out.\n\r")
+                ser.write("s\n\r".encode())
+                update_websocket_text("sort out")
 
-        # Execute actions based on the final decision
-        if decision == 'selected':
-            print("The object will not be sorted out.\n\r")
-            ser.write("d\n\r".encode())
-            update_websocket_text("don't sort out")
-        else:
-            print("The object will be sorted out.\n\r")
-            ser.write("s\n\r".encode())
-            update_websocket_text("sort out")
-
-        print("Received data:", data)
+            print("Received data:", data)
+        except Exception as e:
+            print(f"Error: {e}")
+            ser.write("n\n\r".encode())
+            update_websocket_text("Error occurred (Maybe there is no model loaded). Images are saved.")
 
 
 if __name__ == '__main__':
