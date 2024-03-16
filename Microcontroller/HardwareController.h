@@ -21,12 +21,6 @@
 #define lightbarrier3pin 1
 #define lightbarrier3port 2
 
-#define relay1pin 12
-#define relay1port 0
-
-#define relay2pin 13
-#define relay2port 0
-
 #define laserpin 0
 #define laserport 0
 
@@ -54,6 +48,9 @@
 #define inductivSensor2Pin 11
 #define inductivSensor2Port 0
 
+#define productionLineDirectionPin 9
+#define productionLineDirectionPort 0
+
 #define ON 1
 #define OFF 0
 #define FORWARD 0
@@ -71,7 +68,7 @@ extern void laser(int onOrOff);
 extern void LEDStripes(int onOrOff);
 extern void redLED(int onOrOff);
 extern void greenLED(int onOrOff);
-extern void productionLine(int onOrOff, int direction);
+extern void productionLine(int velocity, int direction);
 extern int lightBarrier1(void);
 extern int lightBarrier2(void);
 extern int lightBarrier3(void);

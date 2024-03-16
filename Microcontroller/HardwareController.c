@@ -16,8 +16,6 @@ void init() {
 	bit_init(lightbarrier1port, lightbarrier1pin, INP);
 	bit_init(lightbarrier2port, lightbarrier2pin, INP);
 	bit_init(lightbarrier3port, lightbarrier3pin, INP);
-	bit_init(relay1port, relay1pin, OUTP);
-	bit_init(relay2port, relay2pin, OUTP);
 	bit_init(pneumatics1port, pneumatics1pin, OUTP);
 	bit_init(pneumatics2port, pneumatics2pin, OUTP);
 	bit_init_mode(button1port, button1pin, INP, PULLDOWN);
@@ -25,10 +23,14 @@ void init() {
 	bit_init(inductivSensor1Port, inductivSensor1Pin, INP);
 	bit_init(inductivSensor2Port, inductivSensor2Pin, INP);
 	bit_init(dir1port, dir1pin, OUTP);
+	bit_init(productionLineDirectionPort, productionLineDirectionPin, OUTP);
 
 	pwm1_init();
 	pwm1_start();
+	pwm3_init();
+	pwm3_start();
 
+	productionLine(0, FORWARD);
 	slider(0, SLIDERFORWARD);
 
 	bit_write(P0, laserport, OFF);
@@ -59,6 +61,7 @@ void greenLED(int onOrOff) {
 			bit_write(greenLEDport, greenLEDpin, ON);
 }
 
+/*
 void productionLine(int onOrOff, int direction) {
 	onOrOff ?
 			bit_write(relay1port, relay1pin, OFF) :
@@ -67,6 +70,16 @@ void productionLine(int onOrOff, int direction) {
 			bit_write(relay2port, relay2pin, ON) :
 			bit_write(relay2port, relay2pin, OFF);
 }
+*/
+
+void productionLine(int velocity, int direction) {
+	direction ?
+			bit_write(productionLineDirectionPort, productionLineDirectionPin, BACKWARD) :
+			bit_write(dir1port, dir1pin, FORWARD);
+	// inverse velocity by 50000
+	pwm3_duty_cycle(50000 - velocity);
+}
+
 
 int lightBarrier1(void) {
 	int temp1 = bit_read(lightbarrier1port, lightbarrier1pin);

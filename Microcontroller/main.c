@@ -2,6 +2,8 @@
 #include "XMC1100-LibHaas.h"
 #include "HardwareController.h"
 
+#define PRODUCTION_LINE_MAX_SPEED 15000
+
 #define MAX_OBJECTS 100
 int nextObjects[MAX_OBJECTS];
 int numObjects = 0; // Tracks the number of objects in the array
@@ -17,7 +19,7 @@ void test(int onOrOff);
 int main(void) {
 	init();
 	LEDStripes(OFF);
-	productionLine(ON, FORWARD);
+	productionLine(0, FORWARD);
 	slider(0, SLIDERFORWARD);
 	test(OFF);
 
@@ -61,7 +63,7 @@ int main(void) {
 			NVIC_SystemReset();
 		}
 
-		productionLine(ON, FORWARD);
+		productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
 	}
 
 	return 0; // Added return statement for formality, though it will never be reached in this loop
@@ -70,7 +72,7 @@ int main(void) {
 void handleNewObject() {
 	handleObjectMovingAway = 1;
 
-	productionLine(OFF, FORWARD);
+	productionLine(0, FORWARD);
 
 	LEDStripes(ON);
 	laser(OFF);
@@ -108,13 +110,13 @@ void handleNewObject() {
 
 	laser(ON);
 	LEDStripes(OFF);
-	productionLine(ON, FORWARD);
+	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
 }
 
 void sortObject() {
 	sortObjectMovingAway = 1;
 
-	productionLine(OFF, FORWARD);
+	productionLine(0, FORWARD);
 	if (nextObjects[0] == SORTOUT) {
 		slider(50000, SLIDERFORWARD);
 		while (readInductivSensor2() == 0)
@@ -131,7 +133,7 @@ void sortObject() {
 	}
 	if (numObjects > 0)
 		numObjects--; // Decrease the objects count after sorting one out
-	productionLine(ON, FORWARD);
+	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
 }
 
 void test(int onOrOff) {
@@ -141,7 +143,7 @@ void test(int onOrOff) {
 		LEDStripes(OFF);
 		redLED(OFF);
 		greenLED(OFF);
-		productionLine(OFF, FORWARD);
+		productionLine(0, FORWARD);
 		return;
 	}
 
@@ -186,11 +188,11 @@ void test(int onOrOff) {
 
 	/*
 	 // check productionLine
-	 productionLine(ON, BACKWARD);
+	 productionLine(PRODUCTION_LINE_MAX_SPEED, BACKWARD);
 	 delay_ms(1000);
-	 productionLine(ON, FORWARD);
+	 productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
 	 delay_ms(1000);
-	 productionLine(OFF, FORWARD);
+	 productionLine(0, FORWARD);
 	 */
 
 	// check pneumatics1
