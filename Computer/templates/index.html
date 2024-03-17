@@ -134,7 +134,6 @@
         }
 
         .switch-label.active {
-            font-weight: bold;
             color: var(--bs-primary);
         }
     </style>
@@ -327,6 +326,8 @@
                         button.addEventListener('click', function () {
                             // Deactivating all delete buttons
                             document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = true);
+                            // Deactivating all load buttons
+                            document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = true);
 
                             Swal.fire({
                                 title: 'Are you sure?',
@@ -365,6 +366,8 @@
                                 }
                                 // Activating all delete buttons again
                                 document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = false);
+                                // Activating all load buttons again
+                                document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = false);
                             });
                         });
                     });
@@ -373,6 +376,8 @@
                         button.addEventListener('click', function () {
                             // Deactivating all load buttons
                             document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = true);
+                            // Deactivating all delete buttons
+                            document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = true);
 
                             fetch('/load-model', {
                                 method: 'POST',
@@ -403,6 +408,8 @@
                                 .finally(() => {
                                     // Activating all load buttons again
                                     document.querySelectorAll('.load-btn').forEach(btn => btn.disabled = false);
+                                    // Activating all delete buttons again
+                                    document.querySelectorAll('.delete-btn').forEach(btn => btn.disabled = false);
                                 });
                         });
                     });

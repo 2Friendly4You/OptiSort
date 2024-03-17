@@ -31,7 +31,7 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 5
+NUM_CAMERAS = 0
 PORT = "COM8"
 
 camera_indices = None
@@ -525,11 +525,11 @@ def micro_controller_thread():
             if decision == 'selected':
                 print("The object will not be sorted out.\n\r")
                 ser.write("d\n\r".encode())
-                update_websocket_text("don't sort out")
+                update_websocket_text("don't sort out | " + class_name)
             else:
                 print("The object will be sorted out.\n\r")
                 ser.write("s\n\r".encode())
-                update_websocket_text("sort out")
+                update_websocket_text("sort out | " + class_name)
 
             print("Received data:", data)
         except Exception as e:
