@@ -470,10 +470,10 @@
                     <label for="class_name_${index}">Class ${index + 1} Name:</label>
                     <input type="text" id="class_name_${index}" name="class_name_${index}" required><br>
                     <p>Should be selected or rejected:</p>
-                    <input type="radio" id="select_${index}" name="selected-rejected-radio_${index}" value="select" checked>
-                    <label for="select_${index}">Select</label><br>
-                    <input type="radio" id="reject_${index}" name="selected-rejected-radio_${index}" value="reject">
-                    <label for="reject_${index}">Reject</label><br>
+                    <input type="radio" id="select_${index}" name="selected-rejected-radio_${index}" value="select" data-bs-toggle="tooltip" title="The object will not be sorted out" checked>
+                    <label for="select_${index}" data-bs-toggle="tooltip" title="The object will not be sorted out">Select</label><br>
+                    <input type="radio" id="reject_${index}" name="selected-rejected-radio_${index} data-bs-toggle="tooltip" title="The object will be sorted out"" value="reject">
+                    <label for="reject_${index}" data-bs-toggle="tooltip" title="The object will be sorted out">Reject</label><br>
                     <label for="class_${index}">Images:</label>
                     <div class="sorted-images" id="sorted-images-${index}"></div> <!-- Placeholder for sorted images -->`;
 
@@ -959,7 +959,13 @@
         document.addEventListener('DOMContentLoaded', function () {
             setupSocketCommunication();
         });
+    </script>
 
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 
 </body>
