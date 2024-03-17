@@ -332,6 +332,10 @@ def train_image_classifier():
         return jsonify({"message": "Invalid class_names format."}), 400
     if not isinstance(data['classes'], list) or not all(isinstance(c, dict) for c in data['classes']):
         return jsonify({"message": "Invalid classes format."}), 400
+    
+    # Check if class names are unique
+    if len(class_names) != len(set(class_names)):
+        return jsonify({"message": "Class names must be unique."}), 400
 
     # Check if model directory already exists
     model_path = os.path.join("models", model_name)

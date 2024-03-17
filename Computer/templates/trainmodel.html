@@ -63,6 +63,7 @@
             border-radius: 20px;
             padding: 10px;
             margin-bottom: 10px;
+            position: relative;
         }
 
         #unclassified-images-container {
@@ -211,6 +212,22 @@
             gap: 20px;
             width: 60%;
             justify-content: center;
+        }
+
+        .class-indicator {
+            background-color: var(--bs-primary);
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            right: 0;
+
+            z-index: 1;
+            display: inline;
+            float: right;
         }
     </style>
 </head>
@@ -445,7 +462,11 @@
             function addClassCard(index) {
                 const classCard = document.createElement("div");
                 classCard.classList.add("class-card");
-                classCard.innerHTML = `
+                const classIndicator = document.createElement("div");
+                classIndicator.classList.add("class-indicator");
+                classIndicator.id = `class-indicator-${index}`;
+                classCard.appendChild(classIndicator);
+                classCard.innerHTML += `
                     <label for="class_name_${index}">Class ${index + 1} Name:</label>
                     <input type="text" id="class_name_${index}" name="class_name_${index}" required><br>
                     <p>Should be selected or rejected:</p>
@@ -462,8 +483,10 @@
                 // Add listener to update data-class-name on input change
                 const classNameInput = document.getElementById(`class_name_${index}`);
                 const sortedImagesContainer = document.getElementById(`sorted-images-${index}`);
+                const classIndicatorText = document.getElementById(`class-indicator-${index}`);
                 classNameInput.addEventListener('input', function () {
                     sortedImagesContainer.setAttribute('data-class-name', classNameInput.value);
+                    classIndicatorText.textContent = classNameInput.value;
                 });
             }
 
