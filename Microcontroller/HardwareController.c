@@ -82,19 +82,19 @@ void productionLine(int velocity, int direction) {
 
 
 int lightBarrier1(void) {
-	int temp1 = bit_read(lightbarrier1port, lightbarrier1pin);
+	int firstActivation = bit_read(lightbarrier1port, lightbarrier1pin);
 	delay_ms(LED_TOLERANCE_MILLIS);
-	int temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+	int secondActivation = bit_read(lightbarrier1port, lightbarrier1pin);
 
 	// implements tolerance
 
-	while (temp1 != temp2) {
-		temp1 = temp2;
+	while (firstActivation != secondActivation) {
+		firstActivation = secondActivation;
 		delay_ms(LED_TOLERANCE_MILLIS);
-		temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+		secondActivation = bit_read(lightbarrier1port, lightbarrier1pin);
 	}
 
-	if (temp1 == 0) {
+	if (firstActivation == 0) {
 		return ON;
 	} else {
 		return OFF;
@@ -102,19 +102,19 @@ int lightBarrier1(void) {
 }
 
 int lightBarrier2(void) {
-	int temp1 = bit_read(lightbarrier2port, lightbarrier2pin);
+	int firstActivation = bit_read(lightbarrier2port, lightbarrier2pin);
 	delay_ms(LED_TOLERANCE_MILLIS);
-	int temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+	int secondActivation = bit_read(lightbarrier2port, lightbarrier2pin);
 
 	// implements tolerance
 
-	while (temp1 != temp2) {
-		temp1 = temp2;
+	while (firstActivation != secondActivation) {
+		firstActivation = secondActivation;
 		delay_ms(LED_TOLERANCE_MILLIS);
-		temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+		secondActivation = bit_read(lightbarrier2port, lightbarrier2pin);
 	}
 
-	if (temp1 == 0) {
+	if (firstActivation == 0) {
 		return ON;
 	} else {
 		return OFF;
@@ -122,19 +122,19 @@ int lightBarrier2(void) {
 }
 
 int lightBarrier3(void) {
-	int temp1 = bit_read(lightbarrier3port, lightbarrier3pin);
+	int firstActivation = bit_read(lightbarrier3port, lightbarrier3pin);
 	delay_ms(LED_TOLERANCE_MILLIS);
-	int temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+	int secondActivation = bit_read(lightbarrier3port, lightbarrier3pin);
 
 	// implements tolerance
 
-	while (temp1 != temp2) {
-		temp1 = temp2;
+	while (firstActivation != secondActivation) {
+		firstActivation = secondActivation;
 		delay_ms(LED_TOLERANCE_MILLIS);
-		temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+		secondActivation = bit_read(lightbarrier3port, lightbarrier3pin);
 	}
 
-	if (temp1 == 0) {
+	if (firstActivation == 0) {
 		return ON;
 	} else {
 		return OFF;
