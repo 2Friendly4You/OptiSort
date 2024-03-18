@@ -1711,824 +1711,1028 @@
   91              	 .align 2
   94              	sortObjectMovingAway:
   95 0000 00000000 	 .space 4
-  96              	 .section .text.main,"ax",%progbits
-  97              	 .align 2
-  98              	 .global main
-  99              	 .code 16
- 100              	 .thumb_func
- 102              	main:
- 103              	.LFB41:
- 104              	 .file 3 "../main.c"
+  96              	 .global productionLineSpeed
+  97              	 .section .data.productionLineSpeed,"aw",%progbits
+  98              	 .align 2
+ 101              	productionLineSpeed:
+ 102 0000 983A0000 	 .word 15000
+ 103              	 .section .rodata
+ 104              	 .align 2
+ 105              	.LC1:
+ 106 0000 5363616E 	 .ascii "Scanning\000"
+ 106      6E696E67 
+ 106      00
+ 107 0009 000000   	 .align 2
+ 108              	.LC5:
+ 109 000c 536F7274 	 .ascii "Sorting\000"
+ 109      696E6700 
+ 110              	 .align 2
+ 111              	.LC8:
+ 112 0014 73706565 	 .ascii "speed\000"
+ 112      6400
+ 113 001a 0000     	 .align 2
+ 114              	.LC13:
+ 115 001c 53706565 	 .ascii "Speed changed to: %ld\000"
+ 115      64206368 
+ 115      616E6765 
+ 115      6420746F 
+ 115      3A20256C 
+ 116 0032 0000     	 .align 2
+ 117              	.LC15:
+ 118 0034 496E7661 	 .ascii "Invalid speed. Please enter a value between 0 and 5"
+ 118      6C696420 
+ 118      73706565 
+ 118      642E2050 
+ 118      6C656173 
+ 119 0067 30303030 	 .ascii "0000.\000"
+ 119      2E00
+ 120              	 .section .text.main,"ax",%progbits
+ 121              	 .align 2
+ 122              	 .global main
+ 123              	 .code 16
+ 124              	 .thumb_func
+ 126              	main:
+ 127              	.LFB41:
+ 128              	 .file 3 "../main.c"
    1:../main.c     **** #include <xmc_common.h>
    2:../main.c     **** #include "XMC1100-LibHaas.h"
    3:../main.c     **** #include "HardwareController.h"
-   4:../main.c     **** 
-   5:../main.c     **** #define PRODUCTION_LINE_MAX_SPEED 15000
-   6:../main.c     **** 
-   7:../main.c     **** #define MAX_OBJECTS 100
-   8:../main.c     **** int nextObjects[MAX_OBJECTS];
-   9:../main.c     **** int numObjects = 0; // Tracks the number of objects in the array
-  10:../main.c     **** 
-  11:../main.c     **** // 1 if an object is currently being handled, 0 otherwise
-  12:../main.c     **** int handleObjectMovingAway = 0;
-  13:../main.c     **** int sortObjectMovingAway = 0;
-  14:../main.c     **** 
-  15:../main.c     **** void handleNewObject();
-  16:../main.c     **** void sortObject();
-  17:../main.c     **** void test(int onOrOff);
-  18:../main.c     **** 
-  19:../main.c     **** int main(void) {
- 105              	 .loc 3 19 0
- 106              	 .cfi_startproc
- 107 0000 80B5     	 push {r7,lr}
- 108              	.LCFI2:
- 109              	 .cfi_def_cfa_offset 8
- 110              	 .cfi_offset 7,-8
- 111              	 .cfi_offset 14,-4
- 112 0002 00AF     	 add r7,sp,#0
- 113              	.LCFI3:
- 114              	 .cfi_def_cfa_register 7
-  20:../main.c     **** 	init();
- 115              	 .loc 3 20 0
- 116 0004 FFF7FEFF 	 bl init
-  21:../main.c     **** 	LEDStripes(OFF);
- 117              	 .loc 3 21 0
- 118 0008 0020     	 mov r0,#0
- 119 000a FFF7FEFF 	 bl LEDStripes
-  22:../main.c     **** 	productionLine(0, FORWARD);
- 120              	 .loc 3 22 0
- 121 000e 0020     	 mov r0,#0
- 122 0010 0021     	 mov r1,#0
- 123 0012 FFF7FEFF 	 bl productionLine
-  23:../main.c     **** 	slider(0, SLIDERFORWARD);
- 124              	 .loc 3 23 0
- 125 0016 0020     	 mov r0,#0
- 126 0018 0021     	 mov r1,#0
- 127 001a FFF7FEFF 	 bl slider
-  24:../main.c     **** 	test(OFF);
- 128              	 .loc 3 24 0
- 129 001e 0020     	 mov r0,#0
- 130 0020 FFF7FEFF 	 bl test
- 131              	.L14:
-  25:../main.c     **** 
-  26:../main.c     **** 	while (1U) {
-  27:../main.c     **** 		laser(ON);
- 132              	 .loc 3 27 0
- 133 0024 0120     	 mov r0,#1
- 134 0026 FFF7FEFF 	 bl laser
-  28:../main.c     **** 		// New object handling
-  29:../main.c     **** 		if (lightBarrier2() == OFF && handleObjectMovingAway == 0) {
- 135              	 .loc 3 29 0
- 136 002a FFF7FEFF 	 bl lightBarrier2
- 137 002e 031E     	 sub r3,r0,#0
- 138 0030 05D1     	 bne .L6
- 139              	 .loc 3 29 0 is_stmt 0 discriminator 1
- 140 0032 254B     	 ldr r3,.L15
- 141 0034 1B68     	 ldr r3,[r3]
- 142 0036 002B     	 cmp r3,#0
- 143 0038 01D1     	 bne .L6
-  30:../main.c     **** 			handleNewObject();
- 144              	 .loc 3 30 0 is_stmt 1
- 145 003a FFF7FEFF 	 bl handleNewObject
- 146              	.L6:
-  31:../main.c     **** 		}
-  32:../main.c     **** 
-  33:../main.c     **** 		// Object sorting if necessary
-  34:../main.c     **** 		if (lightBarrier1() == OFF && numObjects > 0
- 147              	 .loc 3 34 0
- 148 003e FFF7FEFF 	 bl lightBarrier1
- 149 0042 031E     	 sub r3,r0,#0
- 150 0044 09D1     	 bne .L7
- 151              	 .loc 3 34 0 is_stmt 0 discriminator 1
- 152 0046 214B     	 ldr r3,.L15+4
- 153 0048 1B68     	 ldr r3,[r3]
- 154 004a 002B     	 cmp r3,#0
- 155 004c 05DD     	 ble .L7
-  35:../main.c     **** 				&& sortObjectMovingAway == 0) {
- 156              	 .loc 3 35 0 is_stmt 1
- 157 004e 204B     	 ldr r3,.L15+8
- 158 0050 1B68     	 ldr r3,[r3]
- 159 0052 002B     	 cmp r3,#0
- 160 0054 01D1     	 bne .L7
-  36:../main.c     **** 			sortObject();
- 161              	 .loc 3 36 0
- 162 0056 FFF7FEFF 	 bl sortObject
- 163              	.L7:
-  37:../main.c     **** 		}
-  38:../main.c     **** 
-  39:../main.c     **** 		// Reset flags
-  40:../main.c     **** 		if (lightBarrier2() == ON) {
- 164              	 .loc 3 40 0
- 165 005a FFF7FEFF 	 bl lightBarrier2
- 166 005e 031E     	 sub r3,r0,#0
- 167 0060 012B     	 cmp r3,#1
- 168 0062 02D1     	 bne .L8
-  41:../main.c     **** 			handleObjectMovingAway = 0;
- 169              	 .loc 3 41 0
- 170 0064 184B     	 ldr r3,.L15
- 171 0066 0022     	 mov r2,#0
- 172 0068 1A60     	 str r2,[r3]
- 173              	.L8:
-  42:../main.c     **** 		}
-  43:../main.c     **** 		if (lightBarrier1() == ON) {
- 174              	 .loc 3 43 0
- 175 006a FFF7FEFF 	 bl lightBarrier1
- 176 006e 031E     	 sub r3,r0,#0
- 177 0070 012B     	 cmp r3,#1
- 178 0072 02D1     	 bne .L9
-  44:../main.c     **** 			sortObjectMovingAway = 0;
- 179              	 .loc 3 44 0
- 180 0074 164B     	 ldr r3,.L15+8
- 181 0076 0022     	 mov r2,#0
- 182 0078 1A60     	 str r2,[r3]
- 183              	.L9:
-  45:../main.c     **** 		}
-  46:../main.c     **** 
-  47:../main.c     **** 		// Reset the slider if the button is pressed
-  48:../main.c     **** 		if (readButton1() == ON) {
- 184              	 .loc 3 48 0
- 185 007a FFF7FEFF 	 bl readButton1
- 186 007e 031E     	 sub r3,r0,#0
- 187 0080 012B     	 cmp r3,#1
- 188 0082 0DD1     	 bne .L10
-  49:../main.c     **** 			// slider to max backward position
-  50:../main.c     **** 			slider(50000, SLIDERBACKWARD);
- 189              	 .loc 3 50 0
- 190 0084 134B     	 ldr r3,.L15+12
- 191 0086 181C     	 mov r0,r3
- 192 0088 0121     	 mov r1,#1
- 193 008a FFF7FEFF 	 bl slider
-  51:../main.c     **** 			while (readInductivSensor1() == 0)
- 194              	 .loc 3 51 0
- 195 008e C046     	 mov r8,r8
- 196              	.L11:
- 197              	 .loc 3 51 0 is_stmt 0 discriminator 1
- 198 0090 FFF7FEFF 	 bl readInductivSensor1
- 199 0094 031E     	 sub r3,r0,#0
- 200 0096 FBD0     	 beq .L11
-  52:../main.c     **** 				;
-  53:../main.c     **** 			// slider stops
-  54:../main.c     **** 			slider(0, SLIDERFORWARD);
- 201              	 .loc 3 54 0 is_stmt 1
- 202 0098 0020     	 mov r0,#0
- 203 009a 0021     	 mov r1,#0
- 204 009c FFF7FEFF 	 bl slider
- 205              	.L10:
-  55:../main.c     **** 		}
-  56:../main.c     **** 
-  57:../main.c     **** 		// reset system, if button 2 is pressed
-  58:../main.c     **** 		if (readButton2() == ON) {
- 206              	 .loc 3 58 0
- 207 00a0 FFF7FEFF 	 bl readButton2
- 208 00a4 031E     	 sub r3,r0,#0
- 209 00a6 012B     	 cmp r3,#1
- 210 00a8 07D1     	 bne .L12
-  59:../main.c     **** 			// wait till the button is released
-  60:../main.c     **** 			while (readButton2() == ON)
- 211              	 .loc 3 60 0
- 212 00aa C046     	 mov r8,r8
- 213              	.L13:
- 214              	 .loc 3 60 0 is_stmt 0 discriminator 1
- 215 00ac FFF7FEFF 	 bl readButton2
- 216 00b0 031E     	 sub r3,r0,#0
- 217 00b2 012B     	 cmp r3,#1
- 218 00b4 FAD0     	 beq .L13
+   4:../main.c     **** #include "string.h"
+   5:../main.c     **** 
+   6:../main.c     **** #define MAX_OBJECTS 100
+   7:../main.c     **** int nextObjects[MAX_OBJECTS];
+   8:../main.c     **** int numObjects = 0; // Tracks the number of objects in the array
+   9:../main.c     **** 
+  10:../main.c     **** // 1 if an object is currently being handled, 0 otherwise
+  11:../main.c     **** int handleObjectMovingAway = 0;
+  12:../main.c     **** int sortObjectMovingAway = 0;
+  13:../main.c     **** 
+  14:../main.c     **** int productionLineSpeed = 15000; // 15000 is a good value for the production line speed
+  15:../main.c     **** 
+  16:../main.c     **** void handleNewObject();
+  17:../main.c     **** void sortObject();
+  18:../main.c     **** void test(int onOrOff);
+  19:../main.c     **** 
+  20:../main.c     **** int main(void)
+  21:../main.c     **** {
+ 129              	 .loc 3 21 0
+ 130              	 .cfi_startproc
+ 131 0000 80B5     	 push {r7,lr}
+ 132              	.LCFI2:
+ 133              	 .cfi_def_cfa_offset 8
+ 134              	 .cfi_offset 7,-8
+ 135              	 .cfi_offset 14,-4
+ 136 0002 92B0     	 sub sp,sp,#72
+ 137              	.LCFI3:
+ 138              	 .cfi_def_cfa_offset 80
+ 139 0004 00AF     	 add r7,sp,#0
+ 140              	.LCFI4:
+ 141              	 .cfi_def_cfa_register 7
+  22:../main.c     **** 	init();
+ 142              	 .loc 3 22 0
+ 143 0006 FFF7FEFF 	 bl init
+  23:../main.c     **** 	LEDStripes(OFF);
+ 144              	 .loc 3 23 0
+ 145 000a 0020     	 mov r0,#0
+ 146 000c FFF7FEFF 	 bl LEDStripes
+  24:../main.c     **** 	productionLine(0, FORWARD);
+ 147              	 .loc 3 24 0
+ 148 0010 0020     	 mov r0,#0
+ 149 0012 0021     	 mov r1,#0
+ 150 0014 FFF7FEFF 	 bl productionLine
+  25:../main.c     **** 	slider(0, SLIDERFORWARD);
+ 151              	 .loc 3 25 0
+ 152 0018 0020     	 mov r0,#0
+ 153 001a 0021     	 mov r1,#0
+ 154 001c FFF7FEFF 	 bl slider
+  26:../main.c     **** 	test(OFF);
+ 155              	 .loc 3 26 0
+ 156 0020 0020     	 mov r0,#0
+ 157 0022 FFF7FEFF 	 bl test
+ 158              	.L18:
+  27:../main.c     **** 
+  28:../main.c     **** 	while (1U)
+  29:../main.c     **** 	{
+  30:../main.c     **** 		laser(ON);
+ 159              	 .loc 3 30 0
+ 160 0026 0120     	 mov r0,#1
+ 161 0028 FFF7FEFF 	 bl laser
+  31:../main.c     **** 		// New object handling
+  32:../main.c     **** 		if (lightBarrier2() == OFF && handleObjectMovingAway == 0)
+ 162              	 .loc 3 32 0
+ 163 002c FFF7FEFF 	 bl lightBarrier2
+ 164 0030 031E     	 sub r3,r0,#0
+ 165 0032 09D1     	 bne .L6
+ 166              	 .loc 3 32 0 is_stmt 0 discriminator 1
+ 167 0034 4C4B     	 ldr r3,.L19
+ 168 0036 1B68     	 ldr r3,[r3]
+ 169 0038 002B     	 cmp r3,#0
+ 170 003a 05D1     	 bne .L6
+  33:../main.c     **** 		{
+  34:../main.c     **** 			handleNewObject();
+ 171              	 .loc 3 34 0 is_stmt 1
+ 172 003c FFF7FEFF 	 bl handleNewObject
+  35:../main.c     **** 			rs232_print("Scanning");
+ 173              	 .loc 3 35 0
+ 174 0040 4A4B     	 ldr r3,.L19+4
+ 175 0042 181C     	 mov r0,r3
+ 176 0044 FFF7FEFF 	 bl rs232_print
+ 177              	.L6:
+  36:../main.c     **** 		}
+  37:../main.c     **** 
+  38:../main.c     **** 		// Object sorting if necessary
+  39:../main.c     **** 		if (lightBarrier1() == OFF && numObjects > 0 && sortObjectMovingAway == 0)
+ 178              	 .loc 3 39 0
+ 179 0048 FFF7FEFF 	 bl lightBarrier1
+ 180 004c 031E     	 sub r3,r0,#0
+ 181 004e 0DD1     	 bne .L7
+ 182              	 .loc 3 39 0 is_stmt 0 discriminator 1
+ 183 0050 474B     	 ldr r3,.L19+8
+ 184 0052 1B68     	 ldr r3,[r3]
+ 185 0054 002B     	 cmp r3,#0
+ 186 0056 09DD     	 ble .L7
+ 187              	 .loc 3 39 0 discriminator 2
+ 188 0058 464B     	 ldr r3,.L19+12
+ 189 005a 1B68     	 ldr r3,[r3]
+ 190 005c 002B     	 cmp r3,#0
+ 191 005e 05D1     	 bne .L7
+  40:../main.c     **** 		{
+  41:../main.c     **** 			sortObject();
+ 192              	 .loc 3 41 0 is_stmt 1
+ 193 0060 FFF7FEFF 	 bl sortObject
+  42:../main.c     **** 			rs232_print("Sorting");
+ 194              	 .loc 3 42 0
+ 195 0064 444B     	 ldr r3,.L19+16
+ 196 0066 181C     	 mov r0,r3
+ 197 0068 FFF7FEFF 	 bl rs232_print
+ 198              	.L7:
+  43:../main.c     **** 		}
+  44:../main.c     **** 
+  45:../main.c     **** 		// Reset flags
+  46:../main.c     **** 		if (lightBarrier2() == ON)
+ 199              	 .loc 3 46 0
+ 200 006c FFF7FEFF 	 bl lightBarrier2
+ 201 0070 031E     	 sub r3,r0,#0
+ 202 0072 012B     	 cmp r3,#1
+ 203 0074 02D1     	 bne .L8
+  47:../main.c     **** 		{
+  48:../main.c     **** 			handleObjectMovingAway = 0;
+ 204              	 .loc 3 48 0
+ 205 0076 3C4B     	 ldr r3,.L19
+ 206 0078 0022     	 mov r2,#0
+ 207 007a 1A60     	 str r2,[r3]
+ 208              	.L8:
+  49:../main.c     **** 		}
+  50:../main.c     **** 		if (lightBarrier1() == ON)
+ 209              	 .loc 3 50 0
+ 210 007c FFF7FEFF 	 bl lightBarrier1
+ 211 0080 031E     	 sub r3,r0,#0
+ 212 0082 012B     	 cmp r3,#1
+ 213 0084 02D1     	 bne .L9
+  51:../main.c     **** 		{
+  52:../main.c     **** 			sortObjectMovingAway = 0;
+ 214              	 .loc 3 52 0
+ 215 0086 3B4B     	 ldr r3,.L19+12
+ 216 0088 0022     	 mov r2,#0
+ 217 008a 1A60     	 str r2,[r3]
+ 218              	.L9:
+  53:../main.c     **** 		}
+  54:../main.c     **** 
+  55:../main.c     **** 		// Reset the slider if the button is pressed
+  56:../main.c     **** 		if (readButton1() == ON)
+ 219              	 .loc 3 56 0
+ 220 008c FFF7FEFF 	 bl readButton1
+ 221 0090 031E     	 sub r3,r0,#0
+ 222 0092 012B     	 cmp r3,#1
+ 223 0094 0DD1     	 bne .L10
+  57:../main.c     **** 		{
+  58:../main.c     **** 			// slider to max backward position
+  59:../main.c     **** 			slider(50000, SLIDERBACKWARD);
+ 224              	 .loc 3 59 0
+ 225 0096 394B     	 ldr r3,.L19+20
+ 226 0098 181C     	 mov r0,r3
+ 227 009a 0121     	 mov r1,#1
+ 228 009c FFF7FEFF 	 bl slider
+  60:../main.c     **** 			while (readInductivSensor1() == 0)
+ 229              	 .loc 3 60 0
+ 230 00a0 C046     	 mov r8,r8
+ 231              	.L11:
+ 232              	 .loc 3 60 0 is_stmt 0 discriminator 1
+ 233 00a2 FFF7FEFF 	 bl readInductivSensor1
+ 234 00a6 031E     	 sub r3,r0,#0
+ 235 00a8 FBD0     	 beq .L11
   61:../main.c     **** 				;
-  62:../main.c     **** 			// reset the system
-  63:../main.c     **** 			NVIC_SystemReset();
- 219              	 .loc 3 63 0 is_stmt 1
- 220 00b6 FFF7FEFF 	 bl __NVIC_SystemReset
- 221              	.L12:
+  62:../main.c     **** 			// slider stops
+  63:../main.c     **** 			slider(0, SLIDERFORWARD);
+ 236              	 .loc 3 63 0 is_stmt 1
+ 237 00aa 0020     	 mov r0,#0
+ 238 00ac 0021     	 mov r1,#0
+ 239 00ae FFF7FEFF 	 bl slider
+ 240              	.L10:
   64:../main.c     **** 		}
   65:../main.c     **** 
-  66:../main.c     **** 		productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
- 222              	 .loc 3 66 0
- 223 00ba 074B     	 ldr r3,.L15+16
- 224 00bc 181C     	 mov r0,r3
- 225 00be 0021     	 mov r1,#0
- 226 00c0 FFF7FEFF 	 bl productionLine
-  67:../main.c     **** 	}
- 227              	 .loc 3 67 0
- 228 00c4 AEE7     	 b .L14
- 229              	.L16:
- 230 00c6 C046     	 .align 2
- 231              	.L15:
- 232 00c8 00000000 	 .word handleObjectMovingAway
- 233 00cc 00000000 	 .word numObjects
- 234 00d0 00000000 	 .word sortObjectMovingAway
- 235 00d4 50C30000 	 .word 50000
- 236 00d8 983A0000 	 .word 15000
- 237              	 .cfi_endproc
- 238              	.LFE41:
- 240              	 .section .rodata
- 241              	 .align 2
- 242              	.LC4:
- 243 0000 476F6F64 	 .ascii "Good or bad?\012\015\000"
- 243      206F7220 
- 243      6261643F 
- 243      0A0D00
- 244 000f 00       	 .align 2
- 245              	.LC8:
- 246 0010 446F206E 	 .ascii "Do nothing.\000"
- 246      6F746869 
- 246      6E672E00 
- 247              	 .section .text.handleNewObject,"ax",%progbits
- 248              	 .align 2
- 249              	 .global handleNewObject
- 250              	 .code 16
- 251              	 .thumb_func
- 253              	handleNewObject:
- 254              	.LFB42:
-  68:../main.c     **** 
-  69:../main.c     **** 	return 0; // Added return statement for formality, though it will never be reached in this loop
-  70:../main.c     **** }
-  71:../main.c     **** 
-  72:../main.c     **** void handleNewObject() {
- 255              	 .loc 3 72 0
- 256              	 .cfi_startproc
- 257 0000 80B5     	 push {r7,lr}
- 258              	.LCFI4:
- 259              	 .cfi_def_cfa_offset 8
- 260              	 .cfi_offset 7,-8
- 261              	 .cfi_offset 14,-4
- 262 0002 00AF     	 add r7,sp,#0
- 263              	.LCFI5:
- 264              	 .cfi_def_cfa_register 7
-  73:../main.c     **** 	handleObjectMovingAway = 1;
- 265              	 .loc 3 73 0
- 266 0004 2D4B     	 ldr r3,.L23
- 267 0006 0122     	 mov r2,#1
- 268 0008 1A60     	 str r2,[r3]
-  74:../main.c     **** 
-  75:../main.c     **** 	productionLine(0, FORWARD);
- 269              	 .loc 3 75 0
- 270 000a 0020     	 mov r0,#0
- 271 000c 0021     	 mov r1,#0
- 272 000e FFF7FEFF 	 bl productionLine
-  76:../main.c     **** 
-  77:../main.c     **** 	LEDStripes(ON);
- 273              	 .loc 3 77 0
- 274 0012 0120     	 mov r0,#1
- 275 0014 FFF7FEFF 	 bl LEDStripes
-  78:../main.c     **** 	laser(OFF);
- 276              	 .loc 3 78 0
- 277 0018 0020     	 mov r0,#0
- 278 001a FFF7FEFF 	 bl laser
-  79:../main.c     **** 
-  80:../main.c     **** 	pneumatics1(OUT);
- 279              	 .loc 3 80 0
- 280 001e 0120     	 mov r0,#1
- 281 0020 FFF7FEFF 	 bl pneumatics1
-  81:../main.c     **** 
-  82:../main.c     **** 	// Get classification
-  83:../main.c     **** 	uart_print("Good or bad?\n\r");
- 282              	 .loc 3 83 0
- 283 0024 264B     	 ldr r3,.L23+4
- 284 0026 181C     	 mov r0,r3
- 285 0028 FFF7FEFF 	 bl uart_print
-  84:../main.c     **** 
-  85:../main.c     **** 	// uart_wait_of_enter();
-  86:../main.c     **** 	while (uartEnterReceive == 0) {
- 286              	 .loc 3 86 0
- 287 002c 0CE0     	 b .L18
- 288              	.L20:
-  87:../main.c     **** 		if (readButton2() == ON) {
- 289              	 .loc 3 87 0
- 290 002e FFF7FEFF 	 bl readButton2
- 291 0032 031E     	 sub r3,r0,#0
- 292 0034 012B     	 cmp r3,#1
- 293 0036 07D1     	 bne .L18
-  88:../main.c     **** 			// wait till the button is released
-  89:../main.c     **** 			while (readButton2() == ON)
- 294              	 .loc 3 89 0
- 295 0038 C046     	 mov r8,r8
- 296              	.L19:
- 297              	 .loc 3 89 0 is_stmt 0 discriminator 1
- 298 003a FFF7FEFF 	 bl readButton2
- 299 003e 031E     	 sub r3,r0,#0
- 300 0040 012B     	 cmp r3,#1
- 301 0042 FAD0     	 beq .L19
-  90:../main.c     **** 				;
-  91:../main.c     **** 			// reset the system
-  92:../main.c     **** 			NVIC_SystemReset();
- 302              	 .loc 3 92 0 is_stmt 1
- 303 0044 FFF7FEFF 	 bl __NVIC_SystemReset
- 304              	.L18:
-  86:../main.c     **** 		if (readButton2() == ON) {
- 305              	 .loc 3 86 0
- 306 0048 1E4B     	 ldr r3,.L23+8
- 307 004a 1B78     	 ldrb r3,[r3]
- 308 004c 002B     	 cmp r3,#0
- 309 004e EED0     	 beq .L20
-  93:../main.c     **** 		}
-  94:../main.c     **** 	}
-  95:../main.c     **** 	uartEnterReceive = 0;
- 310              	 .loc 3 95 0
- 311 0050 1C4B     	 ldr r3,.L23+8
- 312 0052 0022     	 mov r2,#0
- 313 0054 1A70     	 strb r2,[r3]
-  96:../main.c     **** 
-  97:../main.c     **** 	rs232_print(uartReceivedata);
- 314              	 .loc 3 97 0
- 315 0056 1C4B     	 ldr r3,.L23+12
- 316 0058 181C     	 mov r0,r3
- 317 005a FFF7FEFF 	 bl rs232_print
-  98:../main.c     **** 
-  99:../main.c     **** 	pneumatics1(IN);
- 318              	 .loc 3 99 0
- 319 005e 0020     	 mov r0,#0
- 320 0060 FFF7FEFF 	 bl pneumatics1
+  66:../main.c     **** 		// reset system, if button 2 is pressed
+  67:../main.c     **** 		if (readButton2() == ON)
+ 241              	 .loc 3 67 0
+ 242 00b2 FFF7FEFF 	 bl readButton2
+ 243 00b6 031E     	 sub r3,r0,#0
+ 244 00b8 012B     	 cmp r3,#1
+ 245 00ba 07D1     	 bne .L12
+  68:../main.c     **** 		{
+  69:../main.c     **** 			// wait till the button is released
+  70:../main.c     **** 			while (readButton2() == ON)
+ 246              	 .loc 3 70 0
+ 247 00bc C046     	 mov r8,r8
+ 248              	.L13:
+ 249              	 .loc 3 70 0 is_stmt 0 discriminator 1
+ 250 00be FFF7FEFF 	 bl readButton2
+ 251 00c2 031E     	 sub r3,r0,#0
+ 252 00c4 012B     	 cmp r3,#1
+ 253 00c6 FAD0     	 beq .L13
+  71:../main.c     **** 				;
+  72:../main.c     **** 			// reset the system
+  73:../main.c     **** 			NVIC_SystemReset();
+ 254              	 .loc 3 73 0 is_stmt 1
+ 255 00c8 FFF7FEFF 	 bl __NVIC_SystemReset
+ 256              	.L12:
+  74:../main.c     **** 		}
+  75:../main.c     **** 
+  76:../main.c     **** 		// check if uart data begins with "speed"
+  77:../main.c     **** 		// example input: "speed15000\n\r"
+  78:../main.c     **** 		// example input: "speed0\n\r"
+  79:../main.c     **** 		// example input: "speed1000\n\r"
+  80:../main.c     **** 		// example input: "speed50000\n\r"
+  81:../main.c     **** 		if (strncmp(uartReceivedata, "speed", 5) == 0 && uartEnterReceive != 0)
+ 257              	 .loc 3 81 0
+ 258 00cc 2C4A     	 ldr r2,.L19+24
+ 259 00ce 2D4B     	 ldr r3,.L19+28
+ 260 00d0 101C     	 mov r0,r2
+ 261 00d2 191C     	 mov r1,r3
+ 262 00d4 0522     	 mov r2,#5
+ 263 00d6 FFF7FEFF 	 bl strncmp
+ 264 00da 031E     	 sub r3,r0,#0
+ 265 00dc 3DD1     	 bne .L14
+ 266              	 .loc 3 81 0 is_stmt 0 discriminator 1
+ 267 00de 2A4B     	 ldr r3,.L19+32
+ 268 00e0 1B78     	 ldrb r3,[r3]
+ 269 00e2 002B     	 cmp r3,#0
+ 270 00e4 39D0     	 beq .L14
+ 271              	.LBB10:
+  82:../main.c     **** 		{
+  83:../main.c     **** 		    char *ptr;
+  84:../main.c     **** 		    long nextProductionLineSpeed = strtol(uartReceivedata + 5, &ptr, 10); // Convert starting fro
+ 272              	 .loc 3 84 0 is_stmt 1
+ 273 00e6 294A     	 ldr r2,.L19+36
+ 274 00e8 4023     	 mov r3,#64
+ 275 00ea FB18     	 add r3,r7,r3
+ 276 00ec 101C     	 mov r0,r2
+ 277 00ee 191C     	 mov r1,r3
+ 278 00f0 0A22     	 mov r2,#10
+ 279 00f2 FFF7FEFF 	 bl strtol
+ 280 00f6 031C     	 mov r3,r0
+ 281 00f8 7B64     	 str r3,[r7,#68]
+  85:../main.c     **** 
+  86:../main.c     **** 		    // Validate conversion success and range. Ensure the remainder points to a newline, carriage 
+  87:../main.c     **** 		    if (ptr != uartReceivedata + 5 && (*ptr == '\n' || *ptr == '\r' || *ptr == '\0') && nextProdu
+ 282              	 .loc 3 87 0
+ 283 00fa 3A6C     	 ldr r2,[r7,#64]
+ 284 00fc 234B     	 ldr r3,.L19+36
+ 285 00fe 9A42     	 cmp r2,r3
+ 286 0100 22D0     	 beq .L15
+ 287              	 .loc 3 87 0 is_stmt 0 discriminator 1
+ 288 0102 3B6C     	 ldr r3,[r7,#64]
+ 289 0104 1B78     	 ldrb r3,[r3]
+ 290 0106 0A2B     	 cmp r3,#10
+ 291 0108 07D0     	 beq .L16
+ 292              	 .loc 3 87 0 discriminator 3
+ 293 010a 3B6C     	 ldr r3,[r7,#64]
+ 294 010c 1B78     	 ldrb r3,[r3]
+ 295 010e 0D2B     	 cmp r3,#13
+ 296 0110 03D0     	 beq .L16
+ 297              	 .loc 3 87 0 discriminator 5
+ 298 0112 3B6C     	 ldr r3,[r7,#64]
+ 299 0114 1B78     	 ldrb r3,[r3]
+ 300 0116 002B     	 cmp r3,#0
+ 301 0118 16D1     	 bne .L15
+ 302              	.L16:
+ 303              	 .loc 3 87 0 discriminator 6
+ 304 011a 7B6C     	 ldr r3,[r7,#68]
+ 305 011c 002B     	 cmp r3,#0
+ 306 011e 13DB     	 blt .L15
+ 307              	 .loc 3 87 0 discriminator 7
+ 308 0120 7B6C     	 ldr r3,[r7,#68]
+ 309 0122 164A     	 ldr r2,.L19+20
+ 310 0124 9342     	 cmp r3,r2
+ 311 0126 0FDC     	 bgt .L15
+ 312              	.LBB11:
+  88:../main.c     **** 		    {
+  89:../main.c     **** 		        productionLineSpeed = (int)nextProductionLineSpeed; // Assuming productionLineSpeed is an
+ 313              	 .loc 3 89 0 is_stmt 1
+ 314 0128 194B     	 ldr r3,.L19+40
+ 315 012a 7A6C     	 ldr r2,[r7,#68]
+ 316 012c 1A60     	 str r2,[r3]
+  90:../main.c     **** 		        // Assuming a function exists to convert int to string for printing
+  91:../main.c     **** 		        char feedback[64];
+  92:../main.c     **** 		        sprintf(feedback, "Speed changed to: %ld", nextProductionLineSpeed);
+ 317              	 .loc 3 92 0
+ 318 012e 391C     	 mov r1,r7
+ 319 0130 184A     	 ldr r2,.L19+44
+ 320 0132 7B6C     	 ldr r3,[r7,#68]
+ 321 0134 081C     	 mov r0,r1
+ 322 0136 111C     	 mov r1,r2
+ 323 0138 1A1C     	 mov r2,r3
+ 324 013a FFF7FEFF 	 bl sprintf
+  93:../main.c     **** 		        rs232_print(feedback);
+ 325              	 .loc 3 93 0
+ 326 013e 3B1C     	 mov r3,r7
+ 327 0140 181C     	 mov r0,r3
+ 328 0142 FFF7FEFF 	 bl rs232_print
+ 329              	.LBE11:
+  88:../main.c     **** 		    {
+ 330              	 .loc 3 88 0
+ 331 0146 03E0     	 b .L17
+ 332              	.L15:
+  94:../main.c     **** 		    }
+  95:../main.c     **** 		    else
+  96:../main.c     **** 		    {
+  97:../main.c     **** 		        // Feedback for invalid input
+  98:../main.c     **** 		        rs232_print("Invalid speed. Please enter a value between 0 and 50000.");
+ 333              	 .loc 3 98 0
+ 334 0148 134B     	 ldr r3,.L19+48
+ 335 014a 181C     	 mov r0,r3
+ 336 014c FFF7FEFF 	 bl rs232_print
+ 337              	.L17:
+  99:../main.c     **** 		    }
  100:../main.c     **** 
- 101:../main.c     **** 	// Save if apple is good or bad in the nextObjects array (append to the end of the array)
- 102:../main.c     **** 	if (uartReceivedata[0] == 'n') {
- 321              	 .loc 3 102 0
- 322 0064 184B     	 ldr r3,.L23+12
- 323 0066 1B78     	 ldrb r3,[r3]
- 324 0068 6E2B     	 cmp r3,#110
- 325 006a 04D1     	 bne .L21
- 103:../main.c     **** 		// do nothing
- 104:../main.c     **** 		rs232_print("Do nothing.");
- 326              	 .loc 3 104 0
- 327 006c 174B     	 ldr r3,.L23+16
- 328 006e 181C     	 mov r0,r3
- 329 0070 FFF7FEFF 	 bl rs232_print
- 330 0074 12E0     	 b .L22
- 331              	.L21:
- 105:../main.c     **** 	} else if (numObjects < MAX_OBJECTS) {
- 332              	 .loc 3 105 0
- 333 0076 164B     	 ldr r3,.L23+20
- 334 0078 1B68     	 ldr r3,[r3]
- 335 007a 632B     	 cmp r3,#99
- 336 007c 0EDC     	 bgt .L22
- 106:../main.c     **** 		nextObjects[numObjects++] = (
- 337              	 .loc 3 106 0
- 338 007e 144B     	 ldr r3,.L23+20
- 339 0080 1B68     	 ldr r3,[r3]
- 340 0082 591C     	 add r1,r3,#1
- 341 0084 124A     	 ldr r2,.L23+20
- 342 0086 1160     	 str r1,[r2]
- 107:../main.c     **** 				uartReceivedata[0] == 'd' ? DONTSORTOUT : SORTOUT); // Fixed logic for good/bad apple
- 343              	 .loc 3 107 0
- 344 0088 0F4A     	 ldr r2,.L23+12
- 345 008a 1278     	 ldrb r2,[r2]
- 346 008c 643A     	 sub r2,r2,#100
- 347 008e 511E     	 sub r1,r2,#1
- 348 0090 8A41     	 sbc r2,r2,r1
- 349 0092 D2B2     	 uxtb r2,r2
- 350 0094 111C     	 mov r1,r2
- 106:../main.c     **** 		nextObjects[numObjects++] = (
- 351              	 .loc 3 106 0
- 352 0096 0F4A     	 ldr r2,.L23+24
- 353 0098 9B00     	 lsl r3,r3,#2
- 354 009a 9950     	 str r1,[r3,r2]
- 355              	.L22:
- 108:../main.c     **** 	}
- 109:../main.c     **** 	uart_clear_receivedata();
- 356              	 .loc 3 109 0
- 357 009c FFF7FEFF 	 bl uart_clear_receivedata
+ 101:../main.c     **** 		    uartEnterReceive = 0;
+ 338              	 .loc 3 101 0 discriminator 1
+ 339 0150 0D4B     	 ldr r3,.L19+32
+ 340 0152 0022     	 mov r2,#0
+ 341 0154 1A70     	 strb r2,[r3]
+ 102:../main.c     **** 		    uart_clear_receivedata();
+ 342              	 .loc 3 102 0 discriminator 1
+ 343 0156 FFF7FEFF 	 bl uart_clear_receivedata
+ 344              	.L14:
+ 345              	.LBE10:
+ 103:../main.c     **** 		}
+ 104:../main.c     **** 
+ 105:../main.c     **** 		productionLine(productionLineSpeed, FORWARD);
+ 346              	 .loc 3 105 0
+ 347 015a 0D4B     	 ldr r3,.L19+40
+ 348 015c 1B68     	 ldr r3,[r3]
+ 349 015e 181C     	 mov r0,r3
+ 350 0160 0021     	 mov r1,#0
+ 351 0162 FFF7FEFF 	 bl productionLine
+ 106:../main.c     **** 	}
+ 352              	 .loc 3 106 0
+ 353 0166 5EE7     	 b .L18
+ 354              	.L20:
+ 355              	 .align 2
+ 356              	.L19:
+ 357 0168 00000000 	 .word handleObjectMovingAway
+ 358 016c 00000000 	 .word .LC1
+ 359 0170 00000000 	 .word numObjects
+ 360 0174 00000000 	 .word sortObjectMovingAway
+ 361 0178 0C000000 	 .word .LC5
+ 362 017c 50C30000 	 .word 50000
+ 363 0180 00000000 	 .word uartReceivedata
+ 364 0184 14000000 	 .word .LC8
+ 365 0188 00000000 	 .word uartEnterReceive
+ 366 018c 05000000 	 .word uartReceivedata+5
+ 367 0190 00000000 	 .word productionLineSpeed
+ 368 0194 1C000000 	 .word .LC13
+ 369 0198 34000000 	 .word .LC15
+ 370              	 .cfi_endproc
+ 371              	.LFE41:
+ 373              	 .section .rodata
+ 374 006d 000000   	 .align 2
+ 375              	.LC18:
+ 376 0070 536F7274 	 .ascii "Sort out or don't?\012\015\000"
+ 376      206F7574 
+ 376      206F7220 
+ 376      646F6E27 
+ 376      743F0A0D 
+ 377 0085 000000   	 .align 2
+ 378              	.LC22:
+ 379 0088 446F206E 	 .ascii "Do nothing.\000"
+ 379      6F746869 
+ 379      6E672E00 
+ 380              	 .section .text.handleNewObject,"ax",%progbits
+ 381              	 .align 2
+ 382              	 .global handleNewObject
+ 383              	 .code 16
+ 384              	 .thumb_func
+ 386              	handleNewObject:
+ 387              	.LFB42:
+ 107:../main.c     **** 
+ 108:../main.c     **** 	return 0; // Added return statement for formality, though it will never be reached in this loop
+ 109:../main.c     **** }
  110:../main.c     **** 
- 111:../main.c     **** 	laser(ON);
- 358              	 .loc 3 111 0
- 359 00a0 0120     	 mov r0,#1
- 360 00a2 FFF7FEFF 	 bl laser
- 112:../main.c     **** 	LEDStripes(OFF);
- 361              	 .loc 3 112 0
- 362 00a6 0020     	 mov r0,#0
- 363 00a8 FFF7FEFF 	 bl LEDStripes
- 113:../main.c     **** 	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
- 364              	 .loc 3 113 0
- 365 00ac 0A4B     	 ldr r3,.L23+28
- 366 00ae 181C     	 mov r0,r3
- 367 00b0 0021     	 mov r1,#0
- 368 00b2 FFF7FEFF 	 bl productionLine
- 114:../main.c     **** }
- 369              	 .loc 3 114 0
- 370 00b6 BD46     	 mov sp,r7
- 371              	 
- 372 00b8 80BD     	 pop {r7,pc}
- 373              	.L24:
- 374 00ba C046     	 .align 2
- 375              	.L23:
- 376 00bc 00000000 	 .word handleObjectMovingAway
- 377 00c0 00000000 	 .word .LC4
- 378 00c4 00000000 	 .word uartEnterReceive
- 379 00c8 00000000 	 .word uartReceivedata
- 380 00cc 10000000 	 .word .LC8
- 381 00d0 00000000 	 .word numObjects
- 382 00d4 00000000 	 .word nextObjects
- 383 00d8 983A0000 	 .word 15000
- 384              	 .cfi_endproc
- 385              	.LFE42:
- 387              	 .section .text.sortObject,"ax",%progbits
- 388              	 .align 2
- 389              	 .global sortObject
- 390              	 .code 16
- 391              	 .thumb_func
- 393              	sortObject:
- 394              	.LFB43:
- 115:../main.c     **** 
- 116:../main.c     **** void sortObject() {
- 395              	 .loc 3 116 0
- 396              	 .cfi_startproc
- 397 0000 80B5     	 push {r7,lr}
- 398              	.LCFI6:
- 399              	 .cfi_def_cfa_offset 8
- 400              	 .cfi_offset 7,-8
- 401              	 .cfi_offset 14,-4
- 402 0002 82B0     	 sub sp,sp,#8
- 403              	.LCFI7:
- 404              	 .cfi_def_cfa_offset 16
- 405 0004 00AF     	 add r7,sp,#0
- 406              	.LCFI8:
- 407              	 .cfi_def_cfa_register 7
- 117:../main.c     **** 	sortObjectMovingAway = 1;
- 408              	 .loc 3 117 0
- 409 0006 244B     	 ldr r3,.L32
- 410 0008 0122     	 mov r2,#1
- 411 000a 1A60     	 str r2,[r3]
- 118:../main.c     **** 
- 119:../main.c     **** 	productionLine(0, FORWARD);
- 412              	 .loc 3 119 0
- 413 000c 0020     	 mov r0,#0
- 414 000e 0021     	 mov r1,#0
- 415 0010 FFF7FEFF 	 bl productionLine
- 120:../main.c     **** 	if (nextObjects[0] == SORTOUT) {
- 416              	 .loc 3 120 0
- 417 0014 214B     	 ldr r3,.L32+4
- 418 0016 1B68     	 ldr r3,[r3]
- 419 0018 012B     	 cmp r3,#1
- 420 001a 17D1     	 bne .L26
- 121:../main.c     **** 		slider(50000, SLIDERFORWARD);
- 421              	 .loc 3 121 0
- 422 001c 204B     	 ldr r3,.L32+8
- 423 001e 181C     	 mov r0,r3
- 424 0020 0021     	 mov r1,#0
- 425 0022 FFF7FEFF 	 bl slider
- 122:../main.c     **** 		while (readInductivSensor2() == 0)
- 426              	 .loc 3 122 0
- 427 0026 C046     	 mov r8,r8
- 428              	.L27:
- 429              	 .loc 3 122 0 is_stmt 0 discriminator 1
- 430 0028 FFF7FEFF 	 bl readInductivSensor2
- 431 002c 031E     	 sub r3,r0,#0
- 432 002e FBD0     	 beq .L27
- 123:../main.c     **** 			;
- 124:../main.c     **** 		slider(50000, SLIDERBACKWARD);
- 433              	 .loc 3 124 0 is_stmt 1
- 434 0030 1B4B     	 ldr r3,.L32+8
- 435 0032 181C     	 mov r0,r3
- 436 0034 0121     	 mov r1,#1
- 437 0036 FFF7FEFF 	 bl slider
- 125:../main.c     **** 		while (readInductivSensor1() == 0)
- 438              	 .loc 3 125 0
- 439 003a C046     	 mov r8,r8
- 440              	.L28:
- 441              	 .loc 3 125 0 is_stmt 0 discriminator 1
- 442 003c FFF7FEFF 	 bl readInductivSensor1
- 443 0040 031E     	 sub r3,r0,#0
- 444 0042 FBD0     	 beq .L28
- 126:../main.c     **** 			;
- 127:../main.c     **** 		// slider stops
- 128:../main.c     **** 		slider(0, SLIDERFORWARD);
- 445              	 .loc 3 128 0 is_stmt 1
- 446 0044 0020     	 mov r0,#0
- 447 0046 0021     	 mov r1,#0
- 448 0048 FFF7FEFF 	 bl slider
- 449              	.L26:
- 450              	.LBB10:
- 129:../main.c     **** 	}
- 130:../main.c     **** 	// Shift the nextObjects array elements left, deleting the first element
- 131:../main.c     **** 	for (int i = 1; i < numObjects; i++) {
- 451              	 .loc 3 131 0
- 452 004c 0123     	 mov r3,#1
- 453 004e 7B60     	 str r3,[r7,#4]
- 454 0050 0BE0     	 b .L29
- 455              	.L30:
- 132:../main.c     **** 		nextObjects[i - 1] = nextObjects[i];
- 456              	 .loc 3 132 0 discriminator 3
- 457 0052 7B68     	 ldr r3,[r7,#4]
- 458 0054 5A1E     	 sub r2,r3,#1
- 459 0056 114B     	 ldr r3,.L32+4
- 460 0058 7968     	 ldr r1,[r7,#4]
- 461 005a 8900     	 lsl r1,r1,#2
- 462 005c C958     	 ldr r1,[r1,r3]
- 463 005e 0F4B     	 ldr r3,.L32+4
- 464 0060 9200     	 lsl r2,r2,#2
- 465 0062 D150     	 str r1,[r2,r3]
- 131:../main.c     **** 		nextObjects[i - 1] = nextObjects[i];
- 466              	 .loc 3 131 0 discriminator 3
- 467 0064 7B68     	 ldr r3,[r7,#4]
- 468 0066 0133     	 add r3,r3,#1
- 469 0068 7B60     	 str r3,[r7,#4]
- 470              	.L29:
- 131:../main.c     **** 		nextObjects[i - 1] = nextObjects[i];
- 471              	 .loc 3 131 0 is_stmt 0 discriminator 1
- 472 006a 0E4B     	 ldr r3,.L32+12
- 473 006c 1B68     	 ldr r3,[r3]
- 474 006e 7A68     	 ldr r2,[r7,#4]
- 475 0070 9A42     	 cmp r2,r3
- 476 0072 EEDB     	 blt .L30
- 477              	.LBE10:
- 133:../main.c     **** 	}
- 134:../main.c     **** 	if (numObjects > 0)
- 478              	 .loc 3 134 0 is_stmt 1
- 479 0074 0B4B     	 ldr r3,.L32+12
- 480 0076 1B68     	 ldr r3,[r3]
- 481 0078 002B     	 cmp r3,#0
- 482 007a 04DD     	 ble .L31
- 135:../main.c     **** 		numObjects--; // Decrease the objects count after sorting one out
- 483              	 .loc 3 135 0
- 484 007c 094B     	 ldr r3,.L32+12
- 485 007e 1B68     	 ldr r3,[r3]
- 486 0080 5A1E     	 sub r2,r3,#1
- 487 0082 084B     	 ldr r3,.L32+12
- 488 0084 1A60     	 str r2,[r3]
- 489              	.L31:
- 136:../main.c     **** 	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
- 490              	 .loc 3 136 0
- 491 0086 084B     	 ldr r3,.L32+16
- 492 0088 181C     	 mov r0,r3
- 493 008a 0021     	 mov r1,#0
- 494 008c FFF7FEFF 	 bl productionLine
- 137:../main.c     **** }
- 495              	 .loc 3 137 0
- 496 0090 BD46     	 mov sp,r7
- 497 0092 02B0     	 add sp,sp,#8
- 498              	 
- 499 0094 80BD     	 pop {r7,pc}
- 500              	.L33:
- 501 0096 C046     	 .align 2
- 502              	.L32:
- 503 0098 00000000 	 .word sortObjectMovingAway
- 504 009c 00000000 	 .word nextObjects
- 505 00a0 50C30000 	 .word 50000
- 506 00a4 00000000 	 .word numObjects
- 507 00a8 983A0000 	 .word 15000
- 508              	 .cfi_endproc
- 509              	.LFE43:
- 511              	 .section .text.test,"ax",%progbits
- 512              	 .align 2
- 513              	 .global test
- 514              	 .code 16
- 515              	 .thumb_func
- 517              	test:
- 518              	.LFB44:
+ 111:../main.c     **** void handleNewObject()
+ 112:../main.c     **** {
+ 388              	 .loc 3 112 0
+ 389              	 .cfi_startproc
+ 390 0000 80B5     	 push {r7,lr}
+ 391              	.LCFI5:
+ 392              	 .cfi_def_cfa_offset 8
+ 393              	 .cfi_offset 7,-8
+ 394              	 .cfi_offset 14,-4
+ 395 0002 00AF     	 add r7,sp,#0
+ 396              	.LCFI6:
+ 397              	 .cfi_def_cfa_register 7
+ 113:../main.c     **** 	handleObjectMovingAway = 1;
+ 398              	 .loc 3 113 0
+ 399 0004 2D4B     	 ldr r3,.L27
+ 400 0006 0122     	 mov r2,#1
+ 401 0008 1A60     	 str r2,[r3]
+ 114:../main.c     **** 
+ 115:../main.c     **** 	productionLine(0, FORWARD);
+ 402              	 .loc 3 115 0
+ 403 000a 0020     	 mov r0,#0
+ 404 000c 0021     	 mov r1,#0
+ 405 000e FFF7FEFF 	 bl productionLine
+ 116:../main.c     **** 
+ 117:../main.c     **** 	LEDStripes(ON);
+ 406              	 .loc 3 117 0
+ 407 0012 0120     	 mov r0,#1
+ 408 0014 FFF7FEFF 	 bl LEDStripes
+ 118:../main.c     **** 	laser(OFF);
+ 409              	 .loc 3 118 0
+ 410 0018 0020     	 mov r0,#0
+ 411 001a FFF7FEFF 	 bl laser
+ 119:../main.c     **** 
+ 120:../main.c     **** 	pneumatics1(OUT);
+ 412              	 .loc 3 120 0
+ 413 001e 0120     	 mov r0,#1
+ 414 0020 FFF7FEFF 	 bl pneumatics1
+ 121:../main.c     **** 
+ 122:../main.c     **** 	// Get classification
+ 123:../main.c     **** 	uart_print("Sort out or don't?\n\r");
+ 415              	 .loc 3 123 0
+ 416 0024 264B     	 ldr r3,.L27+4
+ 417 0026 181C     	 mov r0,r3
+ 418 0028 FFF7FEFF 	 bl uart_print
+ 124:../main.c     **** 
+ 125:../main.c     **** 	// uart_wait_of_enter();
+ 126:../main.c     **** 	while (uartEnterReceive == 0)
+ 419              	 .loc 3 126 0
+ 420 002c 0CE0     	 b .L22
+ 421              	.L24:
+ 127:../main.c     **** 	{
+ 128:../main.c     **** 		if (readButton2() == ON)
+ 422              	 .loc 3 128 0
+ 423 002e FFF7FEFF 	 bl readButton2
+ 424 0032 031E     	 sub r3,r0,#0
+ 425 0034 012B     	 cmp r3,#1
+ 426 0036 07D1     	 bne .L22
+ 129:../main.c     **** 		{
+ 130:../main.c     **** 			// wait till the button is released
+ 131:../main.c     **** 			while (readButton2() == ON)
+ 427              	 .loc 3 131 0
+ 428 0038 C046     	 mov r8,r8
+ 429              	.L23:
+ 430              	 .loc 3 131 0 is_stmt 0 discriminator 1
+ 431 003a FFF7FEFF 	 bl readButton2
+ 432 003e 031E     	 sub r3,r0,#0
+ 433 0040 012B     	 cmp r3,#1
+ 434 0042 FAD0     	 beq .L23
+ 132:../main.c     **** 				;
+ 133:../main.c     **** 			// reset the system
+ 134:../main.c     **** 			NVIC_SystemReset();
+ 435              	 .loc 3 134 0 is_stmt 1
+ 436 0044 FFF7FEFF 	 bl __NVIC_SystemReset
+ 437              	.L22:
+ 126:../main.c     **** 	{
+ 438              	 .loc 3 126 0
+ 439 0048 1E4B     	 ldr r3,.L27+8
+ 440 004a 1B78     	 ldrb r3,[r3]
+ 441 004c 002B     	 cmp r3,#0
+ 442 004e EED0     	 beq .L24
+ 135:../main.c     **** 		}
+ 136:../main.c     **** 	}
+ 137:../main.c     **** 	uartEnterReceive = 0;
+ 443              	 .loc 3 137 0
+ 444 0050 1C4B     	 ldr r3,.L27+8
+ 445 0052 0022     	 mov r2,#0
+ 446 0054 1A70     	 strb r2,[r3]
  138:../main.c     **** 
- 139:../main.c     **** void test(int onOrOff) {
- 519              	 .loc 3 139 0
- 520              	 .cfi_startproc
- 521 0000 80B5     	 push {r7,lr}
- 522              	.LCFI9:
- 523              	 .cfi_def_cfa_offset 8
- 524              	 .cfi_offset 7,-8
- 525              	 .cfi_offset 14,-4
- 526 0002 82B0     	 sub sp,sp,#8
- 527              	.LCFI10:
- 528              	 .cfi_def_cfa_offset 16
- 529 0004 00AF     	 add r7,sp,#0
- 530              	.LCFI11:
- 531              	 .cfi_def_cfa_register 7
- 532 0006 7860     	 str r0,[r7,#4]
- 140:../main.c     **** 	if (!onOrOff) {
- 533              	 .loc 3 140 0
- 534 0008 7B68     	 ldr r3,[r7,#4]
- 535 000a 002B     	 cmp r3,#0
- 536 000c 10D1     	 bne .L35
- 141:../main.c     **** 		// shut everything down
- 142:../main.c     **** 		laser(OFF);
- 537              	 .loc 3 142 0
- 538 000e 0020     	 mov r0,#0
- 539 0010 FFF7FEFF 	 bl laser
- 143:../main.c     **** 		LEDStripes(OFF);
- 540              	 .loc 3 143 0
- 541 0014 0020     	 mov r0,#0
- 542 0016 FFF7FEFF 	 bl LEDStripes
- 144:../main.c     **** 		redLED(OFF);
- 543              	 .loc 3 144 0
- 544 001a 0020     	 mov r0,#0
- 545 001c FFF7FEFF 	 bl redLED
- 145:../main.c     **** 		greenLED(OFF);
- 546              	 .loc 3 145 0
- 547 0020 0020     	 mov r0,#0
- 548 0022 FFF7FEFF 	 bl greenLED
- 146:../main.c     **** 		productionLine(0, FORWARD);
- 549              	 .loc 3 146 0
- 550 0026 0020     	 mov r0,#0
- 551 0028 0021     	 mov r1,#0
- 552 002a FFF7FEFF 	 bl productionLine
- 147:../main.c     **** 		return;
- 553              	 .loc 3 147 0
- 554 002e 7FE0     	 b .L34
- 555              	.L35:
+ 139:../main.c     **** 	rs232_print(uartReceivedata);
+ 447              	 .loc 3 139 0
+ 448 0056 1C4B     	 ldr r3,.L27+12
+ 449 0058 181C     	 mov r0,r3
+ 450 005a FFF7FEFF 	 bl rs232_print
+ 140:../main.c     **** 
+ 141:../main.c     **** 	pneumatics1(IN);
+ 451              	 .loc 3 141 0
+ 452 005e 0020     	 mov r0,#0
+ 453 0060 FFF7FEFF 	 bl pneumatics1
+ 142:../main.c     **** 
+ 143:../main.c     **** 	// Save if apple is good or bad in the nextObjects array (append to the end of the array)
+ 144:../main.c     **** 	if (uartReceivedata[0] == 'n')
+ 454              	 .loc 3 144 0
+ 455 0064 184B     	 ldr r3,.L27+12
+ 456 0066 1B78     	 ldrb r3,[r3]
+ 457 0068 6E2B     	 cmp r3,#110
+ 458 006a 04D1     	 bne .L25
+ 145:../main.c     **** 	{
+ 146:../main.c     **** 		// do nothing
+ 147:../main.c     **** 		rs232_print("Do nothing.");
+ 459              	 .loc 3 147 0
+ 460 006c 174B     	 ldr r3,.L27+16
+ 461 006e 181C     	 mov r0,r3
+ 462 0070 FFF7FEFF 	 bl rs232_print
+ 463 0074 12E0     	 b .L26
+ 464              	.L25:
  148:../main.c     **** 	}
- 149:../main.c     **** 
- 150:../main.c     **** 	// light test: manual check
- 151:../main.c     **** 	laser(ON);
- 556              	 .loc 3 151 0
- 557 0030 0120     	 mov r0,#1
- 558 0032 FFF7FEFF 	 bl laser
- 152:../main.c     **** 	LEDStripes(ON);
- 559              	 .loc 3 152 0
- 560 0036 0120     	 mov r0,#1
- 561 0038 FFF7FEFF 	 bl LEDStripes
- 153:../main.c     **** 	redLED(ON);
- 562              	 .loc 3 153 0
- 563 003c 0120     	 mov r0,#1
- 564 003e FFF7FEFF 	 bl redLED
- 154:../main.c     **** 	greenLED(ON);
- 565              	 .loc 3 154 0
- 566 0042 0120     	 mov r0,#1
- 567 0044 FFF7FEFF 	 bl greenLED
- 155:../main.c     **** 	delay_ms(5000);
- 568              	 .loc 3 155 0
- 569 0048 3B4B     	 ldr r3,.L43
- 570 004a 181C     	 mov r0,r3
- 571 004c FFF7FEFF 	 bl delay_ms
+ 149:../main.c     **** 	else if (numObjects < MAX_OBJECTS)
+ 465              	 .loc 3 149 0
+ 466 0076 164B     	 ldr r3,.L27+20
+ 467 0078 1B68     	 ldr r3,[r3]
+ 468 007a 632B     	 cmp r3,#99
+ 469 007c 0EDC     	 bgt .L26
+ 150:../main.c     **** 	{
+ 151:../main.c     **** 		nextObjects[numObjects++] = (uartReceivedata[0] == 'd' ? DONTSORTOUT : SORTOUT); // Fixed logic f
+ 470              	 .loc 3 151 0
+ 471 007e 144B     	 ldr r3,.L27+20
+ 472 0080 1B68     	 ldr r3,[r3]
+ 473 0082 591C     	 add r1,r3,#1
+ 474 0084 124A     	 ldr r2,.L27+20
+ 475 0086 1160     	 str r1,[r2]
+ 476 0088 0F4A     	 ldr r2,.L27+12
+ 477 008a 1278     	 ldrb r2,[r2]
+ 478 008c 643A     	 sub r2,r2,#100
+ 479 008e 511E     	 sub r1,r2,#1
+ 480 0090 8A41     	 sbc r2,r2,r1
+ 481 0092 D2B2     	 uxtb r2,r2
+ 482 0094 111C     	 mov r1,r2
+ 483 0096 0F4A     	 ldr r2,.L27+24
+ 484 0098 9B00     	 lsl r3,r3,#2
+ 485 009a 9950     	 str r1,[r3,r2]
+ 486              	.L26:
+ 152:../main.c     **** 	}
+ 153:../main.c     **** 	uart_clear_receivedata();
+ 487              	 .loc 3 153 0
+ 488 009c FFF7FEFF 	 bl uart_clear_receivedata
+ 154:../main.c     **** 
+ 155:../main.c     **** 	laser(ON);
+ 489              	 .loc 3 155 0
+ 490 00a0 0120     	 mov r0,#1
+ 491 00a2 FFF7FEFF 	 bl laser
  156:../main.c     **** 	LEDStripes(OFF);
- 572              	 .loc 3 156 0
- 573 0050 0020     	 mov r0,#0
- 574 0052 FFF7FEFF 	 bl LEDStripes
- 157:../main.c     **** 	redLED(OFF);
- 575              	 .loc 3 157 0
- 576 0056 0020     	 mov r0,#0
- 577 0058 FFF7FEFF 	 bl redLED
- 158:../main.c     **** 	greenLED(OFF);
- 578              	 .loc 3 158 0
- 579 005c 0020     	 mov r0,#0
- 580 005e FFF7FEFF 	 bl greenLED
- 159:../main.c     **** 	delay_ms(2000);
- 581              	 .loc 3 159 0
- 582 0062 FA23     	 mov r3,#250
- 583 0064 DB00     	 lsl r3,r3,#3
- 584 0066 181C     	 mov r0,r3
- 585 0068 FFF7FEFF 	 bl delay_ms
- 160:../main.c     **** 
- 161:../main.c     **** 	// check lightbarriers: automatic check
- 162:../main.c     **** 	if (lightBarrier1()) {
- 586              	 .loc 3 162 0
- 587 006c FFF7FEFF 	 bl lightBarrier1
- 588 0070 031E     	 sub r3,r0,#0
- 589 0072 03D0     	 beq .L37
- 163:../main.c     **** 		greenLED(ON);
- 590              	 .loc 3 163 0
- 591 0074 0120     	 mov r0,#1
- 592 0076 FFF7FEFF 	 bl greenLED
- 593 007a 02E0     	 b .L38
- 594              	.L37:
- 164:../main.c     **** 	} else {
- 165:../main.c     **** 		redLED(ON);
- 595              	 .loc 3 165 0
- 596 007c 0120     	 mov r0,#1
- 597 007e FFF7FEFF 	 bl redLED
- 598              	.L38:
- 166:../main.c     **** 	}
- 167:../main.c     **** 	delay_ms(1000);
- 599              	 .loc 3 167 0
- 600 0082 FA23     	 mov r3,#250
- 601 0084 9B00     	 lsl r3,r3,#2
- 602 0086 181C     	 mov r0,r3
- 603 0088 FFF7FEFF 	 bl delay_ms
- 168:../main.c     **** 	redLED(OFF);
- 604              	 .loc 3 168 0
- 605 008c 0020     	 mov r0,#0
- 606 008e FFF7FEFF 	 bl redLED
- 169:../main.c     **** 	greenLED(OFF);
- 607              	 .loc 3 169 0
- 608 0092 0020     	 mov r0,#0
- 609 0094 FFF7FEFF 	 bl greenLED
- 170:../main.c     **** 	delay_ms(500);
- 610              	 .loc 3 170 0
- 611 0098 FA23     	 mov r3,#250
- 612 009a 5B00     	 lsl r3,r3,#1
- 613 009c 181C     	 mov r0,r3
- 614 009e FFF7FEFF 	 bl delay_ms
- 171:../main.c     **** 	if (lightBarrier2()) {
- 615              	 .loc 3 171 0
- 616 00a2 FFF7FEFF 	 bl lightBarrier2
- 617 00a6 031E     	 sub r3,r0,#0
- 618 00a8 03D0     	 beq .L39
- 172:../main.c     **** 		greenLED(ON);
- 619              	 .loc 3 172 0
- 620 00aa 0120     	 mov r0,#1
- 621 00ac FFF7FEFF 	 bl greenLED
- 622 00b0 02E0     	 b .L40
- 623              	.L39:
- 173:../main.c     **** 	} else {
- 174:../main.c     **** 		redLED(ON);
- 624              	 .loc 3 174 0
- 625 00b2 0120     	 mov r0,#1
- 626 00b4 FFF7FEFF 	 bl redLED
- 627              	.L40:
+ 492              	 .loc 3 156 0
+ 493 00a6 0020     	 mov r0,#0
+ 494 00a8 FFF7FEFF 	 bl LEDStripes
+ 157:../main.c     **** 	productionLine(productionLineSpeed, FORWARD);
+ 495              	 .loc 3 157 0
+ 496 00ac 0A4B     	 ldr r3,.L27+28
+ 497 00ae 1B68     	 ldr r3,[r3]
+ 498 00b0 181C     	 mov r0,r3
+ 499 00b2 0021     	 mov r1,#0
+ 500 00b4 FFF7FEFF 	 bl productionLine
+ 158:../main.c     **** }
+ 501              	 .loc 3 158 0
+ 502 00b8 BD46     	 mov sp,r7
+ 503              	 
+ 504 00ba 80BD     	 pop {r7,pc}
+ 505              	.L28:
+ 506              	 .align 2
+ 507              	.L27:
+ 508 00bc 00000000 	 .word handleObjectMovingAway
+ 509 00c0 70000000 	 .word .LC18
+ 510 00c4 00000000 	 .word uartEnterReceive
+ 511 00c8 00000000 	 .word uartReceivedata
+ 512 00cc 88000000 	 .word .LC22
+ 513 00d0 00000000 	 .word numObjects
+ 514 00d4 00000000 	 .word nextObjects
+ 515 00d8 00000000 	 .word productionLineSpeed
+ 516              	 .cfi_endproc
+ 517              	.LFE42:
+ 519              	 .section .text.sortObject,"ax",%progbits
+ 520              	 .align 2
+ 521              	 .global sortObject
+ 522              	 .code 16
+ 523              	 .thumb_func
+ 525              	sortObject:
+ 526              	.LFB43:
+ 159:../main.c     **** 
+ 160:../main.c     **** void sortObject()
+ 161:../main.c     **** {
+ 527              	 .loc 3 161 0
+ 528              	 .cfi_startproc
+ 529 0000 80B5     	 push {r7,lr}
+ 530              	.LCFI7:
+ 531              	 .cfi_def_cfa_offset 8
+ 532              	 .cfi_offset 7,-8
+ 533              	 .cfi_offset 14,-4
+ 534 0002 82B0     	 sub sp,sp,#8
+ 535              	.LCFI8:
+ 536              	 .cfi_def_cfa_offset 16
+ 537 0004 00AF     	 add r7,sp,#0
+ 538              	.LCFI9:
+ 539              	 .cfi_def_cfa_register 7
+ 162:../main.c     **** 	sortObjectMovingAway = 1;
+ 540              	 .loc 3 162 0
+ 541 0006 244B     	 ldr r3,.L36
+ 542 0008 0122     	 mov r2,#1
+ 543 000a 1A60     	 str r2,[r3]
+ 163:../main.c     **** 
+ 164:../main.c     **** 	productionLine(0, FORWARD);
+ 544              	 .loc 3 164 0
+ 545 000c 0020     	 mov r0,#0
+ 546 000e 0021     	 mov r1,#0
+ 547 0010 FFF7FEFF 	 bl productionLine
+ 165:../main.c     **** 	if (nextObjects[0] == SORTOUT)
+ 548              	 .loc 3 165 0
+ 549 0014 214B     	 ldr r3,.L36+4
+ 550 0016 1B68     	 ldr r3,[r3]
+ 551 0018 012B     	 cmp r3,#1
+ 552 001a 17D1     	 bne .L30
+ 166:../main.c     **** 	{
+ 167:../main.c     **** 		slider(50000, SLIDERFORWARD);
+ 553              	 .loc 3 167 0
+ 554 001c 204B     	 ldr r3,.L36+8
+ 555 001e 181C     	 mov r0,r3
+ 556 0020 0021     	 mov r1,#0
+ 557 0022 FFF7FEFF 	 bl slider
+ 168:../main.c     **** 		while (readInductivSensor2() == 0)
+ 558              	 .loc 3 168 0
+ 559 0026 C046     	 mov r8,r8
+ 560              	.L31:
+ 561              	 .loc 3 168 0 is_stmt 0 discriminator 1
+ 562 0028 FFF7FEFF 	 bl readInductivSensor2
+ 563 002c 031E     	 sub r3,r0,#0
+ 564 002e FBD0     	 beq .L31
+ 169:../main.c     **** 			;
+ 170:../main.c     **** 		slider(50000, SLIDERBACKWARD);
+ 565              	 .loc 3 170 0 is_stmt 1
+ 566 0030 1B4B     	 ldr r3,.L36+8
+ 567 0032 181C     	 mov r0,r3
+ 568 0034 0121     	 mov r1,#1
+ 569 0036 FFF7FEFF 	 bl slider
+ 171:../main.c     **** 		while (readInductivSensor1() == 0)
+ 570              	 .loc 3 171 0
+ 571 003a C046     	 mov r8,r8
+ 572              	.L32:
+ 573              	 .loc 3 171 0 is_stmt 0 discriminator 1
+ 574 003c FFF7FEFF 	 bl readInductivSensor1
+ 575 0040 031E     	 sub r3,r0,#0
+ 576 0042 FBD0     	 beq .L32
+ 172:../main.c     **** 			;
+ 173:../main.c     **** 		// slider stops
+ 174:../main.c     **** 		slider(0, SLIDERFORWARD);
+ 577              	 .loc 3 174 0 is_stmt 1
+ 578 0044 0020     	 mov r0,#0
+ 579 0046 0021     	 mov r1,#0
+ 580 0048 FFF7FEFF 	 bl slider
+ 581              	.L30:
+ 582              	.LBB12:
  175:../main.c     **** 	}
- 176:../main.c     **** 	delay_ms(1000);
- 628              	 .loc 3 176 0
- 629 00b8 FA23     	 mov r3,#250
- 630 00ba 9B00     	 lsl r3,r3,#2
- 631 00bc 181C     	 mov r0,r3
- 632 00be FFF7FEFF 	 bl delay_ms
- 177:../main.c     **** 	redLED(OFF);
- 633              	 .loc 3 177 0
- 634 00c2 0020     	 mov r0,#0
- 635 00c4 FFF7FEFF 	 bl redLED
- 178:../main.c     **** 	greenLED(OFF);
- 636              	 .loc 3 178 0
- 637 00c8 0020     	 mov r0,#0
- 638 00ca FFF7FEFF 	 bl greenLED
- 179:../main.c     **** 	delay_ms(500);
- 639              	 .loc 3 179 0
- 640 00ce FA23     	 mov r3,#250
- 641 00d0 5B00     	 lsl r3,r3,#1
- 642 00d2 181C     	 mov r0,r3
- 643 00d4 FFF7FEFF 	 bl delay_ms
- 180:../main.c     **** 	if (lightBarrier3()) {
- 644              	 .loc 3 180 0
- 645 00d8 FFF7FEFF 	 bl lightBarrier3
- 646 00dc 031E     	 sub r3,r0,#0
- 647 00de 03D0     	 beq .L41
- 181:../main.c     **** 		greenLED(ON);
- 648              	 .loc 3 181 0
- 649 00e0 0120     	 mov r0,#1
- 650 00e2 FFF7FEFF 	 bl greenLED
- 651 00e6 02E0     	 b .L42
- 652              	.L41:
- 182:../main.c     **** 	} else {
- 183:../main.c     **** 		redLED(ON);
- 653              	 .loc 3 183 0
- 654 00e8 0120     	 mov r0,#1
- 655 00ea FFF7FEFF 	 bl redLED
- 656              	.L42:
- 184:../main.c     **** 	}
- 185:../main.c     **** 	delay_ms(1000);
- 657              	 .loc 3 185 0
- 658 00ee FA23     	 mov r3,#250
- 659 00f0 9B00     	 lsl r3,r3,#2
- 660 00f2 181C     	 mov r0,r3
- 661 00f4 FFF7FEFF 	 bl delay_ms
- 186:../main.c     **** 	redLED(OFF);
- 662              	 .loc 3 186 0
- 663 00f8 0020     	 mov r0,#0
- 664 00fa FFF7FEFF 	 bl redLED
- 187:../main.c     **** 	greenLED(OFF);
- 665              	 .loc 3 187 0
- 666 00fe 0020     	 mov r0,#0
- 667 0100 FFF7FEFF 	 bl greenLED
- 188:../main.c     **** 
- 189:../main.c     **** 	/*
- 190:../main.c     **** 	 // check productionLine
- 191:../main.c     **** 	 productionLine(PRODUCTION_LINE_MAX_SPEED, BACKWARD);
- 192:../main.c     **** 	 delay_ms(1000);
- 193:../main.c     **** 	 productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
- 194:../main.c     **** 	 delay_ms(1000);
- 195:../main.c     **** 	 productionLine(0, FORWARD);
- 196:../main.c     **** 	 */
- 197:../main.c     **** 
- 198:../main.c     **** 	// check pneumatics1
- 199:../main.c     **** 	pneumatics1(OUT);
- 668              	 .loc 3 199 0
- 669 0104 0120     	 mov r0,#1
- 670 0106 FFF7FEFF 	 bl pneumatics1
- 200:../main.c     **** 	delay_ms(1000);
- 671              	 .loc 3 200 0
- 672 010a FA23     	 mov r3,#250
- 673 010c 9B00     	 lsl r3,r3,#2
- 674 010e 181C     	 mov r0,r3
- 675 0110 FFF7FEFF 	 bl delay_ms
- 201:../main.c     **** 	pneumatics1(IN);
- 676              	 .loc 3 201 0
- 677 0114 0020     	 mov r0,#0
- 678 0116 FFF7FEFF 	 bl pneumatics1
- 202:../main.c     **** 	pneumatics2(OUT);
- 679              	 .loc 3 202 0
- 680 011a 0120     	 mov r0,#1
- 681 011c FFF7FEFF 	 bl pneumatics2
- 203:../main.c     **** 	delay_ms(1000);
- 682              	 .loc 3 203 0
- 683 0120 FA23     	 mov r3,#250
- 684 0122 9B00     	 lsl r3,r3,#2
- 685 0124 181C     	 mov r0,r3
- 686 0126 FFF7FEFF 	 bl delay_ms
- 204:../main.c     **** 	pneumatics2(IN);
- 687              	 .loc 3 204 0
- 688 012a 0020     	 mov r0,#0
- 689 012c FFF7FEFF 	 bl pneumatics2
- 690              	.L34:
- 205:../main.c     **** }
- 691              	 .loc 3 205 0
- 692 0130 BD46     	 mov sp,r7
- 693 0132 02B0     	 add sp,sp,#8
- 694              	 
- 695 0134 80BD     	 pop {r7,pc}
- 696              	.L44:
- 697 0136 C046     	 .align 2
- 698              	.L43:
- 699 0138 88130000 	 .word 5000
- 700              	 .cfi_endproc
- 701              	.LFE44:
- 703              	 .text
- 704              	.Letext0:
- 705              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
- 706              	 .file 5 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
- 707              	 .file 6 "../XMC1100-LibHaas.h"
+ 176:../main.c     **** 	// Shift the nextObjects array elements left, deleting the first element
+ 177:../main.c     **** 	for (int i = 1; i < numObjects; i++)
+ 583              	 .loc 3 177 0
+ 584 004c 0123     	 mov r3,#1
+ 585 004e 7B60     	 str r3,[r7,#4]
+ 586 0050 0BE0     	 b .L33
+ 587              	.L34:
+ 178:../main.c     **** 	{
+ 179:../main.c     **** 		nextObjects[i - 1] = nextObjects[i];
+ 588              	 .loc 3 179 0 discriminator 3
+ 589 0052 7B68     	 ldr r3,[r7,#4]
+ 590 0054 5A1E     	 sub r2,r3,#1
+ 591 0056 114B     	 ldr r3,.L36+4
+ 592 0058 7968     	 ldr r1,[r7,#4]
+ 593 005a 8900     	 lsl r1,r1,#2
+ 594 005c C958     	 ldr r1,[r1,r3]
+ 595 005e 0F4B     	 ldr r3,.L36+4
+ 596 0060 9200     	 lsl r2,r2,#2
+ 597 0062 D150     	 str r1,[r2,r3]
+ 177:../main.c     **** 	{
+ 598              	 .loc 3 177 0 discriminator 3
+ 599 0064 7B68     	 ldr r3,[r7,#4]
+ 600 0066 0133     	 add r3,r3,#1
+ 601 0068 7B60     	 str r3,[r7,#4]
+ 602              	.L33:
+ 177:../main.c     **** 	{
+ 603              	 .loc 3 177 0 is_stmt 0 discriminator 1
+ 604 006a 0E4B     	 ldr r3,.L36+12
+ 605 006c 1B68     	 ldr r3,[r3]
+ 606 006e 7A68     	 ldr r2,[r7,#4]
+ 607 0070 9A42     	 cmp r2,r3
+ 608 0072 EEDB     	 blt .L34
+ 609              	.LBE12:
+ 180:../main.c     **** 	}
+ 181:../main.c     **** 	if (numObjects > 0)
+ 610              	 .loc 3 181 0 is_stmt 1
+ 611 0074 0B4B     	 ldr r3,.L36+12
+ 612 0076 1B68     	 ldr r3,[r3]
+ 613 0078 002B     	 cmp r3,#0
+ 614 007a 04DD     	 ble .L35
+ 182:../main.c     **** 		numObjects--; // Decrease the objects count after sorting one out
+ 615              	 .loc 3 182 0
+ 616 007c 094B     	 ldr r3,.L36+12
+ 617 007e 1B68     	 ldr r3,[r3]
+ 618 0080 5A1E     	 sub r2,r3,#1
+ 619 0082 084B     	 ldr r3,.L36+12
+ 620 0084 1A60     	 str r2,[r3]
+ 621              	.L35:
+ 183:../main.c     **** 	productionLine(productionLineSpeed, FORWARD);
+ 622              	 .loc 3 183 0
+ 623 0086 084B     	 ldr r3,.L36+16
+ 624 0088 1B68     	 ldr r3,[r3]
+ 625 008a 181C     	 mov r0,r3
+ 626 008c 0021     	 mov r1,#0
+ 627 008e FFF7FEFF 	 bl productionLine
+ 184:../main.c     **** }
+ 628              	 .loc 3 184 0
+ 629 0092 BD46     	 mov sp,r7
+ 630 0094 02B0     	 add sp,sp,#8
+ 631              	 
+ 632 0096 80BD     	 pop {r7,pc}
+ 633              	.L37:
+ 634              	 .align 2
+ 635              	.L36:
+ 636 0098 00000000 	 .word sortObjectMovingAway
+ 637 009c 00000000 	 .word nextObjects
+ 638 00a0 50C30000 	 .word 50000
+ 639 00a4 00000000 	 .word numObjects
+ 640 00a8 00000000 	 .word productionLineSpeed
+ 641              	 .cfi_endproc
+ 642              	.LFE43:
+ 644              	 .section .text.test,"ax",%progbits
+ 645              	 .align 2
+ 646              	 .global test
+ 647              	 .code 16
+ 648              	 .thumb_func
+ 650              	test:
+ 651              	.LFB44:
+ 185:../main.c     **** 
+ 186:../main.c     **** void test(int onOrOff)
+ 187:../main.c     **** {
+ 652              	 .loc 3 187 0
+ 653              	 .cfi_startproc
+ 654 0000 80B5     	 push {r7,lr}
+ 655              	.LCFI10:
+ 656              	 .cfi_def_cfa_offset 8
+ 657              	 .cfi_offset 7,-8
+ 658              	 .cfi_offset 14,-4
+ 659 0002 82B0     	 sub sp,sp,#8
+ 660              	.LCFI11:
+ 661              	 .cfi_def_cfa_offset 16
+ 662 0004 00AF     	 add r7,sp,#0
+ 663              	.LCFI12:
+ 664              	 .cfi_def_cfa_register 7
+ 665 0006 7860     	 str r0,[r7,#4]
+ 188:../main.c     **** 	if (!onOrOff)
+ 666              	 .loc 3 188 0
+ 667 0008 7B68     	 ldr r3,[r7,#4]
+ 668 000a 002B     	 cmp r3,#0
+ 669 000c 10D1     	 bne .L39
+ 189:../main.c     **** 	{
+ 190:../main.c     **** 		// shut everything down
+ 191:../main.c     **** 		laser(OFF);
+ 670              	 .loc 3 191 0
+ 671 000e 0020     	 mov r0,#0
+ 672 0010 FFF7FEFF 	 bl laser
+ 192:../main.c     **** 		LEDStripes(OFF);
+ 673              	 .loc 3 192 0
+ 674 0014 0020     	 mov r0,#0
+ 675 0016 FFF7FEFF 	 bl LEDStripes
+ 193:../main.c     **** 		redLED(OFF);
+ 676              	 .loc 3 193 0
+ 677 001a 0020     	 mov r0,#0
+ 678 001c FFF7FEFF 	 bl redLED
+ 194:../main.c     **** 		greenLED(OFF);
+ 679              	 .loc 3 194 0
+ 680 0020 0020     	 mov r0,#0
+ 681 0022 FFF7FEFF 	 bl greenLED
+ 195:../main.c     **** 		productionLine(0, FORWARD);
+ 682              	 .loc 3 195 0
+ 683 0026 0020     	 mov r0,#0
+ 684 0028 0021     	 mov r1,#0
+ 685 002a FFF7FEFF 	 bl productionLine
+ 196:../main.c     **** 		return;
+ 686              	 .loc 3 196 0
+ 687 002e 7FE0     	 b .L38
+ 688              	.L39:
+ 197:../main.c     **** 	}
+ 198:../main.c     **** 
+ 199:../main.c     **** 	// light test: manual check
+ 200:../main.c     **** 	laser(ON);
+ 689              	 .loc 3 200 0
+ 690 0030 0120     	 mov r0,#1
+ 691 0032 FFF7FEFF 	 bl laser
+ 201:../main.c     **** 	LEDStripes(ON);
+ 692              	 .loc 3 201 0
+ 693 0036 0120     	 mov r0,#1
+ 694 0038 FFF7FEFF 	 bl LEDStripes
+ 202:../main.c     **** 	redLED(ON);
+ 695              	 .loc 3 202 0
+ 696 003c 0120     	 mov r0,#1
+ 697 003e FFF7FEFF 	 bl redLED
+ 203:../main.c     **** 	greenLED(ON);
+ 698              	 .loc 3 203 0
+ 699 0042 0120     	 mov r0,#1
+ 700 0044 FFF7FEFF 	 bl greenLED
+ 204:../main.c     **** 	delay_ms(5000);
+ 701              	 .loc 3 204 0
+ 702 0048 3B4B     	 ldr r3,.L47
+ 703 004a 181C     	 mov r0,r3
+ 704 004c FFF7FEFF 	 bl delay_ms
+ 205:../main.c     **** 	LEDStripes(OFF);
+ 705              	 .loc 3 205 0
+ 706 0050 0020     	 mov r0,#0
+ 707 0052 FFF7FEFF 	 bl LEDStripes
+ 206:../main.c     **** 	redLED(OFF);
+ 708              	 .loc 3 206 0
+ 709 0056 0020     	 mov r0,#0
+ 710 0058 FFF7FEFF 	 bl redLED
+ 207:../main.c     **** 	greenLED(OFF);
+ 711              	 .loc 3 207 0
+ 712 005c 0020     	 mov r0,#0
+ 713 005e FFF7FEFF 	 bl greenLED
+ 208:../main.c     **** 	delay_ms(2000);
+ 714              	 .loc 3 208 0
+ 715 0062 FA23     	 mov r3,#250
+ 716 0064 DB00     	 lsl r3,r3,#3
+ 717 0066 181C     	 mov r0,r3
+ 718 0068 FFF7FEFF 	 bl delay_ms
+ 209:../main.c     **** 
+ 210:../main.c     **** 	// check lightbarriers: automatic check
+ 211:../main.c     **** 	if (lightBarrier1())
+ 719              	 .loc 3 211 0
+ 720 006c FFF7FEFF 	 bl lightBarrier1
+ 721 0070 031E     	 sub r3,r0,#0
+ 722 0072 03D0     	 beq .L41
+ 212:../main.c     **** 	{
+ 213:../main.c     **** 		greenLED(ON);
+ 723              	 .loc 3 213 0
+ 724 0074 0120     	 mov r0,#1
+ 725 0076 FFF7FEFF 	 bl greenLED
+ 726 007a 02E0     	 b .L42
+ 727              	.L41:
+ 214:../main.c     **** 	}
+ 215:../main.c     **** 	else
+ 216:../main.c     **** 	{
+ 217:../main.c     **** 		redLED(ON);
+ 728              	 .loc 3 217 0
+ 729 007c 0120     	 mov r0,#1
+ 730 007e FFF7FEFF 	 bl redLED
+ 731              	.L42:
+ 218:../main.c     **** 	}
+ 219:../main.c     **** 	delay_ms(1000);
+ 732              	 .loc 3 219 0
+ 733 0082 FA23     	 mov r3,#250
+ 734 0084 9B00     	 lsl r3,r3,#2
+ 735 0086 181C     	 mov r0,r3
+ 736 0088 FFF7FEFF 	 bl delay_ms
+ 220:../main.c     **** 	redLED(OFF);
+ 737              	 .loc 3 220 0
+ 738 008c 0020     	 mov r0,#0
+ 739 008e FFF7FEFF 	 bl redLED
+ 221:../main.c     **** 	greenLED(OFF);
+ 740              	 .loc 3 221 0
+ 741 0092 0020     	 mov r0,#0
+ 742 0094 FFF7FEFF 	 bl greenLED
+ 222:../main.c     **** 	delay_ms(500);
+ 743              	 .loc 3 222 0
+ 744 0098 FA23     	 mov r3,#250
+ 745 009a 5B00     	 lsl r3,r3,#1
+ 746 009c 181C     	 mov r0,r3
+ 747 009e FFF7FEFF 	 bl delay_ms
+ 223:../main.c     **** 	if (lightBarrier2())
+ 748              	 .loc 3 223 0
+ 749 00a2 FFF7FEFF 	 bl lightBarrier2
+ 750 00a6 031E     	 sub r3,r0,#0
+ 751 00a8 03D0     	 beq .L43
+ 224:../main.c     **** 	{
+ 225:../main.c     **** 		greenLED(ON);
+ 752              	 .loc 3 225 0
+ 753 00aa 0120     	 mov r0,#1
+ 754 00ac FFF7FEFF 	 bl greenLED
+ 755 00b0 02E0     	 b .L44
+ 756              	.L43:
+ 226:../main.c     **** 	}
+ 227:../main.c     **** 	else
+ 228:../main.c     **** 	{
+ 229:../main.c     **** 		redLED(ON);
+ 757              	 .loc 3 229 0
+ 758 00b2 0120     	 mov r0,#1
+ 759 00b4 FFF7FEFF 	 bl redLED
+ 760              	.L44:
+ 230:../main.c     **** 	}
+ 231:../main.c     **** 	delay_ms(1000);
+ 761              	 .loc 3 231 0
+ 762 00b8 FA23     	 mov r3,#250
+ 763 00ba 9B00     	 lsl r3,r3,#2
+ 764 00bc 181C     	 mov r0,r3
+ 765 00be FFF7FEFF 	 bl delay_ms
+ 232:../main.c     **** 	redLED(OFF);
+ 766              	 .loc 3 232 0
+ 767 00c2 0020     	 mov r0,#0
+ 768 00c4 FFF7FEFF 	 bl redLED
+ 233:../main.c     **** 	greenLED(OFF);
+ 769              	 .loc 3 233 0
+ 770 00c8 0020     	 mov r0,#0
+ 771 00ca FFF7FEFF 	 bl greenLED
+ 234:../main.c     **** 	delay_ms(500);
+ 772              	 .loc 3 234 0
+ 773 00ce FA23     	 mov r3,#250
+ 774 00d0 5B00     	 lsl r3,r3,#1
+ 775 00d2 181C     	 mov r0,r3
+ 776 00d4 FFF7FEFF 	 bl delay_ms
+ 235:../main.c     **** 	if (lightBarrier3())
+ 777              	 .loc 3 235 0
+ 778 00d8 FFF7FEFF 	 bl lightBarrier3
+ 779 00dc 031E     	 sub r3,r0,#0
+ 780 00de 03D0     	 beq .L45
+ 236:../main.c     **** 	{
+ 237:../main.c     **** 		greenLED(ON);
+ 781              	 .loc 3 237 0
+ 782 00e0 0120     	 mov r0,#1
+ 783 00e2 FFF7FEFF 	 bl greenLED
+ 784 00e6 02E0     	 b .L46
+ 785              	.L45:
+ 238:../main.c     **** 	}
+ 239:../main.c     **** 	else
+ 240:../main.c     **** 	{
+ 241:../main.c     **** 		redLED(ON);
+ 786              	 .loc 3 241 0
+ 787 00e8 0120     	 mov r0,#1
+ 788 00ea FFF7FEFF 	 bl redLED
+ 789              	.L46:
+ 242:../main.c     **** 	}
+ 243:../main.c     **** 	delay_ms(1000);
+ 790              	 .loc 3 243 0
+ 791 00ee FA23     	 mov r3,#250
+ 792 00f0 9B00     	 lsl r3,r3,#2
+ 793 00f2 181C     	 mov r0,r3
+ 794 00f4 FFF7FEFF 	 bl delay_ms
+ 244:../main.c     **** 	redLED(OFF);
+ 795              	 .loc 3 244 0
+ 796 00f8 0020     	 mov r0,#0
+ 797 00fa FFF7FEFF 	 bl redLED
+ 245:../main.c     **** 	greenLED(OFF);
+ 798              	 .loc 3 245 0
+ 799 00fe 0020     	 mov r0,#0
+ 800 0100 FFF7FEFF 	 bl greenLED
+ 246:../main.c     **** 
+ 247:../main.c     **** 	/*
+ 248:../main.c     **** 	 // check productionLine
+ 249:../main.c     **** 	 productionLine(productionLineSpeed, BACKWARD);
+ 250:../main.c     **** 	 delay_ms(1000);
+ 251:../main.c     **** 	 productionLine(productionLineSpeed, FORWARD);
+ 252:../main.c     **** 	 delay_ms(1000);
+ 253:../main.c     **** 	 productionLine(0, FORWARD);
+ 254:../main.c     **** 	 */
+ 255:../main.c     **** 
+ 256:../main.c     **** 	// check pneumatics1
+ 257:../main.c     **** 	pneumatics1(OUT);
+ 801              	 .loc 3 257 0
+ 802 0104 0120     	 mov r0,#1
+ 803 0106 FFF7FEFF 	 bl pneumatics1
+ 258:../main.c     **** 	delay_ms(1000);
+ 804              	 .loc 3 258 0
+ 805 010a FA23     	 mov r3,#250
+ 806 010c 9B00     	 lsl r3,r3,#2
+ 807 010e 181C     	 mov r0,r3
+ 808 0110 FFF7FEFF 	 bl delay_ms
+ 259:../main.c     **** 	pneumatics1(IN);
+ 809              	 .loc 3 259 0
+ 810 0114 0020     	 mov r0,#0
+ 811 0116 FFF7FEFF 	 bl pneumatics1
+ 260:../main.c     **** 	pneumatics2(OUT);
+ 812              	 .loc 3 260 0
+ 813 011a 0120     	 mov r0,#1
+ 814 011c FFF7FEFF 	 bl pneumatics2
+ 261:../main.c     **** 	delay_ms(1000);
+ 815              	 .loc 3 261 0
+ 816 0120 FA23     	 mov r3,#250
+ 817 0122 9B00     	 lsl r3,r3,#2
+ 818 0124 181C     	 mov r0,r3
+ 819 0126 FFF7FEFF 	 bl delay_ms
+ 262:../main.c     **** 	pneumatics2(IN);
+ 820              	 .loc 3 262 0
+ 821 012a 0020     	 mov r0,#0
+ 822 012c FFF7FEFF 	 bl pneumatics2
+ 823              	.L38:
+ 263:../main.c     **** }
+ 824              	 .loc 3 263 0
+ 825 0130 BD46     	 mov sp,r7
+ 826 0132 02B0     	 add sp,sp,#8
+ 827              	 
+ 828 0134 80BD     	 pop {r7,pc}
+ 829              	.L48:
+ 830 0136 C046     	 .align 2
+ 831              	.L47:
+ 832 0138 88130000 	 .word 5000
+ 833              	 .cfi_endproc
+ 834              	.LFE44:
+ 836              	 .text
+ 837              	.Letext0:
+ 838              	 .file 4 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 839              	 .file 5 "c:\\infineon\\tools\\dave ide\\4.5.0.202105191637\\eclipse\\arm-gcc-49\\arm-none-eabi\\include\\stdint.h"
+ 840              	 .file 6 "<built-in>"
+ 841              	 .file 7 "../XMC1100-LibHaas.h"
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
     {standard input}:18     .text.__NVIC_SystemReset:00000000 $t
@@ -2541,19 +2745,21 @@ DEFINED SYMBOLS
     {standard input}:84     .bss.handleObjectMovingAway:00000000 $d
     {standard input}:94     .bss.sortObjectMovingAway:00000000 sortObjectMovingAway
     {standard input}:91     .bss.sortObjectMovingAway:00000000 $d
-    {standard input}:97     .text.main:00000000 $t
-    {standard input}:102    .text.main:00000000 main
-    {standard input}:517    .text.test:00000000 test
-    {standard input}:253    .text.handleNewObject:00000000 handleNewObject
-    {standard input}:393    .text.sortObject:00000000 sortObject
-    {standard input}:232    .text.main:000000c8 $d
-    {standard input}:241    .rodata:00000000 $d
-    {standard input}:248    .text.handleNewObject:00000000 $t
-    {standard input}:376    .text.handleNewObject:000000bc $d
-    {standard input}:388    .text.sortObject:00000000 $t
-    {standard input}:503    .text.sortObject:00000098 $d
-    {standard input}:512    .text.test:00000000 $t
-    {standard input}:699    .text.test:00000138 $d
+    {standard input}:101    .data.productionLineSpeed:00000000 productionLineSpeed
+    {standard input}:98     .data.productionLineSpeed:00000000 $d
+    {standard input}:104    .rodata:00000000 $d
+    {standard input}:121    .text.main:00000000 $t
+    {standard input}:126    .text.main:00000000 main
+    {standard input}:650    .text.test:00000000 test
+    {standard input}:386    .text.handleNewObject:00000000 handleNewObject
+    {standard input}:525    .text.sortObject:00000000 sortObject
+    {standard input}:357    .text.main:00000168 $d
+    {standard input}:381    .text.handleNewObject:00000000 $t
+    {standard input}:508    .text.handleNewObject:000000bc $d
+    {standard input}:520    .text.sortObject:00000000 $t
+    {standard input}:636    .text.sortObject:00000098 $d
+    {standard input}:645    .text.test:00000000 $t
+    {standard input}:832    .text.test:00000138 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
@@ -2563,16 +2769,19 @@ productionLine
 slider
 laser
 lightBarrier2
+rs232_print
 lightBarrier1
 readButton1
 readInductivSensor1
 readButton2
+strncmp
+strtol
+sprintf
+uart_clear_receivedata
+uartReceivedata
+uartEnterReceive
 pneumatics1
 uart_print
-rs232_print
-uart_clear_receivedata
-uartEnterReceive
-uartReceivedata
 readInductivSensor2
 redLED
 greenLED

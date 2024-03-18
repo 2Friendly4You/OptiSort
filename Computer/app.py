@@ -40,6 +40,55 @@ camera_manager = None
 
 socketio = SocketIO(app, async_mode="threading")
 
+class SendSerialData:
+    def __init__(self):
+        self.last_data = ""
+        self.locked = False
+        self.last_send_time = 0
+        self.send_thread = None
+
+    def send(self, data):
+        if self.send_thread is None or not self.send_thread.is_alive():
+            self.send_thread = threading.Thread(target=self._send, args=(data,))
+            self.send_thread.start()
+        else:
+            self.last_data = data
+
+    def _send(self, data):
+        with threading.Lock():
+            while True:
+                current_time = time.time()
+                wait_time = 1 - (current_time - self.last_send_time)
+                if not self.locked:
+                    if wait_time > 0:
+                        time.sleep(wait_time)
+                    ser.write(data.encode())
+                    self.last_send_time = time.time()
+                    if self.last_data and self.last_data != data:
+                        data = self.last_data
+                        self.last_data = ""
+                        continue
+                    break
+                else:
+                    self.last_data = data
+                    break
+
+    def send_ignore_queue(self, data):
+        threading.Thread(target=self._send_ignore_queue, args=(data,)).start()
+
+    def _send_ignore_queue(self, data):
+        with threading.Lock():
+            ser.write(data.encode())
+            self.last_send_time = time.time()
+
+    def set_locked(self, locked):
+        self.locked = locked
+        if not locked and self.last_data:
+            self.send(self.last_data)
+
+ser = None
+send_serial_data = SendSerialData()
+
 # Initialize lists to hold classes
 all_classes = []
 selected_classes = []
@@ -84,15 +133,18 @@ def update_websocket_images(images):
 def update_websocket_text(text):
     socketio.emit('update_text', {'text': text})
 
-
 @socketio.on('change_mode')
 def handle_mode_change(data):
     global ai_evaluation_mode
     ai_evaluation_mode = data['mode']
-    emit_mode_change(ai_evaluation_mode)
+    socketio.emit('mode_changed', {'mode': ai_evaluation_mode})
 
-def emit_mode_change(mode):
-    socketio.emit('mode_changed', {'mode': mode})
+@socketio.on('production_line_speed')
+def handle_production_line_speed(data):
+    global production_line_speed
+    production_line_speed = data['production_line_speed']
+    send_serial_data.send(f"speed{production_line_speed}\n\r")
+    socketio.emit('production_line_speed', {'production_line_speed': production_line_speed})
 
 
 def get_current_model_config():
@@ -232,6 +284,10 @@ def remove_all_unclassified_images():
 def get_aievaluationmode():
     return jsonify({"ai_evaluation_mode": ai_evaluation_mode}), 200
 
+@app.route('/get-production-line-speed', methods=['GET'])
+def get_productionlinespeed():
+    return jsonify({"production_line_speed": production_line_speed}), 200
+
 # set the ai_evaluation_mode
 @app.route('/set-ai-evaluation-mode', methods=['POST'])
 def set_aievaluationmode():
@@ -337,6 +393,11 @@ def train_image_classifier():
     # Check if class names are unique
     if len(class_names) != len(set(class_names)):
         return jsonify({"message": "Class names must be unique."}), 400
+    
+    # Check if class names
+    for class_name in class_names:
+        if not re.match("^[a-zA-Z0-9_ ]+$", class_name):
+            return jsonify({"message": "Invalid class name. Use only alphanumeric characters, underscores, and spaces."}), 400
 
     # Check if model directory already exists
     model_path = os.path.join("models", model_name)
@@ -383,6 +444,8 @@ def train_image_classifier():
         # If an error occurs, delete the model folder and provide a generic error message
         if os.path.exists(model_path):
             shutil.rmtree(model_path)
+        # move images back to unclassified_images
+        move_images(UPLOAD_FOLDER, "static/unclassified_images")
         return jsonify({"message": "An error occurred during training. Please try again."}), 500
     finally:
         TRAINING_IN_PROGRESS = False
@@ -449,6 +512,7 @@ def move_images(source_folder, destination_folder):
 
 
 def micro_controller_thread():
+    global ser
     freeze_support()
 
     # load current model
@@ -461,6 +525,8 @@ def micro_controller_thread():
     try:
         ser = serial.Serial(PORT, 9600)
         print("Connected to microcontroller.")
+
+        send_serial_data.send(f"speed{production_line_speed}\n\r")
     except:
         print("Not connected to microcontroller.")
 
@@ -484,6 +550,9 @@ def micro_controller_thread():
         if data == "":  # If the data is empty, wait for an "Enter" character
             continue
 
+        # lock the serial data
+        send_serial_data.set_locked(True)
+
         move_images("static/captured_images", "static/unclassified_images")
         print(f"Capturing {NUM_CAMERAS} images...")
         time.sleep(0.2)
@@ -497,17 +566,27 @@ def micro_controller_thread():
         # check for the mode
         if ai_evaluation_mode == 1:
             print("The images are saved.\n\r")
-            ser.write("n\n\r".encode())
+            send_serial_data.send_ignore_queue("n\n\r")
             update_websocket_text("Images are saved.")
+
+            send_serial_data.set_locked(False)
             continue
 
         try:
+            average_class_name = {}
+
             for filename in file_names_to_check:
                 print(filename)
                 class_name, class_probability = mf.predict_image(filename, all_classes)
 
                 print(f"{class_name}: {class_probability}%")
                 print(f"Predicted {filename}: {class_name}")
+
+                # add to dictionary average_class_name
+                if class_name in average_class_name:
+                    average_class_name[class_name] += 1
+                else:
+                    average_class_name[class_name] = 1
 
                 # Increment counters based on prediction
                 if class_name in selected_classes:
@@ -533,21 +612,27 @@ def micro_controller_thread():
             else:  # 'dominant-reject'
                 decision = 'selected' if rejected_count == 0 else 'rejected'
 
+            # Get the class name with the highest count
+            class_name = max(average_class_name, key=average_class_name.get)
+
             # Execute actions based on the final decision
             if decision == 'selected':
                 print("The object will not be sorted out.\n\r")
-                ser.write("d\n\r".encode())
+                send_serial_data.send_ignore_queue("d\n\r")
                 update_websocket_text("don't sort out | " + class_name)
             else:
                 print("The object will be sorted out.\n\r")
-                ser.write("s\n\r".encode())
+                send_serial_data.send_ignore_queue("s\n\r")
                 update_websocket_text("sort out | " + class_name)
 
             print("Received data:", data)
         except Exception as e:
             print(f"Error: {e}")
-            ser.write("n\n\r".encode())
+            send_serial_data.send_ignore_queue("n\n\r")
             update_websocket_text("Error occurred (Maybe there is no model loaded). Images are saved.")
+        finally:
+            # unlock the serial data
+            send_serial_data.set_locked(False)
 
 
 if __name__ == '__main__':

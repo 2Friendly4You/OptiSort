@@ -209,7 +209,7 @@
                     <br>
                     <div>
                         <!-- change mode of scanning or evaluation via toggle switch -->
-                        <h2>Mode</h2>
+                        <h2>Settings</h2>
                         <div class="switch-container">
                             <label class="switch-label switch-label-off">Evaluate images with the ai</label>
                             <div class="switch">
@@ -217,6 +217,13 @@
                                 <label class="slider round" for="toggle-switch"></label>
                             </div>
                             <label class="switch-label switch-label-on">Save the images without ai evaluation</label>
+                        </div>
+                        <br>
+                        <div>
+                            <label for="production_line_speed">Production line speed:</label>
+                            <input type="range" id="production_line_speed" min="0" max="50000" step="5000"
+                                        value="15000" oninput="this.nextSibling.value = this.value"
+                                        required><output>15000</output>
                         </div>
                     </div>
                     <br>
@@ -449,6 +456,13 @@
                 updateModeLabel(data.ai_evaluation_mode);
             })
 
+        fetch('/get-production-line-speed')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                updateProductionLineSpeed(data.production_line_speed);
+            })
+
 
         // listen to the toggle switch change event and send the new value to the server
         document.getElementById('toggle-switch').addEventListener('change', function () {
@@ -505,6 +519,30 @@
                 modeLabelOn.classList.remove('active');
                 modeLabelOff.classList.add('active');
             }
+        }
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+
+        // Listen for mode change events from the server
+        socket.on('production_line_speed', function (data) {
+            var production_line_speed = data.production_line_speed;
+            updateProductionLineSpeed(production_line_speed);
+            console.log('production_line_speed', production_line_speed);
+        });
+
+        // Send mode change events to the server
+        document.getElementById('production_line_speed').addEventListener('change', function () {
+            var speed = this.value;
+            socket.emit('production_line_speed', {'production_line_speed': speed});
+            console.log('production_line_speed', speed);
+        });
+
+        function updateProductionLineSpeed(speed) {
+            var speedInput = document.getElementById('production_line_speed');
+            speedInput.value = speed;
+            speedInput.nextSibling.value = speed;
         }
     </script>
 </body>

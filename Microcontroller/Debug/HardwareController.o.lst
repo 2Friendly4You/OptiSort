@@ -494,7 +494,7 @@
  423 0004 00AF     	 add r7,sp,#0
  424              	.LCFI19:
  425              	 .cfi_def_cfa_register 7
-  85:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier1port, lightbarrier1pin);
+  85:../HardwareController.c **** 	int firstActivation = bit_read(lightbarrier1port, lightbarrier1pin);
  426              	 .loc 1 85 0
  427 0006 0220     	 mov r0,#2
  428 0008 0321     	 mov r1,#3
@@ -505,7 +505,7 @@
  432              	 .loc 1 86 0
  433 0012 0520     	 mov r0,#5
  434 0014 FFF7FEFF 	 bl delay_ms
-  87:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+  87:../HardwareController.c **** 	int secondActivation = bit_read(lightbarrier1port, lightbarrier1pin);
  435              	 .loc 1 87 0
  436 0018 0220     	 mov r0,#2
  437 001a 0321     	 mov r1,#3
@@ -515,11 +515,11 @@
   88:../HardwareController.c **** 
   89:../HardwareController.c **** 	// implements tolerance
   90:../HardwareController.c **** 
-  91:../HardwareController.c **** 	while (temp1 != temp2) {
+  91:../HardwareController.c **** 	while (firstActivation != secondActivation) {
  441              	 .loc 1 91 0
  442 0024 0AE0     	 b .L20
  443              	.L21:
-  92:../HardwareController.c **** 		temp1 = temp2;
+  92:../HardwareController.c **** 		firstActivation = secondActivation;
  444              	 .loc 1 92 0
  445 0026 3B68     	 ldr r3,[r7]
  446 0028 7B60     	 str r3,[r7,#4]
@@ -527,7 +527,7 @@
  447              	 .loc 1 93 0
  448 002a 0520     	 mov r0,#5
  449 002c FFF7FEFF 	 bl delay_ms
-  94:../HardwareController.c **** 		temp2 = bit_read(lightbarrier1port, lightbarrier1pin);
+  94:../HardwareController.c **** 		secondActivation = bit_read(lightbarrier1port, lightbarrier1pin);
  450              	 .loc 1 94 0
  451 0030 0220     	 mov r0,#2
  452 0032 0321     	 mov r1,#3
@@ -535,7 +535,7 @@
  454 0038 031C     	 mov r3,r0
  455 003a 3B60     	 str r3,[r7]
  456              	.L20:
-  91:../HardwareController.c **** 		temp1 = temp2;
+  91:../HardwareController.c **** 		firstActivation = secondActivation;
  457              	 .loc 1 91 0
  458 003c 7A68     	 ldr r2,[r7,#4]
  459 003e 3B68     	 ldr r3,[r7]
@@ -543,7 +543,7 @@
  461 0042 F0D1     	 bne .L21
   95:../HardwareController.c **** 	}
   96:../HardwareController.c **** 
-  97:../HardwareController.c **** 	if (temp1 == 0) {
+  97:../HardwareController.c **** 	if (firstActivation == 0) {
  462              	 .loc 1 97 0
  463 0044 7B68     	 ldr r3,[r7,#4]
  464 0046 002B     	 cmp r3,#0
@@ -590,7 +590,7 @@
  500 0004 00AF     	 add r7,sp,#0
  501              	.LCFI22:
  502              	 .cfi_def_cfa_register 7
- 105:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 105:../HardwareController.c **** 	int firstActivation = bit_read(lightbarrier2port, lightbarrier2pin);
  503              	 .loc 1 105 0
  504 0006 0220     	 mov r0,#2
  505 0008 0221     	 mov r1,#2
@@ -601,7 +601,7 @@
  509              	 .loc 1 106 0
  510 0012 0520     	 mov r0,#5
  511 0014 FFF7FEFF 	 bl delay_ms
- 107:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 107:../HardwareController.c **** 	int secondActivation = bit_read(lightbarrier2port, lightbarrier2pin);
  512              	 .loc 1 107 0
  513 0018 0220     	 mov r0,#2
  514 001a 0221     	 mov r1,#2
@@ -611,11 +611,11 @@
  108:../HardwareController.c **** 
  109:../HardwareController.c **** 	// implements tolerance
  110:../HardwareController.c **** 
- 111:../HardwareController.c **** 	while (temp1 != temp2) {
+ 111:../HardwareController.c **** 	while (firstActivation != secondActivation) {
  518              	 .loc 1 111 0
  519 0024 0AE0     	 b .L25
  520              	.L26:
- 112:../HardwareController.c **** 		temp1 = temp2;
+ 112:../HardwareController.c **** 		firstActivation = secondActivation;
  521              	 .loc 1 112 0
  522 0026 3B68     	 ldr r3,[r7]
  523 0028 7B60     	 str r3,[r7,#4]
@@ -623,7 +623,7 @@
  524              	 .loc 1 113 0
  525 002a 0520     	 mov r0,#5
  526 002c FFF7FEFF 	 bl delay_ms
- 114:../HardwareController.c **** 		temp2 = bit_read(lightbarrier2port, lightbarrier2pin);
+ 114:../HardwareController.c **** 		secondActivation = bit_read(lightbarrier2port, lightbarrier2pin);
  527              	 .loc 1 114 0
  528 0030 0220     	 mov r0,#2
  529 0032 0221     	 mov r1,#2
@@ -631,7 +631,7 @@
  531 0038 031C     	 mov r3,r0
  532 003a 3B60     	 str r3,[r7]
  533              	.L25:
- 111:../HardwareController.c **** 		temp1 = temp2;
+ 111:../HardwareController.c **** 		firstActivation = secondActivation;
  534              	 .loc 1 111 0
  535 003c 7A68     	 ldr r2,[r7,#4]
  536 003e 3B68     	 ldr r3,[r7]
@@ -639,7 +639,7 @@
  538 0042 F0D1     	 bne .L26
  115:../HardwareController.c **** 	}
  116:../HardwareController.c **** 
- 117:../HardwareController.c **** 	if (temp1 == 0) {
+ 117:../HardwareController.c **** 	if (firstActivation == 0) {
  539              	 .loc 1 117 0
  540 0044 7B68     	 ldr r3,[r7,#4]
  541 0046 002B     	 cmp r3,#0
@@ -686,7 +686,7 @@
  577 0004 00AF     	 add r7,sp,#0
  578              	.LCFI25:
  579              	 .cfi_def_cfa_register 7
- 125:../HardwareController.c **** 	int temp1 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 125:../HardwareController.c **** 	int firstActivation = bit_read(lightbarrier3port, lightbarrier3pin);
  580              	 .loc 1 125 0
  581 0006 0220     	 mov r0,#2
  582 0008 0121     	 mov r1,#1
@@ -697,7 +697,7 @@
  586              	 .loc 1 126 0
  587 0012 0520     	 mov r0,#5
  588 0014 FFF7FEFF 	 bl delay_ms
- 127:../HardwareController.c **** 	int temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 127:../HardwareController.c **** 	int secondActivation = bit_read(lightbarrier3port, lightbarrier3pin);
  589              	 .loc 1 127 0
  590 0018 0220     	 mov r0,#2
  591 001a 0121     	 mov r1,#1
@@ -707,11 +707,11 @@
  128:../HardwareController.c **** 
  129:../HardwareController.c **** 	// implements tolerance
  130:../HardwareController.c **** 
- 131:../HardwareController.c **** 	while (temp1 != temp2) {
+ 131:../HardwareController.c **** 	while (firstActivation != secondActivation) {
  595              	 .loc 1 131 0
  596 0024 0AE0     	 b .L30
  597              	.L31:
- 132:../HardwareController.c **** 		temp1 = temp2;
+ 132:../HardwareController.c **** 		firstActivation = secondActivation;
  598              	 .loc 1 132 0
  599 0026 3B68     	 ldr r3,[r7]
  600 0028 7B60     	 str r3,[r7,#4]
@@ -719,7 +719,7 @@
  601              	 .loc 1 133 0
  602 002a 0520     	 mov r0,#5
  603 002c FFF7FEFF 	 bl delay_ms
- 134:../HardwareController.c **** 		temp2 = bit_read(lightbarrier3port, lightbarrier3pin);
+ 134:../HardwareController.c **** 		secondActivation = bit_read(lightbarrier3port, lightbarrier3pin);
  604              	 .loc 1 134 0
  605 0030 0220     	 mov r0,#2
  606 0032 0121     	 mov r1,#1
@@ -727,7 +727,7 @@
  608 0038 031C     	 mov r3,r0
  609 003a 3B60     	 str r3,[r7]
  610              	.L30:
- 131:../HardwareController.c **** 		temp1 = temp2;
+ 131:../HardwareController.c **** 		firstActivation = secondActivation;
  611              	 .loc 1 131 0
  612 003c 7A68     	 ldr r2,[r7,#4]
  613 003e 3B68     	 ldr r3,[r7]
@@ -735,7 +735,7 @@
  615 0042 F0D1     	 bne .L31
  135:../HardwareController.c **** 	}
  136:../HardwareController.c **** 
- 137:../HardwareController.c **** 	if (temp1 == 0) {
+ 137:../HardwareController.c **** 	if (firstActivation == 0) {
  616              	 .loc 1 137 0
  617 0044 7B68     	 ldr r3,[r7,#4]
  618 0046 002B     	 cmp r3,#0
