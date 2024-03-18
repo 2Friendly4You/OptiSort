@@ -31,7 +31,7 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 TRAINING_IN_PROGRESS = False
 
 IMG_SIZE = (200, 200)
-NUM_CAMERAS = 0
+NUM_CAMERAS = 5
 PORT = "COM8"
 
 camera_indices = None
@@ -402,7 +402,14 @@ def find_cameras_until_num(num_cameras, max_cameras=20):
 
     if len(camera_indices) != num_cameras:
         print(f"Required {num_cameras} cameras not found.")
-        sys.exit(1)
+        print("Do you want to continue with the available cameras? (y/n)")
+        response = input()
+        while response.lower() not in ['y', 'n']:
+            print("Invalid input. Enter 'y' or 'n'.")
+            response = input()
+        if response.lower() == 'n':
+            print("Exiting...")
+            sys.exit(1)
 
     return camera_indices
 
