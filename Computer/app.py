@@ -30,7 +30,6 @@ ALLOWED_IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'jfif', 'pjpeg', 'pjp'}
 # Flag to track training status
 TRAINING_IN_PROGRESS = False
 
-IMG_SIZE = (200, 200)
 NUM_CAMERAS = 5
 PORT = "COM8"
 
@@ -54,6 +53,8 @@ sorting_type = ""
 # if 0 the images will be evaluated by the model
 # if 1 the images will just be made and saved
 ai_evaluation_mode = 0
+
+production_line_speed = 15000
 
 # Create a lock to control access to the training process
 training_lock = threading.Lock()

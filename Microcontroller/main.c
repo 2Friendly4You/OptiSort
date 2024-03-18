@@ -2,8 +2,6 @@
 #include "XMC1100-LibHaas.h"
 #include "HardwareController.h"
 
-#define PRODUCTION_LINE_MAX_SPEED 15000
-
 #define MAX_OBJECTS 100
 int nextObjects[MAX_OBJECTS];
 int numObjects = 0; // Tracks the number of objects in the array
@@ -11,6 +9,8 @@ int numObjects = 0; // Tracks the number of objects in the array
 // 1 if an object is currently being handled, 0 otherwise
 int handleObjectMovingAway = 0;
 int sortObjectMovingAway = 0;
+
+int productionLineSpeed = 15000; // 15000 is a good value for the production line speed
 
 void handleNewObject();
 void sortObject();
@@ -63,7 +63,7 @@ int main(void) {
 			NVIC_SystemReset();
 		}
 
-		productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
+		productionLine(productionLineSpeed, FORWARD);
 	}
 
 	return 0; // Added return statement for formality, though it will never be reached in this loop
@@ -110,7 +110,7 @@ void handleNewObject() {
 
 	laser(ON);
 	LEDStripes(OFF);
-	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
+	productionLine(productionLineSpeed, FORWARD);
 }
 
 void sortObject() {
@@ -133,7 +133,7 @@ void sortObject() {
 	}
 	if (numObjects > 0)
 		numObjects--; // Decrease the objects count after sorting one out
-	productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
+	productionLine(productionLineSpeed, FORWARD);
 }
 
 void test(int onOrOff) {
@@ -188,9 +188,9 @@ void test(int onOrOff) {
 
 	/*
 	 // check productionLine
-	 productionLine(PRODUCTION_LINE_MAX_SPEED, BACKWARD);
+	 productionLine(productionLineSpeed, BACKWARD);
 	 delay_ms(1000);
-	 productionLine(PRODUCTION_LINE_MAX_SPEED, FORWARD);
+	 productionLine(productionLineSpeed, FORWARD);
 	 delay_ms(1000);
 	 productionLine(0, FORWARD);
 	 */
