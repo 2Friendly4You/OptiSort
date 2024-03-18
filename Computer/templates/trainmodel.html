@@ -736,28 +736,26 @@
             classInputs.addEventListener("input", reloadSortButtons);
 
             // Function to upload unclassified images
-            function uploadUnclassifiedImages() {
+            function uploadUnclassifiedImages(event) {
+                event.preventDefault();
+                event.stopPropagation();
+
                 const files = document.getElementById("new-unclassified-images").files;
                 const formData = new FormData();
                 Array.from(files).forEach(file => {
                     formData.append("images", file);
                 });
 
-                $.ajax({
-                    type: "POST",
-                    url: "/upload-unclassified-images",
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function (response) {
-                        // reset the input field
-                        document.getElementById("new-unclassified-images").value = "";
-                        sweetAlert(response.message, "success");
-                        loadUnclassifiedImages();
-                    },
-                    error: function (response) {
-                        sweetAlert(response.responseJSON.message, "error");
-                    }
+                fetch("/upload-unclassified-images", {
+                    method: "POST",
+                    body: formData
+                }).then(response => response.json()).then(data => {
+                    // reset the input field
+                    document.getElementById("new-unclassified-images").value = "";
+                    sweetAlert(data.message, "success");
+                    loadUnclassifiedImages();
+                }).catch(error => {
+                    sweetAlert(error.message, "error");
                 });
             }
 
