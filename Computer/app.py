@@ -555,7 +555,7 @@ def micro_controller_thread():
 
         move_images("static/captured_images", "static/unclassified_images")
         print(f"Capturing {NUM_CAMERAS} images...")
-        time.sleep(0.2)
+        time.sleep(0.5)
         file_names_to_check = camera_manager.capture_and_save_images()
         update_websocket_images(file_names_to_check)
 
@@ -573,20 +573,12 @@ def micro_controller_thread():
             continue
 
         try:
-            average_class_name = {}
-
             for filename in file_names_to_check:
                 print(filename)
                 class_name, class_probability = mf.predict_image(filename, all_classes)
 
                 print(f"{class_name}: {class_probability}%")
                 print(f"Predicted {filename}: {class_name}")
-
-                # add to dictionary average_class_name
-                if class_name in average_class_name:
-                    average_class_name[class_name] += 1
-                else:
-                    average_class_name[class_name] = 1
 
                 # Increment counters based on prediction
                 if class_name in selected_classes:
@@ -612,18 +604,15 @@ def micro_controller_thread():
             else:  # 'dominant-reject'
                 decision = 'selected' if rejected_count == 0 else 'rejected'
 
-            # Get the class name with the highest count
-            class_name = max(average_class_name, key=average_class_name.get)
-
             # Execute actions based on the final decision
             if decision == 'selected':
                 print("The object will not be sorted out.\n\r")
                 send_serial_data.send_ignore_queue("d\n\r")
-                update_websocket_text("don't sort out | " + class_name)
+                update_websocket_text("don't sort out")
             else:
                 print("The object will be sorted out.\n\r")
                 send_serial_data.send_ignore_queue("s\n\r")
-                update_websocket_text("sort out | " + class_name)
+                update_websocket_text("sort out")
 
             print("Received data:", data)
         except Exception as e:
