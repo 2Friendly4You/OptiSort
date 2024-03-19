@@ -104,6 +104,7 @@ sorting_type = ""
 ai_evaluation_mode = 0
 
 production_line_speed = 15000
+scan_time_minimum = 0.2
 
 # Create a lock to control access to the training process
 training_lock = threading.Lock()
@@ -145,6 +146,12 @@ def handle_production_line_speed(data):
     production_line_speed = data['production_line_speed']
     send_serial_data.send(f"speed{production_line_speed}\n\r")
     socketio.emit('production_line_speed', {'production_line_speed': production_line_speed})
+
+@socketio.on('scan_time_minimum')
+def handle_scan_time_minimum(data):
+    global scan_time_minimum
+    scan_time_minimum = float(data['scan_time_minimum'])
+    socketio.emit('scan_time_minimum', {'scan_time_minimum': scan_time_minimum})
 
 
 def get_current_model_config():
@@ -287,6 +294,10 @@ def get_aievaluationmode():
 @app.route('/get-production-line-speed', methods=['GET'])
 def get_productionlinespeed():
     return jsonify({"production_line_speed": production_line_speed}), 200
+
+@app.route('/get-scan-time-minimum', methods=['GET'])
+def get_scantimeminimum():
+    return jsonify({"scan_time_minimum": scan_time_minimum}), 200
 
 # set the ai_evaluation_mode
 @app.route('/set-ai-evaluation-mode', methods=['POST'])
@@ -512,7 +523,7 @@ def move_images(source_folder, destination_folder):
 
 
 def micro_controller_thread():
-    global ser
+    global ser, scan_time_minimum
     freeze_support()
 
     # load current model
@@ -555,7 +566,7 @@ def micro_controller_thread():
 
         move_images("static/captured_images", "static/unclassified_images")
         print(f"Capturing {NUM_CAMERAS} images...")
-        time.sleep(0.5)
+        time.sleep(scan_time_minimum)
         file_names_to_check = camera_manager.capture_and_save_images()
         update_websocket_images(file_names_to_check)
 

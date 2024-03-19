@@ -90,6 +90,8 @@
             width: 50px;
             height: 24px;
             min-width: 50px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
 
         .switch input {
@@ -130,11 +132,24 @@
 
         .switch-label {
             font-size: 14px;
-            margin: 0 10px;
         }
 
         .switch-label.active {
             color: var(--bs-primary);
+        }
+
+        .settings {
+            display: flex;
+            align-items: center;
+        }
+
+        .settings label {
+            margin-right: 10px;
+        }
+
+        .settings input {
+            width: 50%;
+            margin: 0 10px;
         }
     </style>
 </head>
@@ -219,11 +234,16 @@
                             <label class="switch-label switch-label-on">Save the images without ai evaluation</label>
                         </div>
                         <br>
-                        <div>
+                        <div class="settings">
                             <label for="production_line_speed">Production line speed:</label>
-                            <input type="range" id="production_line_speed" min="0" max="50000" step="5000"
-                                        value="15000" oninput="this.nextSibling.value = this.value"
-                                        required><output>15000</output>
+                            <input type="range" id="production_line_speed" min="0" max="50000" step="5000" value="15000"
+                                oninput="this.nextSibling.value = this.value" required><output>15000</output>
+                        </div>
+                        <br>
+                        <div class="settings">
+                            <label for="scan_time_minimum">Scan time minimum:</label>
+                            <input type="range" id="scan_time_minimum" min="0" max="3" step="0.05" value="0.2"
+                                oninput="this.nextSibling.value = this.value" required><output>0.2</output>
                         </div>
                     </div>
                     <br>
@@ -463,6 +483,12 @@
                 updateProductionLineSpeed(data.production_line_speed);
             })
 
+        fetch('/get-scan-time-minimum')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                updateScanTimeMinimum(data.scan_time_minimum);
+            })
 
         // listen to the toggle switch change event and send the new value to the server
         document.getElementById('toggle-switch').addEventListener('change', function () {
@@ -535,7 +561,7 @@
         // Send mode change events to the server
         document.getElementById('production_line_speed').addEventListener('change', function () {
             var speed = this.value;
-            socket.emit('production_line_speed', {'production_line_speed': speed});
+            socket.emit('production_line_speed', { 'production_line_speed': speed });
             console.log('production_line_speed', speed);
         });
 
@@ -543,6 +569,30 @@
             var speedInput = document.getElementById('production_line_speed');
             speedInput.value = speed;
             speedInput.nextSibling.value = speed;
+        }
+    </script>
+
+    <script type="text/javascript" charset="utf-8">
+        var socket = io();
+
+        // Listen for mode change events from the server
+        socket.on('scan_time_minimum', function (data) {
+            var scan_time_minimum = data.scan_time_minimum;
+            updateScanTimeMinimum(scan_time_minimum);
+            console.log('scan_time_minimum', scan_time_minimum);
+        });
+
+        // Send mode change events to the server
+        document.getElementById('scan_time_minimum').addEventListener('change', function () {
+            var scan_time_minimum = this.value;
+            socket.emit('scan_time_minimum', { 'scan_time_minimum': scan_time_minimum });
+            console.log('scan_time_minimum', scan_time_minimum);
+        });
+
+        function updateScanTimeMinimum(scan_time_minimum) {
+            var scanTimeMinimumInput = document.getElementById('scan_time_minimum');
+            scanTimeMinimumInput.value = scan_time_minimum;
+            scanTimeMinimumInput.nextSibling.value = scan_time_minimum;
         }
     </script>
 </body>
