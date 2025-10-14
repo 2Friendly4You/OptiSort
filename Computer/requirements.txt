@@ -5,3 +5,4 @@ pyserial==3.5
 tensorflow==2.13.0
 tensorflow_intel==2.13.0
 eventlet==0.34.3
+python-socketio>=5.14.0 # not directly required, pinned by Snyk to avoid a vulnerability
